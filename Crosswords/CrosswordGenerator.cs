@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Crosswords
 {
@@ -84,7 +78,10 @@ namespace Crosswords
             {
                 //if index is less than 0, set x expansion + 1
                 // else...
-                if(LetterCanBePlaced(block[i-1, block.ArrayY], word.Letters[i-1]))
+                if (LetterCanBePlaced(blocks[i - 1, block.ArrayY].Coordinates, word.Letters[i - 1]))
+                {
+                    
+                }
 
 
             }

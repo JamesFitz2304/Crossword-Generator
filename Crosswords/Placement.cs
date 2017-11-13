@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Crosswords
+﻿namespace Crosswords
 {
     public class Placement
     {

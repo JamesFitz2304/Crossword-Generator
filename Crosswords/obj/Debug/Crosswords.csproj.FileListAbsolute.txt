@@ -13,3 +13,10 @@ C:\Users\James.Fitzgerald\Documents\Visual Studio 2017\Projects\Crosswords\Cross
 C:\Users\James.Fitzgerald\Documents\Visual Studio 2017\Projects\Crosswords\Crosswords\obj\Debug\Crosswords.csproj.CoreCompileInputs.cache
 C:\Users\James.Fitzgerald\Documents\Visual Studio 2017\Projects\Crosswords\Crosswords\obj\Debug\Crosswords.exe
 C:\Users\James.Fitzgerald\Documents\Visual Studio 2017\Projects\Crosswords\Crosswords\obj\Debug\Crosswords.pdb
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\Crosswords.csprojResolveAssemblyReference.cache
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\MainWindow.g.cs
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\App.g.cs
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\Crosswords_MarkupCompile.cache
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\Crosswords_MarkupCompile.lref
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\Crosswords.exe
+C:\Users\James.Fitzgerald\Documents\CrosswordGenerator\Crosswords\obj\Debug\Crosswords.pdb

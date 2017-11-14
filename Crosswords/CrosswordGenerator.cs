@@ -19,8 +19,10 @@ namespace Crosswords
         {
             for (int i = 0; i < Words.Count; i++)
             {
-                blocks = new Block[Words[i].WordLength, 1];
-
+                if (PlaceFirstWord(Words[i]))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -43,24 +45,43 @@ namespace Crosswords
             return false;
         }
 
+        private bool PlaceFirstWord(Word word)
+        {
+            blocks = new Block[word.WordLength, 1];
+            Placement placement = new Placement();
+
+            for (int i = 1; i <= word.WordLength; i++)
+            {
+                BlockCoordinates coordinates = new BlockCoordinates(i, 1);
+                blocks[i - 1, 1] = new Block();
+                PlaceWordOnBoard(word, placement);
+            }
+
+            return PlaceNextWord();
+        }
+
         private List<Placement> FindPossibleWordPlacements(Word word)
         {
             List<Placement> placements = new List<Placement>();
 
-            for(int i = 0; i<word.Letters.Length; i++)
+            for (int i = 0; i < word.Letters.Length; i++)
             {
-                foreach (Block block in blocks)
+                for (int x = 0; x < blocks.GetLength(0); x++)
                 {
-                    if (!block.Free && block.letter.Character == word.Letters[i].Character) // check if block == letter
+                    for (int y = 0; y < blocks.GetLength(1); y++)
                     {
-                        Placement placement;
-                        if (WordCanBePlacedVertically(word, block, i+1, out placement))
+                        Block block = blocks[x, y];
+                        if (!block.Free && block.letter.Character == word.Letters[i].Character) // check if block == letter
                         {
-                            if(placement != null) placements.Add(placement);
-                        }
-                        else if (WordCanBePlacedHorizontally(word, block, i+1, out placement))
-                        {
-                            if (placement != null) placements.Add(placement);
+                            Placement placement;
+                            if (WordCanBePlacedVertically(word, block, new BlockCoordinates(x+1, y+1),  i + 1, out placement))
+                            {
+                                if (placement != null) placements.Add(placement);
+                            }
+                            else if (WordCanBePlacedHorizontally(word, block, new BlockCoordinates(x + 1, y + 1), i + 1, out placement))
+                            {
+                                if (placement != null) placements.Add(placement);
+                            }
                         }
                     }
                 }
@@ -70,33 +91,82 @@ namespace Crosswords
             return placements;
         }
 
-        private bool WordCanBePlacedHorizontally(Word word, Block block, int letterIndex, out Placement placement)
+        private bool WordCanBePlacedHorizontally(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
             placement = new Placement();
-
-            for (int i = block.Coordinates.X; i > block.Coordinates.X - letterIndex; i--) //check all preceding letters
+            placement.Coordinates = new BlockCoordinates[word.Letters.Length];
+            placement.Coordinates[letterIndex - 1] = blockCoordinates;
+            BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+            for (int i = letterIndex - 1; i > 0; i--) //check all preceding letters
             {
-                //if index is less than 0, set x expansion + 1
-                // else...
-                if (LetterCanBePlaced(blocks[i - 1, block.ArrayY].Coordinates, word.Letters[i - 1]))
+                currentBlock.X--;
+                if (currentBlock.X < 1)
                 {
-                    
+                    placement.XExpansion++;
                 }
-
-
+                else if (!LetterCanBePlaced(currentBlock, word.Letters[letterIndex-1]))
+                {
+                    return false;
+                }
+                placement.Coordinates[i - 1] = currentBlock;
             }
 
-            return false;
+            currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+            for (int i = letterIndex + 1; i < word.WordLength; i++) //check all preceding letters
+            {
+                currentBlock.X++;
+                if (currentBlock.X > blocks.GetLength(0))
+                {
+                    placement.XExpansion++;
+                }
+                else if (!LetterCanBePlaced(currentBlock, word.Letters[letterIndex - 1]))
+                {
+                    return false;
+                }
+                placement.Coordinates[i - 1] = currentBlock;
+            }
+            return true;
         }
 
-        private bool LetterCanBePlaced(BlockCoordinates block, Letter letter)
-        {
-            return false;
-        }
-
-        private bool WordCanBePlacedVertically(Word word, Block block, int letterIndex, out Placement placement)
+        private bool WordCanBePlacedVertically(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
             placement = new Placement();
+            placement.Coordinates = new BlockCoordinates[word.Letters.Length];
+            placement.Coordinates[letterIndex - 1] = blockCoordinates;
+            BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+            for (int i = letterIndex - 1; i > 0; i--) //check all preceding letters
+            {
+                currentBlock.Y--;
+                if (currentBlock.Y < 1)
+                {
+                    placement.YExpansion++;
+                }
+                else if (!LetterCanBePlaced(currentBlock, word.Letters[letterIndex - 1]))
+                {
+                    return false;
+                }
+                placement.Coordinates[i - 1] = currentBlock;
+            }
+
+            currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+            for (int i = letterIndex + 1; i < word.WordLength; i++) //check all preceding letters
+            {
+                currentBlock.Y++;
+                if (currentBlock.Y > blocks.GetLength(1))
+                {
+                    placement.YExpansion++;
+                }
+                else if (!LetterCanBePlaced(currentBlock, word.Letters[letterIndex - 1]))
+                {
+                    return false;
+                }
+                placement.Coordinates[i - 1] = currentBlock;
+            }
+            return true;
+        }
+
+        private bool LetterCanBePlaced(BlockCoordinates blockCoordinates, Letter letter)
+        {
             return false;
         }
 

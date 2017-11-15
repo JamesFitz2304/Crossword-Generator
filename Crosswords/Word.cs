@@ -7,11 +7,11 @@
 
         public Word(string word)
         {
+            word = word.ToUpper();
             letters = new Letter[word.Length];
-            int i = 0;
-            foreach(char character in word)
+            for(int i = 0; i < word.Length; i++)
             {
-                letters[i] = new Letter(character);
+                letters[i] = new Letter(word[i]);
             }
         }
 

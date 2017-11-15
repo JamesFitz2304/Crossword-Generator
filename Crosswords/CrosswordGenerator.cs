@@ -4,9 +4,7 @@ namespace Crosswords
 {
     public class CrosswordGenerator
     {
-        private List<Word> Words;
-        private List<Word> PlacedWords;
-        private List<Word> RemainingWords;
+        private readonly List<Word> Words;
 
         //private CrosswordSpace Space = new CrosswordSpace();
         public Block[,] blocks;
@@ -27,37 +25,41 @@ namespace Crosswords
             return false;
         }
 
-        public bool PlaceNextWord()
-        {
-            for (int i = 0; i < RemainingWords.Count; i++)
-            {
-                List<Placement> placements = FindPossibleWordPlacements(RemainingWords[i]);
-
-                foreach (Placement placement in placements)
-                {
-                    PlaceWordOnBoard(RemainingWords[i], placement);
-                    if (PlaceNextWord())
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
         private bool PlaceFirstWord(Word word)
         {
             blocks = new Block[word.WordLength, 1];
-            Placement placement = new Placement();
+            Placement placement = new Placement(word.WordLength);
 
             for (int i = 1; i <= word.WordLength; i++)
             {
                 BlockCoordinates coordinates = new BlockCoordinates(i, 1);
-                blocks[i - 1, 1] = new Block();
-                PlaceWordOnBoard(word, placement);
+                placement.Coordinates[i-1] = coordinates;
+                blocks[i - 1, 0] = new Block();
             }
+            PlaceWordOnBoard(word, placement);
 
             return PlaceNextWord();
+        }
+
+        private bool PlaceNextWord()
+        {
+            for (int i = 0; i < Words.Count; i++)
+            {
+                if(Words[i].Placed) continue;
+                List<Placement> placements = FindPossibleWordPlacements(Words[i]);
+
+                foreach (Placement placement in placements)
+                {
+                    PlaceWordOnBoard(Words[i], placement);
+                    if (PlaceNextWord())
+                    {
+                        return true;
+                    }
+                    //TODO ELSE WILL NEED TO ROLL BACK LAST WORD. REMOVE FROM BOARD
+                    //COULD WE SAVE THE STATE OF THE GAME? THE BLOCKS AND WORD LIST? OR IS IT EASIER TO JUST MANUALLY REMOVE THE WORD AND RESIZE ARRAY 
+                }
+            }
+            return false;
         }
 
         private List<Placement> FindPossibleWordPlacements(Word word)
@@ -93,7 +95,7 @@ namespace Crosswords
 
         private bool WordCanBePlacedHorizontally(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
-            placement = new Placement();
+            placement = new Placement(word.WordLength);
             placement.Coordinates = new BlockCoordinates[word.Letters.Length];
             placement.Coordinates[letterIndex - 1] = blockCoordinates;
             BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
@@ -130,7 +132,7 @@ namespace Crosswords
 
         private bool WordCanBePlacedVertically(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
-            placement = new Placement();
+            placement = new Placement(word.WordLength);
             placement.Coordinates = new BlockCoordinates[word.Letters.Length];
             placement.Coordinates[letterIndex - 1] = blockCoordinates;
             BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
@@ -177,21 +179,21 @@ namespace Crosswords
 
         private void PlaceWordOnBoard(Word word, Placement placement)
         {
+            //TODO if expansion is needed, this is the place to do it!!!
             SetLetterToPlacementCoordinates(word, placement);
             foreach (Letter letter in word.Letters)
             {
                 blocks[letter.Coordinates.X - 1, letter.Coordinates.Y - 1].letter = letter;
+                blocks[letter.Coordinates.X - 1, letter.Coordinates.Y - 1].Free = false;
             }
             word.Placed = true;
         }
 
         private static void SetLetterToPlacementCoordinates(Word word, Placement placement)
         {
-            int i = 0;
-
-            foreach (BlockCoordinates coordinates in placement.Coordinates)
+            for (int i = 0; i<word.WordLength; i++)
             {
-                word.Letters[i].Coordinates = coordinates;
+                word.Letters[i].Coordinates = placement.Coordinates[i];
             }
         }
     }
@@ -214,8 +216,3 @@ namespace Crosswords
  * If it turns out a letter is impossible to place, go back through all previosuly placed letters and remove their X Y coordinates
  * Try next starting position  
  * */
-
-
-    //TO DO
-            //IF THE BOARD MUST EXPAND, HOW DO WE DEAL WITH THIS? NEGATIVE COORDINATES? - POSSIBLY NEED A METHOD TO SHUFFLE ALL LETTERS
-            // CHECK IF WORD CAN BE PLACED VERTICALLY AND HORIZONTALLY 

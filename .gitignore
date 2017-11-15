@@ -1,3 +1,7 @@
 packages/
 Crosswords/obj/
+Crosswords/bin/
 .vs/
+CrosswordTests/bin/
+CrosswordTests/obj/
+CrosswordTests/packages/

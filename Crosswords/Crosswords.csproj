@@ -56,9 +56,7 @@
     </ApplicationDefinition>
     <Compile Include="Block.cs" />
     <Compile Include="BlockCoordinates.cs" />
-    <Compile Include="BoardState.cs" />
     <Compile Include="CrosswordGenerator.cs" />
-    <Compile Include="CrosswordState.cs" />
     <Compile Include="Letter.cs" />
     <Compile Include="Placement.cs" />
     <Compile Include="PlacementComparer.cs" />

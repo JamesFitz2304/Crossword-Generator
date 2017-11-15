@@ -10,8 +10,8 @@
 
         public BlockCoordinates(int x, int y)
         {
-            Y = x;
-            X = y;
+            X = x;
+            Y = y;
         }
 
         public BlockCoordinates()

@@ -112,9 +112,18 @@ namespace Crosswords
         private bool WordCanBePlacedHorizontally(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
             placement = new Placement(word.WordLength);
+            BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+
+            if (!OutOfBounds(currentBlock.ArrayX - 1, currentBlock.ArrayY) && blocks[currentBlock.ArrayX - 1, currentBlock.ArrayY] != null ||
+                !OutOfBounds(currentBlock.ArrayX + 1, currentBlock.ArrayY) && blocks[currentBlock.ArrayX + 1, currentBlock.ArrayY] != null)
+            {
+                return false;
+            }
+
             placement.Coordinates = new BlockCoordinates[word.Letters.Length];
             placement.Coordinates[letterIndex - 1] = blockCoordinates;
-            BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+          
+
             for (int i = letterIndex - 1; i > 0; i--) //check all preceding letters
             {
                 currentBlock.X--;
@@ -122,7 +131,7 @@ namespace Crosswords
                 {
                     placement.Expansion.Left++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, letterIndex, -1, "L", new BlockCoordinates(currentBlock.X-1, currentBlock.Y)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, -1, "L", new BlockCoordinates(currentBlock.X-1, currentBlock.Y)))
                 {
                     return false;
                 }
@@ -137,7 +146,7 @@ namespace Crosswords
                 {
                     placement.Expansion.Right++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, letterIndex, 1, "R", new BlockCoordinates(currentBlock.X + 1, currentBlock.Y)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, 1, "R", new BlockCoordinates(currentBlock.X + 1, currentBlock.Y)))
                 {
                     return false;
                 }
@@ -148,7 +157,7 @@ namespace Crosswords
             {
                 foreach (var coordinate in placement.Coordinates)
                 {
-                    coordinate.X += placement.Expansion.Left + 1;
+                    coordinate.X += placement.Expansion.Left;
                 }
             }
 
@@ -158,9 +167,18 @@ namespace Crosswords
         private bool WordCanBePlacedVertically(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
             placement = new Placement(word.WordLength);
+            BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+
+            if (!OutOfBounds(currentBlock.ArrayX, currentBlock.ArrayY - 1) && blocks[currentBlock.ArrayX, currentBlock.ArrayY - 1] != null ||
+                !OutOfBounds(currentBlock.ArrayX, currentBlock.ArrayY - 1) && blocks[currentBlock.ArrayX , currentBlock.ArrayY - 1] != null)
+            {
+                return false;
+            }
+
             placement.Coordinates = new BlockCoordinates[word.Letters.Length];
             placement.Coordinates[letterIndex - 1] = blockCoordinates;
-            BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
+
+
             for (int i = letterIndex - 1; i > 0; i--) //check all preceding letters
             {
                 currentBlock.Y--;
@@ -168,7 +186,7 @@ namespace Crosswords
                 {
                     placement.Expansion.Up++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, letterIndex, -1 , "U", new BlockCoordinates(currentBlock.X, currentBlock.Y - 1)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, -1 , "U", new BlockCoordinates(currentBlock.X, currentBlock.Y - 1)))
                 {
                     return false;
                 }
@@ -183,7 +201,7 @@ namespace Crosswords
                 {
                     placement.Expansion.Down++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, letterIndex, 1 , "D", new BlockCoordinates(currentBlock.X, currentBlock.Y + 1)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, 1 , "D", new BlockCoordinates(currentBlock.X, currentBlock.Y + 1)))
                 {
                     return false;
                 }
@@ -292,19 +310,8 @@ namespace Crosswords
 //TODO Doesn't always take the best solution. Maybe prioritise placements add the least amount of new letters
 //TODO Why isn't MEATEATER placed between the M and the A? Because it makes it squarer?
 
-/* For each letter in the word
- * Try to find that letter already on the board
- * If found, 
- * If there is a letter to the left or right, it would have to be vertical
- * If there is a letter above or below, it would have to be horizontal
- * If letter has other letter horizontally or vertical, it isn't viable
- * 
- * If horizontal, for each previous letter, check it can be placed to the left (no adjacent letters) and place
- * Then do again with all letters to the right
- * 
- * If vertical, do the same but above and below
- * 
- * 
+/* 
+
  * If it turns out a letter is impossible to place, go back through all previosuly placed letters and remove their X Y coordinates
  * Try next starting position  
  * */

@@ -2,12 +2,11 @@
 {
     public class Block
     {
-        public bool Free;
         public Letter letter;
 
-        public Block()
+        public Block(Letter letter)
         {
-            Free = true;
+            this.letter = letter;
         }
     }
 }

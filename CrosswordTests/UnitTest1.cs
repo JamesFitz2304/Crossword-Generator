@@ -8,7 +8,7 @@ namespace CrosswordTests
     public class UnitTest1
     {
         [TestMethod]
-        public void WhenTwoWordsCanExistAlone_GenerationIsSuccessful()
+        public void WhenTwoWordsCanExist_GenerationIsSuccessful()
         {
             List<Word> Words = new List<Word>
             {
@@ -16,8 +16,23 @@ namespace CrosswordTests
                 new Word("Orange") 
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
-            Assert.IsTrue(generator.PlaceWords());
+            Assert.IsTrue(generator.Generate());
         }
+
+        [TestMethod]
+        public void WhenThreeWordsCanExist_GenerationIsSuccessful()
+        {
+            List<Word> Words = new List<Word>
+            {
+                new Word("Toilet") ,
+                new Word("Lemon"),
+                new Word("Bee")
+            };
+            CrosswordGenerator generator = new CrosswordGenerator(Words);
+            Assert.IsTrue(generator.Generate());
+        }
+
+
 
         [TestMethod]
         public void WhenTwoWordsCannotExistAlone_GenerationIsUnsuccessful()
@@ -28,7 +43,7 @@ namespace CrosswordTests
                 new Word("Food")
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
-            Assert.IsFalse(generator.PlaceWords());
+            Assert.IsFalse(generator.Generate());
         }
 
     }

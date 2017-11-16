@@ -17,7 +17,7 @@ namespace Crosswords
 
         public int Compare(Placement a, Placement b)
         {
-            return Math.Abs((XSize + b.XExpansion) - (YSize + b.YExpansion)) - Math.Abs((XSize + a.XExpansion) - (YSize + a.YExpansion));
+            return Math.Abs((XSize + b.Expansion.TotalX) - (YSize + b.Expansion.TotalY)) - Math.Abs((XSize + b.Expansion.TotalX) - (YSize + b.Expansion.TotalY));
 
         }
     }

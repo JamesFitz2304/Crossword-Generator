@@ -5,20 +5,13 @@ namespace Crosswords
 {
     public class PlacementComparer : IComparer<Placement>
     {
-
-        private int XSize;
-        private int YSize;
-
-        public PlacementComparer(int xsize, int ysize)
-        {
-            XSize = xsize;
-            YSize = ysize;
-        }
-
         public int Compare(Placement a, Placement b)
         {
-            return Math.Abs((XSize + b.Expansion.TotalX) - (YSize + b.Expansion.TotalY)) - Math.Abs((XSize + b.Expansion.TotalX) - (YSize + b.Expansion.TotalY));
+            int diff = a.NewLetters - b.NewLetters;
 
+            return diff == 0
+                ? (a.NewLetters + a.Expansion.TotalX + a.Expansion.TotalY) - (b.NewLetters + b.Expansion.TotalX + b.Expansion.TotalY)
+                : diff;
         }
     }
 }

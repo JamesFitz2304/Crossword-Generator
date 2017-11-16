@@ -24,16 +24,21 @@ namespace CrosswordTests
         {
             List<Word> Words = new List<Word>
             {
-                new Word("Toilet"),
-                new Word("Lemon"),
-                new Word("Bee"),
-                new Word("Beans"),
-                new Word("Sausage"),
-                new Word("Meateater"),
-                new Word("Saudi"),
-                new Word("Poo"),
-                new Word("Anus"),
-                new Word("Sod")
+                new Word("WHEN"),
+                new Word("YOU"),
+                new Word("WERE"),
+                new Word("YOUNG"),
+                new Word("BLING"),
+                new Word("MISTER"),
+                new Word("BRIGHTSIDE"),
+                new Word("SOMEBODY"),
+                new Word("TOLD"),
+                new Word("ME"),
+                new Word("MISS"),
+                new Word("ATOMIC"),
+                new Word("BOMB"),
+                new Word("MY"),
+                new Word("LIST")
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
             Assert.IsTrue(generator.Generate());

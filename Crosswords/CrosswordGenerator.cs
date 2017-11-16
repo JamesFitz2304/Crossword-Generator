@@ -105,7 +105,7 @@ namespace Crosswords
                 }
             }
             //add each new possible placement to list
-            placements.Sort(new PlacementComparer(blocks.GetLength(0), blocks.GetLength(1))); //sort placements by least expansion required
+            placements.Sort(new PlacementComparer()); //sort placements by least new letters added to board
             return placements;
         }
 
@@ -130,8 +130,9 @@ namespace Crosswords
                 if (currentBlock.X < 1)
                 {
                     placement.Expansion.Left++;
+                    placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, -1, "L", new BlockCoordinates(currentBlock.X-1, currentBlock.Y)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, -1, "L", new BlockCoordinates(currentBlock.X-1, currentBlock.Y), placement))
                 {
                     return false;
                 }
@@ -145,8 +146,9 @@ namespace Crosswords
                 if (currentBlock.X > blocks.GetLength(0))
                 {
                     placement.Expansion.Right++;
+                    placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, 1, "R", new BlockCoordinates(currentBlock.X + 1, currentBlock.Y)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, 1, "R", new BlockCoordinates(currentBlock.X + 1, currentBlock.Y), placement))
                 {
                     return false;
                 }
@@ -169,7 +171,7 @@ namespace Crosswords
             placement = new Placement(word.WordLength);
             BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
 
-            if (!OutOfBounds(currentBlock.ArrayX, currentBlock.ArrayY - 1) && blocks[currentBlock.ArrayX, currentBlock.ArrayY - 1] != null ||
+            if (!OutOfBounds(currentBlock.ArrayX, currentBlock.ArrayY + 1) && blocks[currentBlock.ArrayX, currentBlock.ArrayY + 1] != null ||
                 !OutOfBounds(currentBlock.ArrayX, currentBlock.ArrayY - 1) && blocks[currentBlock.ArrayX , currentBlock.ArrayY - 1] != null)
             {
                 return false;
@@ -185,8 +187,9 @@ namespace Crosswords
                 if (currentBlock.Y < 1)
                 {
                     placement.Expansion.Up++;
+                    placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, -1 , "U", new BlockCoordinates(currentBlock.X, currentBlock.Y - 1)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, -1 , "U", new BlockCoordinates(currentBlock.X, currentBlock.Y - 1), placement))
                 {
                     return false;
                 }
@@ -200,8 +203,9 @@ namespace Crosswords
                 if (currentBlock.Y > blocks.GetLength(1))
                 {
                     placement.Expansion.Down++;
+                    placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, 1 , "D", new BlockCoordinates(currentBlock.X, currentBlock.Y + 1)))
+                else if (!LetterCanBePlaced(currentBlock, word.Letters, i, 1 , "D", new BlockCoordinates(currentBlock.X, currentBlock.Y + 1), placement))
                 {
                     return false;
                 }
@@ -219,7 +223,7 @@ namespace Crosswords
             return true;
         }
 
-        private bool LetterCanBePlaced(BlockCoordinates blockCoordinates, Letter[] letters, int letterIndex, int nextLetterStep, string direction, BlockCoordinates nextBlockCoordinates)
+        private bool LetterCanBePlaced(BlockCoordinates blockCoordinates, Letter[] letters, int letterIndex, int nextLetterStep, string direction, BlockCoordinates nextBlockCoordinates, Placement placement)
         {
             Letter letter = letters[letterIndex-1];
             Block nextBlock = OutOfBounds(nextBlockCoordinates.ArrayX, nextBlockCoordinates.ArrayY)
@@ -255,6 +259,7 @@ namespace Crosswords
                     return false;
                 }
             }
+            placement.NewLetters++;
             return nextLetter == null && nextBlock == null || nextLetter != null && (nextBlock == null || nextBlock.letter.Character == nextLetter.Character);
         }
 
@@ -305,10 +310,7 @@ namespace Crosswords
     }
 }
 
-
-//TODO Need to check the block before the first word to make sure it's empty
-//TODO Doesn't always take the best solution. Maybe prioritise placements add the least amount of new letters
-//TODO Why isn't MEATEATER placed between the M and the A? Because it makes it squarer?
+//TODO Doesn't always take the best solution. Prioritise placements add the least amount of new letters
 
 /* 
 

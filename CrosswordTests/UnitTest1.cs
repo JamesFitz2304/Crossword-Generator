@@ -12,8 +12,8 @@ namespace CrosswordTests
         {
             List<Word> Words = new List<Word>
             {
-                new Word("Bacon") ,
-                new Word("Orange") 
+                new Word("Hello") ,
+                new Word("Heat") 
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
             Assert.IsTrue(generator.Generate());
@@ -24,21 +24,10 @@ namespace CrosswordTests
         {
             List<Word> Words = new List<Word>
             {
-                new Word("WHEN"),
-                new Word("YOU"),
-                new Word("WERE"),
-                new Word("YOUNG"),
-                new Word("BLING"),
-                new Word("MISTER"),
-                new Word("BRIGHTSIDE"),
-                new Word("SOMEBODY"),
-                new Word("TOLD"),
-                new Word("ME"),
-                new Word("MISS"),
-                new Word("ATOMIC"),
-                new Word("BOMB"),
-                new Word("MY"),
-                new Word("LIST")
+                new Word("Hello"),
+                new Word("Heat"),
+                new Word("Toad")
+
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
             Assert.IsTrue(generator.Generate());
@@ -53,6 +42,30 @@ namespace CrosswordTests
             {
                 new Word("Beer") ,
                 new Word("Food")
+            };
+            CrosswordGenerator generator = new CrosswordGenerator(Words);
+            Assert.IsFalse(generator.Generate());
+        }
+
+        [TestMethod]
+        public void WhenFirstTwoWordsCannotExistAlone_ThirdWordAllowsThemToExist_GenerationIsSuccessful()
+        {
+            List<Word> Words = new List<Word>
+            {
+                new Word("CAT"),
+                new Word("DOG"),
+                new Word("TOAD")
+            };
+            CrosswordGenerator generator = new CrosswordGenerator(Words);
+            Assert.IsTrue(generator.Generate());
+        }
+
+        [TestMethod]
+        public void WhenOnlyOneWord_GenerationIsUnSuccessful()
+        {
+            List<Word> Words = new List<Word>
+            {
+                new Word("CAT")
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
             Assert.IsFalse(generator.Generate());

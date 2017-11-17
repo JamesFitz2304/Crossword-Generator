@@ -9,6 +9,8 @@ namespace Crosswords
 
         //private CrosswordSpace Space = new CrosswordSpace();
         public Block[,] blocks;
+
+        private int wordsPlaced = 0;
         public CrosswordGenerator(List<Word> words)
         {
             Words = words;
@@ -18,6 +20,7 @@ namespace Crosswords
         {
             for (int i = 0; i < Words.Count; i++)
             {
+                wordsPlaced = 0;
                 if (PlaceFirstWord(Words[i]))
                 {
                     return true;
@@ -37,7 +40,7 @@ namespace Crosswords
                 placement.Coordinates[i-1] = coordinates;
             }
             PlaceWordOnBoard(word, placement);
-
+            wordsPlaced++;
             return PlaceNextWord();
         }
 
@@ -45,36 +48,37 @@ namespace Crosswords
         {
             for (int i = 0; i < Words.Count; i++)
             {
-                if(Words[i].Placed) continue;
+                if (Words[i].Placed) continue;
                 List<Placement> placements = FindPossibleWordPlacements(Words[i]);
 
                 foreach (Placement placement in placements)
                 {
                     Block[,] blockState = blocks;
                     PlaceWordOnBoard(Words[i], placement);
-                    if (PlaceNextWord())
+                    wordsPlaced++;
+                    if (PlaceNextWord() || wordsPlaced == Words.Count)
                     {
                         return true;
                     }
-                    else
-                    {
-                        blocks = blockState;
-                        ReverseWordPlacement(placement, Words[i]);
-                        return false;
-                    }
-                    //TODO ELSE WILL NEED TO ROLL BACK LAST WORD. REMOVE FROM BOARD
-                    //COULD WE SAVE THE STATE OF THE GAME? THE BLOCKS AND WORD LIST? OR IS IT EASIER TO JUST MANUALLY REMOVE THE WORD AND RESIZE ARRAY 
+                    blocks = blockState;
+                    ReverseWordPlacement(placement, Words[i]);
+                    return false;
                 }
             }
-            return true;
+            return false;
         }
 
         private void ReverseWordPlacement(Placement placement, Word word)
         {
-            for (int i = 0; i < word.WordLength; i++)
+            word.Placed = false;
+            wordsPlaced--;
+            if (placement.Expansion.TotalX == 0 && placement.Expansion.TotalY == 0) return;
+            for (int x = 0; x < blocks.GetLength(0); x++)
             {
-                word.Letters[i].Coordinates.ShiftCoordinates(-placement.Expansion.Left, -placement.Expansion.Up);
-                word.Placed = false;
+                for (int y = 0; y < blocks.GetLength(1); y++)
+                {
+                    if (blocks[x, y] != null) blocks[x, y].letter.Coordinates.ShiftCoordinates(-placement.Expansion.Left, -placement.Expansion.Up);
+                }
             }
         }
 
@@ -286,7 +290,6 @@ namespace Crosswords
                 {
                     if (blocks[x, y] != null) blocks[x, y].letter.Coordinates.ShiftCoordinates(placement.Expansion.Left, placement.Expansion.Up);
                     newBlocks[x + placement.Expansion.Left, y + placement.Expansion.Up] = blocks[x, y];
-                    //TODO - Will also need to alter the inner coordinates of the letters! What happens when we want to rollback?
                 }
             }
 
@@ -309,11 +312,3 @@ namespace Crosswords
         }
     }
 }
-
-//TODO Doesn't always take the best solution. Prioritise placements add the least amount of new letters
-
-/* 
-
- * If it turns out a letter is impossible to place, go back through all previosuly placed letters and remove their X Y coordinates
- * Try next starting position  
- * */

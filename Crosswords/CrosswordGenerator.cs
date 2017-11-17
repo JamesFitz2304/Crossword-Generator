@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Crosswords
 {
@@ -9,11 +10,28 @@ namespace Crosswords
 
         //private CrosswordSpace Space = new CrosswordSpace();
         public Block[,] blocks;
+        private Regex regex = new Regex(@"[^A-Z]");
 
         private int wordsPlaced = 0;
         public CrosswordGenerator(List<Word> words)
         {
+            if (!AllWordsValid(words))
+            {
+                throw new FormatException("Word list contained invalid characters");
+            }
             Words = words;
+        }
+
+        private bool AllWordsValid(List<Word> words)
+        {
+            foreach (var word in words)
+            {
+                if (regex.IsMatch(word.WordAsString))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool Generate()

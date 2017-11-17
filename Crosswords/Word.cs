@@ -31,5 +31,20 @@
             set { placed = value; }
         }
 
+        public string WordAsString
+        {
+
+
+            get
+            {
+                string word = "";
+                foreach (Letter letter in letters)
+                {
+                    word += letter.Character;
+                }
+                return word;
+            }
+        }
+
     }
 }

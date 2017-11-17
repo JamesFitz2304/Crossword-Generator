@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Crosswords;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -69,6 +70,19 @@ namespace CrosswordTests
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
             Assert.IsFalse(generator.Generate());
+        }
+
+        [TestMethod]
+        public void WhenAWordContainsANonAlphabeticCharacter_ThrowError()
+        {
+            List<Word> Words = new List<Word>
+            {
+                new Word("CAT"),
+                new Word("DOG"),
+                new Word("SNA.KE/")
+            };
+            CrosswordGenerator generator;
+            Assert.ThrowsException<FormatException>(() => generator = new CrosswordGenerator(Words));
         }
 
     }

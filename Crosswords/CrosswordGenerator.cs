@@ -298,7 +298,7 @@ namespace Crosswords
         }
 
 
-        private static void SetLetterToPlacementCoordinates(Word word, Placement placement)
+        private void SetLetterToPlacementCoordinates(Word word, Placement placement)
         {
             for (int i = 0; i<word.WordLength; i++)
             {

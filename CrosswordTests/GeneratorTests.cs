@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CrosswordTests
 {
     [TestClass]
-    public class UnitTest1
+    public class GeneratorTests
     {
         [TestMethod]
         public void WhenTwoWordsCanExist_GenerationIsSuccessful()

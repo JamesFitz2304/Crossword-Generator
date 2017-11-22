@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Crosswords;
 
 namespace CrosswordWPF
 {
@@ -23,6 +12,36 @@ namespace CrosswordWPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            CrosswordGenerator generator = new CrosswordGenerator(new List<Word>
+            {
+                new Word("Dog"),
+                new Word("Cat"),
+                new Word("Chicken"),
+                new Word("Cow"),
+                new Word("Monkey"),
+                new Word("Salmon"),
+                new Word("Goat"),
+                new Word("Worm"),
+                new Word("Wasp"),
+                new Word("Bee"),
+                new Word("Ostrich"),
+                new Word("Parrot"),
+                new Word("Frog"),
+                new Word("Skunk"),
+                new Word("Tiger"),
+                new Word("Rabbit"),
+                new Word("BAT")
+            });
+
+            generator.Generate();
+
+            CrosswordWindow crossword = new CrosswordWindow(generator.blocks);
+            crossword.Show();
         }
     }
 }

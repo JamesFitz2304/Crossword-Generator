@@ -12,5 +12,6 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="135,10,0,0" TextWrapping="Wrap" Text="Clue" VerticalAlignment="Top" Width="296"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="135,38,0,0" TextWrapping="Wrap" Text="Clue" VerticalAlignment="Top" Width="296"/>
         <Button x:Name="btnAdd" Content="+" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="31" FontWeight="Bold" FontSize="16" VerticalContentAlignment="Top" Height="28" HorizontalContentAlignment="Center"/>
+        <Button Content="Go" HorizontalAlignment="Left" Margin="393,74,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
     </Grid>
 </Window>

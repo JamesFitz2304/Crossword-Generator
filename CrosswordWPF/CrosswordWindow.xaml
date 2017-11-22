@@ -1,0 +1,11 @@
+﻿<Window x:Class="CrosswordWPF.CrosswordWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CrosswordWPF"
+        mc:Ignorable="d"
+        Title="CrosswordWindow" ResizeMode="NoResize" SizeToContent="WidthAndHeight" MinHeight="25" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
+    <Canvas Name="CrosswordCanvas" Grid.Row="0">
+    </Canvas>
+</Window>

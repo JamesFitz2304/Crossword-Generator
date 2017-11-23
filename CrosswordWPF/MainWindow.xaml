@@ -5,13 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrosswordWPF"
         mc:Ignorable="d"
-        Title="Crossword Generator" Height="135" Width="486" Background="#FF85EEFF">
-    <Grid >
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="Word" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="Word" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="135,10,0,0" TextWrapping="Wrap" Text="Clue" VerticalAlignment="Top" Width="296"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="135,38,0,0" TextWrapping="Wrap" Text="Clue" VerticalAlignment="Top" Width="296"/>
-        <Button x:Name="btnAdd" Content="+" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="31" FontWeight="Bold" FontSize="16" VerticalContentAlignment="Top" Height="28" HorizontalContentAlignment="Center"/>
-        <Button Content="Go" HorizontalAlignment="Left" Margin="393,74,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        Title="Crossword Generator" Background="#FF85EEFF" SizeToContent="WidthAndHeight">
+    <Grid x:Name="MainGrid" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="350"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="boxWord1" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="0" Margin="0,0,2,0"/>
+        <TextBox x:Name="boxWord2" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Grid.Row="1" Margin="0,0,2,0"/>
+        <TextBox x:Name="boxClue1" HorizontalAlignment="Left" Height="23" Margin="2,0,0,0" TextWrapping="Wrap" Width="300" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="boxClue2" HorizontalAlignment="Left" Height="23" Margin="2,0,0,0" TextWrapping="Wrap" Width="300" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+        <Button x:Name="btnAdd" Content="+" HorizontalAlignment="Left" Margin="8,0,0,0" VerticalAlignment="Top" Width="31" FontWeight="Bold" FontSize="16" VerticalContentAlignment="Top" Height="28" HorizontalContentAlignment="Center" Grid.Row="2" Click="btnAdd_Click"/>
+        <Button x:Name="btnGo" Content="Go" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Center" Width="75" Click="Button_Click" Grid.Row="2"/>
     </Grid>
 </Window>

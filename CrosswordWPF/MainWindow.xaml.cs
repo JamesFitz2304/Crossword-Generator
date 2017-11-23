@@ -12,25 +12,22 @@ namespace CrosswordWPF
     public partial class MainWindow : Window
     {
 
-        List<TextBox> wordBoxes = new List<TextBox>();
-        List<TextBox> clueBoxes = new List<TextBox>();
+        List<WordInput> WordInputs = new List<WordInput>();
 
         public MainWindow()
         {
             InitializeComponent();
-            wordBoxes.Add(boxWord1);
-            wordBoxes.Add(boxWord2);
-            clueBoxes.Add(boxClue1);
-            clueBoxes.Add(boxClue2);
+            WordInputs.Add(new WordInput(boxWord1, boxClue1));
+            WordInputs.Add(new WordInput(boxWord2, boxClue2));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             List<Word> words = new List<Word>();
 
-            foreach (TextBox box in wordBoxes)
+            foreach (WordInput input in WordInputs)
             {
-                words.Add(new Word(box.Text));
+                words.Add(new Word(input.WordBox.Text));
             }
 
             CrosswordGenerator generator;
@@ -58,40 +55,47 @@ namespace CrosswordWPF
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddNewWordLine();
+            if (WordInputs.Count > 2)
+            {
+                btnRemove.Visibility = Visibility.Visible;
+            }
         }
 
         private void AddNewWordLine()
         {
             AddNewGridRow();
-            TextBox newWord = new TextBox();
-            TextBox newClue = new TextBox();
-            newWord.Name = "boxWord" + wordBoxes.Count + 1;
-            newClue.Name = "boxClue" + wordBoxes.Count + 1;
-            MainGrid.Children.Add(newWord);
-            MainGrid.Children.Add(newClue);
-            Grid.SetRow(newWord, MainGrid.RowDefinitions.Count-2);
-            Grid.SetRow(newClue, MainGrid.RowDefinitions.Count - 2);
-            Grid.SetColumn(newWord, 0);
-            Grid.SetColumn(newClue, 1);
-            newWord.Height = newClue.Height = 23;
-            newWord.Width = 120;
-            newClue.Width = 300;
-            newWord.VerticalAlignment = newClue.VerticalAlignment = VerticalAlignment.Center;
-            newWord.HorizontalAlignment = HorizontalAlignment.Right;
-            newClue.HorizontalAlignment = HorizontalAlignment.Left;
-            newWord.Margin = new Thickness(0, 0, 2, 0);
-            newClue.Margin = new Thickness(2, 0, 0, 0);
-
-            wordBoxes.Add(newWord);
-            clueBoxes.Add(newClue);
+            WordInputs.Add(new WordInput(WordInputs, MainGrid));
         }
 
         private void AddNewGridRow()
         {
-            RowDefinition newRow = new RowDefinition();
-            newRow.Height = new GridLength(30);
+            RowDefinition newRow = new RowDefinition
+            {
+                Height = new GridLength(30)
+            };
             MainGrid.RowDefinitions.Add(newRow);
-            Grid.SetRow(btnAdd, MainGrid.RowDefinitions.Count-1);
+            Grid.SetRow(btnAdd, MainGrid.RowDefinitions.Count - 1);
+            Grid.SetRow(btnGo, MainGrid.RowDefinitions.Count - 1);
+            Grid.SetRow(btnRemove, MainGrid.RowDefinitions.Count - 2);
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            MainGrid.Children.Remove(WordInputs[WordInputs.Count-1].WordBox);
+            MainGrid.Children.Remove(WordInputs[WordInputs.Count - 1].ClueBox);
+            WordInputs.RemoveAt(WordInputs.Count-1);
+            RemoveGridRow();
+            Grid.SetRow(btnRemove, MainGrid.RowDefinitions.Count - 2);
+            if (WordInputs.Count < 3)
+            {
+                btnRemove.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void RemoveGridRow()
+        {
+            MainGrid.RowDefinitions.RemoveAt(MainGrid.RowDefinitions.Count-1);
+            Grid.SetRow(btnAdd, MainGrid.RowDefinitions.Count - 1);
             Grid.SetRow(btnGo, MainGrid.RowDefinitions.Count - 1);
         }
     }

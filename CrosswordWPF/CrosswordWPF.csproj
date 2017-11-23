@@ -57,6 +57,7 @@
     <Compile Include="BlankDrawingBlock.cs" />
     <Compile Include="DrawingBlock.cs" />
     <Compile Include="UsedDrawingBlock.cs" />
+    <Compile Include="WordInput.cs" />
     <Page Include="CrosswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

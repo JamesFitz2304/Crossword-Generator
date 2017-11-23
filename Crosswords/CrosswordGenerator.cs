@@ -24,7 +24,7 @@ namespace Crosswords
         {
             foreach (var word in words)
             {
-                if (regex.IsMatch(word.WordAsString))
+                if (regex.IsMatch(word.WordAsString) || string.IsNullOrWhiteSpace(word.WordAsString))
                 {
                     return false;
                 }

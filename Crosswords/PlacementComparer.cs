@@ -7,11 +7,24 @@ namespace Crosswords
     {
         public int Compare(Placement a, Placement b)
         {
-            int diff = a.NewLetters - b.NewLetters;
+            if (a.Expansion.TotalY + a.Expansion.TotalX > b.Expansion.TotalY + b.Expansion.TotalX)
+            {
+                return 1;
+            }
 
-            return diff == 0
-                ? (a.Expansion.TotalX + a.Expansion.TotalY) - (b.Expansion.TotalX + b.Expansion.TotalY)
-                : diff;
+            if (a.Expansion.TotalY + a.Expansion.TotalX < b.Expansion.TotalY + b.Expansion.TotalX)
+            {
+                return -1;
+            }
+            if (a.Word.WordLength - a.NewLetters < b.Word.WordLength - b.NewLetters)
+            {
+                return 1;
+            }
+            if (a.Word.WordLength - a.NewLetters > b.Word.WordLength - b.NewLetters)
+            {
+                return -1;
+            }
+            return 0;
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrosswordWPF"
         mc:Ignorable="d"
-        Title="Crossword Generator" Background="#FF85EEFF" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="Crossword Generator" Background="#FF85EEFF" SizeToContent="WidthAndHeight" ResizeMode="NoResize" KeyDown="Window_KeyDown">
     <Grid x:Name="MainGrid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

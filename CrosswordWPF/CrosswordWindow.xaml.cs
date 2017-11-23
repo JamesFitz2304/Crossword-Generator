@@ -17,19 +17,30 @@ namespace CrosswordWPF
         private DrawingBlock[,] drawingBlocks;
         private double SizeFactor = 1;
         private double BaseSize = 30;
+        public bool CrosswordFailed = false;
         public CrosswordWindow(CrosswordGenerator generator)
         {
             InitializeComponent();
             this.generator = generator;
-            GenerateCrossword();
+            if (!GenerateCrossword())
+            {
+                CrosswordFailed = true;
+                return;
+            }
             DrawCrossword();
         }
 
-        private void GenerateCrossword()
+        private bool GenerateCrossword()
         {
-            generator.Generate();
+
+            if (!generator.Generate())
+            {
+                MessageBox.Show("A crossword could not be generated from the given words.");
+                this.Close();
+                return false;
+            }
             drawingBlocks = new DrawingBlock[generator.blocks.GetLength(0), generator.blocks.GetLength(1)];
-            
+            return true;
         }
 
         private void DrawCrossword()

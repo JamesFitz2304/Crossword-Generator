@@ -44,7 +44,11 @@ namespace CrosswordWPF
             }
 
             CrosswordWindow crossword = new CrosswordWindow(generator);
-            crossword.Show();
+
+            if (!crossword.CrosswordFailed)
+            {
+                crossword.Show();
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

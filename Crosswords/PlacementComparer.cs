@@ -10,7 +10,7 @@ namespace Crosswords
             int diff = a.NewLetters - b.NewLetters;
 
             return diff == 0
-                ? (a.NewLetters + a.Expansion.TotalX + a.Expansion.TotalY) - (b.NewLetters + b.Expansion.TotalX + b.Expansion.TotalY)
+                ? (a.Expansion.TotalX + a.Expansion.TotalY) - (b.Expansion.TotalX + b.Expansion.TotalY)
                 : diff;
         }
     }

@@ -56,14 +56,14 @@ namespace Crosswords
         private bool PlaceFirstWord(Word word)
         {
             blocks = new Block[word.WordLength, 1];
-            Placement placement = new Placement(word.WordLength);
+            Placement placement = new Placement(word);
 
             for (int i = 1; i <= word.WordLength; i++)
             {
                 BlockCoordinates coordinates = new BlockCoordinates(i, 1);
                 placement.Coordinates[i - 1] = coordinates;
             }
-            PlaceWordOnBoard(word, placement);
+            PlaceWordOnBoard(placement);
             wordsPlaced++;
             if (!PlaceNextWord())
             {
@@ -76,15 +76,18 @@ namespace Crosswords
 
         private bool PlaceNextWord()
         {
+            List<Placement> placements = new List<Placement>();
             for (int i = 0; i < Words.Count; i++)
             {
                 if (Words[i].Placed) continue;
-                List<Placement> placements = FindPossibleWordPlacements(Words[i]);
+                placements.AddRange(FindPossibleWordPlacements(Words[i]));
+            }
+            placements.Sort(new PlacementComparer()); //sort placements by least new letters added to board
 
-                foreach (Placement placement in placements)
+            foreach (Placement placement in placements)
                 {
                     Block[,] blockState = (Block[,])blocks.Clone();
-                    PlaceWordOnBoard(Words[i], placement);
+                    PlaceWordOnBoard(placement);
                     wordsPlaced++;
                     if (wordsPlaced == Words.Count || PlaceNextWord())
                     {
@@ -92,9 +95,8 @@ namespace Crosswords
                         return true;
                     }
                     blocks = blockState;
-                    ReverseWordPlacement(placement, Words[i]);
+                    ReverseWordPlacement(placement);
                 }
-            }
             SetUnplacedWords();
             return false;
         }
@@ -116,9 +118,9 @@ namespace Crosswords
             }
         }
 
-        private void ReverseWordPlacement(Placement placement, Word word)
+        private void ReverseWordPlacement(Placement placement)
         {
-            word.Placed = false;
+            placement.Word.Placed = false;
             wordsPlaced--;
             if (placement.Expansion.TotalX == 0 && placement.Expansion.TotalY == 0) return;
             for (int y = 0; y < blocks.GetLength(1); y++)
@@ -157,13 +159,12 @@ namespace Crosswords
                 }
             }
             //add each new possible placement to list
-            placements.Sort(new PlacementComparer()); //sort placements by least new letters added to board
             return placements;
         }
 
         private bool WordCanBePlacedHorizontally(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
-            placement = new Placement(word.WordLength);
+            placement = new Placement(word);
             BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
 
             if (!OutOfBounds(currentBlock.ArrayX - 1, currentBlock.ArrayY) && blocks[currentBlock.ArrayX - 1, currentBlock.ArrayY] != null ||
@@ -220,7 +221,7 @@ namespace Crosswords
 
         private bool WordCanBePlacedVertically(Word word, Block block, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
-            placement = new Placement(word.WordLength);
+            placement = new Placement(word);
             BlockCoordinates currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
 
             if (!OutOfBounds(currentBlock.ArrayX, currentBlock.ArrayY + 1) && blocks[currentBlock.ArrayX, currentBlock.ArrayY + 1] != null ||
@@ -316,16 +317,16 @@ namespace Crosswords
         }
 
 
-        private void PlaceWordOnBoard(Word word, Placement placement)
+        private void PlaceWordOnBoard(Placement placement)
         {
             if (placement.Expansion.TotalX != 0 || placement.Expansion.TotalY != 0)
                 ExpandCrosswordSpace(placement);
-            SetLetterToPlacementCoordinates(word, placement);
-            foreach (Letter letter in word.Letters)
+            SetLetterToPlacementCoordinates(placement);
+            foreach (Letter letter in placement.Word.Letters)
             {
                 blocks[letter.Coordinates.ArrayX, letter.Coordinates.ArrayY] = new Block(letter);
             }
-            word.Placed = true;
+            placement.Word.Placed = true;
         }
 
         private void ExpandCrosswordSpace(Placement placement)
@@ -346,11 +347,11 @@ namespace Crosswords
         }
 
 
-        private void SetLetterToPlacementCoordinates(Word word, Placement placement)
+        private void SetLetterToPlacementCoordinates(Placement placement)
         {
-            for (int i = 0; i < word.WordLength; i++)
+            for (int i = 0; i < placement.Word.WordLength; i++)
             {
-                word.Letters[i].Coordinates = placement.Coordinates[i];
+                placement.Word.Letters[i].Coordinates = placement.Coordinates[i];
             }
         }
 

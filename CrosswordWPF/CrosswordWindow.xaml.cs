@@ -13,27 +13,35 @@ namespace CrosswordWPF
     /// </summary>
     public partial class CrosswordWindow : Window
     {
-        private Block[,] blocks;
+        private CrosswordGenerator generator;
         private DrawingBlock[,] drawingBlocks;
         private double SizeFactor = 1;
         private double BaseSize = 30;
-        public CrosswordWindow(Block[,] blocks)
+        public CrosswordWindow(CrosswordGenerator generator)
         {
-            this.blocks = blocks;
-            drawingBlocks = new DrawingBlock[blocks.GetLength(0), blocks.GetLength(1)];
             InitializeComponent();
+            this.generator = generator;
+            GenerateCrossword();
             DrawCrossword();
-            CrosswordCanvas.Width = BaseSize * blocks.GetLength(0);
-            CrosswordCanvas.Height = BaseSize * blocks.GetLength(1);
+        }
+
+        private void GenerateCrossword()
+        {
+            generator.Generate();
+            drawingBlocks = new DrawingBlock[generator.blocks.GetLength(0), generator.blocks.GetLength(1)];
+            
         }
 
         private void DrawCrossword()
         {
-            for (int y = 0; y < blocks.GetLength(1); y++)
+            CrosswordCanvas.Children.RemoveRange(0, CrosswordCanvas.Children.Count);
+            CrosswordCanvas.Width = BaseSize * generator.blocks.GetLength(0);
+            CrosswordCanvas.Height = BaseSize * generator.blocks.GetLength(1);
+            for (int y = 0; y < generator.blocks.GetLength(1); y++)
             {
-                for (int x = 0; x < blocks.GetLength(0); x++)
+                for (int x = 0; x < generator.blocks.GetLength(0); x++)
                 {
-                    DrawingBlock drawingBlock = blocks[x, y] == null ? new BlankDrawingBlock() : (DrawingBlock) new UsedDrawingBlock(blocks[x, y].letter);
+                    DrawingBlock drawingBlock = generator.blocks[x, y] == null ? new BlankDrawingBlock() : (DrawingBlock) new UsedDrawingBlock(generator.blocks[x, y].letter);
                     drawingBlocks[x, y] = drawingBlock;
                     CrosswordCanvas.Children.Add(drawingBlock.Square);
                     drawingBlock.LocationX = BaseSize * x;
@@ -41,8 +49,6 @@ namespace CrosswordWPF
                 }
             }
         }
-
-
 
         private void ResizeBoard()
         {
@@ -56,8 +62,8 @@ namespace CrosswordWPF
                     drawingBlock.LocationY = drawingBlock.SquareSize * y;
                 }
             }
-            CrosswordCanvas.Width = BaseSize * SizeFactor * blocks.GetLength(0);
-            CrosswordCanvas.Height = BaseSize * SizeFactor * blocks.GetLength(1);
+            CrosswordCanvas.Width = BaseSize * SizeFactor * generator.blocks.GetLength(0);
+            CrosswordCanvas.Height = BaseSize * SizeFactor * generator.blocks.GetLength(1);
 
         }
 
@@ -73,6 +79,18 @@ namespace CrosswordWPF
                 SizeFactor = Math.Round(SizeFactor + 0.1, 1);
                 ResizeBoard();
             }
+            else if (e.Key == Key.Enter)
+            {
+                ShuffleAndRegnerate();
+            }
+        }
+
+        private void ShuffleAndRegnerate()
+        {
+            generator.blocks = null;
+            generator.ShuffleWords();
+            GenerateCrossword();
+            DrawCrossword();
         }
     }
 }

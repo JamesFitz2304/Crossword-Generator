@@ -7,10 +7,9 @@ namespace Crosswords
     public class CrosswordGenerator
     {
         private readonly List<Word> Words;
-        public List<Word> UnplacedWords = new List<Word>();
+        public List<Word> UnplacedWords;
         public Block[,] blocks;
         private Regex regex = new Regex(@"[^A-Z]");
-
         private int wordsPlaced = 0;
         public CrosswordGenerator(List<Word> words)
         {
@@ -35,6 +34,13 @@ namespace Crosswords
 
         public bool Generate()
         {
+            UnplacedWords = new List<Word>();
+
+            foreach (Word word in Words)
+            {
+                word.Placed = false;
+            }
+
             for (int i = 0; i < Words.Count; i++)
             {
                 wordsPlaced = 0;
@@ -351,6 +357,20 @@ namespace Crosswords
         private bool OutOfBounds(int x, int y)
         {
             return !(x < blocks.GetLength(0) && x >= 0 && y < blocks.GetLength(1) && y >= 0);
+        }
+
+        public void ShuffleWords()
+        {
+            Random random = new Random();
+            int n = Words.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                Word word = Words[k];
+                Words[k] = Words[n];
+                Words[n] = word;
+            }
         }
     }
 }

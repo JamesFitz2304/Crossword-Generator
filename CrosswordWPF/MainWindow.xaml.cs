@@ -23,12 +23,35 @@ namespace CrosswordWPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            List<Word> words = new List<Word>();
+            //List<Word> words = new List<Word>();
 
-            foreach (WordInput input in WordInputs)
+            //foreach (WordInput input in WordInputs)
+            //{
+            //    words.Add(new Word(input.WordBox.Text));
+            //}
+
+            List<Word> words = new List<Word>
             {
-                words.Add(new Word(input.WordBox.Text));
-            }
+                new Word("Dog"),
+                new Word("Cat"),
+                new Word("Chicken"),
+                new Word("Cow"),
+                new Word("Monkey"),
+                new Word("Salmon"),
+                new Word("Goat"),
+                new Word("Worm"),
+                new Word("Wasp"),
+                new Word("Bee"),
+                new Word("Ostrich"),
+                new Word("Parrot"),
+                new Word("Frog"),
+                new Word("Skunk"),
+                new Word("Tiger"),
+                new Word("Rabbit"),
+                new Word("Bat"),
+                new Word("Antelope"),
+                new Word("Tortoise")
+            };
 
             CrosswordGenerator generator;
 
@@ -42,13 +65,7 @@ namespace CrosswordWPF
                 return;
             }
 
-            if (!generator.Generate())
-            {
-                MessageBox.Show("Could not generate a crossword with the entered words.");
-                return;
-            }
-            
-            CrosswordWindow crossword = new CrosswordWindow(generator.blocks);
+            CrosswordWindow crossword = new CrosswordWindow(generator);
             crossword.Show();
         }
 

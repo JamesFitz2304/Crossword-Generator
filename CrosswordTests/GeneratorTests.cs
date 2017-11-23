@@ -119,7 +119,9 @@ namespace CrosswordTests
                 new Word("Skunk"),
                 new Word("Tiger"),
                 new Word("Rabbit"),
-                new Word("BAT")
+                new Word("Bat"),
+                new Word("Antelope"),
+                new Word("Tortoise")
             };
             CrosswordGenerator generator = new CrosswordGenerator(Words);
             generator.Generate();

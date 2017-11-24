@@ -9,7 +9,7 @@ namespace Crosswords
         private readonly List<Word> Words;
         public List<Word> UnplacedWords;
         public Block[,] blocks;
-        private Regex regex = new Regex(@"[^A-Z]");
+        private readonly Regex regex = new Regex(@"[^A-Z]");
         private int wordsPlaced = 0;
         public CrosswordGenerator(List<Word> words)
         {

@@ -18,6 +18,7 @@ namespace CrosswordWPF
         private double SizeFactor = 1;
         private double BaseSize = 30;
         public bool CrosswordFailed = false;
+        private bool Generating = false;
         public CrosswordWindow(CrosswordGenerator generator)
         {
             InitializeComponent();
@@ -92,7 +93,12 @@ namespace CrosswordWPF
             }
             else if (e.Key == Key.Enter)
             {
-                ShuffleAndRegnerate();
+                if (!Generating)
+                {
+                    Generating = true;
+                    ShuffleAndRegnerate();
+                    Generating = false;
+                }
             }
         }
 

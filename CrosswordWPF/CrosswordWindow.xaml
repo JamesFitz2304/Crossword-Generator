@@ -6,6 +6,6 @@
         xmlns:local="clr-namespace:CrosswordWPF"
         mc:Ignorable="d"
         Title="CrosswordWindow" ResizeMode="NoResize" SizeToContent="WidthAndHeight" MinHeight="25" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
-    <Canvas Name="CrosswordCanvas" Grid.Row="0">
-    </Canvas>
+    <Grid Name="CrosswordGrid" Grid.Row="0">
+    </Grid>
 </Window>

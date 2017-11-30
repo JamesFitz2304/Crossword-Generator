@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrosswordWPF"
         mc:Ignorable="d"
-        Title="Crossword Generator" Background="#FF85EEFF" SizeToContent="WidthAndHeight" ResizeMode="NoResize" KeyDown="Window_KeyDown">
+        Title="Crossword Generator" Background="#FF85EEFF" SizeToContent="WidthAndHeight" ResizeMode="NoResize" KeyDown="Window_KeyDown" Height="374.333">
     <Grid x:Name="MainGrid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="130"/>
@@ -25,5 +25,69 @@
         <Button x:Name="btnRemove" Content="-" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center" Width="31" FontWeight="Bold" FontSize="16" VerticalContentAlignment="Top" Height="28" HorizontalContentAlignment="Center" Grid.Row="1" Grid.Column="1" Visibility="Hidden" Click="btnRemove_Click"/>
         <TextBlock Grid.Column="1" HorizontalAlignment="Center" Margin="0,5,48,0" TextWrapping="Wrap" Text="Clue" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="49,5,0,0" TextWrapping="Wrap" Text="Word" VerticalAlignment="Top"/>
+        <Grid Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Margin="0,28,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.RowSpan="10" Grid.ColumnSpan="10" Background="White" Margin="0,0,0,0"/>
+            <Grid Height="20" Width="20">
+                <Border Background="Black" Margin="0,0,0,0"/>
+                <Border Background="White" Margin="1,1,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Column="1">
+                <Border Background="Black" Margin="-1,0,0,0"/>
+                <Border Background="White" Margin="0,1,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Column="2">
+                <Border Background="Black" Margin="-1,0,0,0"/>
+                <Border Background="White" Margin="0,1,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Column="3">
+                <Border Background="Black" Margin="-1,0,0,0"/>
+                <Border Background="White" Margin="0,1,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Row="1"  Grid.Column="2">
+                <Border Background="Black" Margin="-1,-1,0,0"/>
+                <Border Background="White" Margin="0,0,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Row="2"  Grid.Column="2">
+                <Border Background="Black" Margin="-1,-1,0,0"/>
+                <Border Background="White" Margin="0,0,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Row="3"  Grid.Column="2">
+                <Border Background="Black" Margin="-1,-1,0,0"/>
+                <Border Background="White" Margin="0,0,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Row="3"  Grid.Column="3">
+                <Border Background="Black" Margin="-1,-1,0,0"/>
+                <Border Background="White" Margin="0,0,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Row="3"  Grid.Column="1">
+                <Border Background="Black" Margin="-1,-1,0,0"/>
+                <Border Background="White" Margin="0,0,1,1"/>
+            </Grid>
+            <Grid Height="20" Width="20" Grid.Row="4"  Grid.Column="2">
+                <Border Background="Black" Margin="-1,-1,0,0"/>
+                <Border Background="White" Margin="0,0,1,1"/>
+            </Grid>
+
+        </Grid>
     </Grid>
 </Window>

@@ -2,7 +2,9 @@
 using System;
 using System.Windows;
 using System.Windows.Annotations;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Crosswords;
 
@@ -18,7 +20,7 @@ namespace CrosswordWPF
         private double SizeFactor = 1;
         private double BaseSize = 30;
         public bool CrosswordFailed = false;
-        private bool Generating = false;
+        private Color backgroundColor = Colors.Black;
         public CrosswordWindow(CrosswordGenerator generator)
         {
             InitializeComponent();
@@ -44,22 +46,48 @@ namespace CrosswordWPF
             return true;
         }
 
+        private void GenerateGridRowsAndColumns()
+        {
+            CrosswordGrid.RowDefinitions.Clear();
+            CrosswordGrid.ColumnDefinitions.Clear();
+
+            for (int i = 0; i < drawingBlocks.GetLength(0); i++)
+            {
+                ColumnDefinition column = new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) };
+                CrosswordGrid.ColumnDefinitions.Add(column);
+            }
+
+            for (int i = 0; i < drawingBlocks.GetLength(1); i++)
+            {
+                RowDefinition row = new RowDefinition { Height = new GridLength(1, GridUnitType.Star) };
+                CrosswordGrid.RowDefinitions.Add(row);
+            }
+        }
+
         private void DrawCrossword()
         {
-            CrosswordCanvas.Children.RemoveRange(0, CrosswordCanvas.Children.Count);
-            CrosswordCanvas.Width = BaseSize * generator.blocks.GetLength(0);
-            CrosswordCanvas.Height = BaseSize * generator.blocks.GetLength(1);
+            CrosswordGrid.Children.RemoveRange(0, CrosswordGrid.Children.Count);
+            Border background = new Border
+            {
+                Background = new SolidColorBrush(backgroundColor)
+            };
+            CrosswordGrid.Children.Add(background);
+            Grid.SetRowSpan(background, drawingBlocks.GetLength(1));
+            Grid.SetColumnSpan(background, drawingBlocks.GetLength(0));
+
+            GenerateGridRowsAndColumns();
             for (int y = 0; y < generator.blocks.GetLength(1); y++)
             {
                 for (int x = 0; x < generator.blocks.GetLength(0); x++)
                 {
-                    DrawingBlock drawingBlock = generator.blocks[x, y] == null ? new BlankDrawingBlock() : (DrawingBlock) new UsedDrawingBlock(generator.blocks[x, y].letter);
+                    if (generator.blocks[x, y] == null) continue;
+                    DrawingBlock drawingBlock = new DrawingBlock(generator.blocks[x, y].letter, x, y);
                     drawingBlocks[x, y] = drawingBlock;
-                    CrosswordCanvas.Children.Add(drawingBlock.Square);
-                    drawingBlock.LocationX = BaseSize * x;
-                    drawingBlock.LocationY = BaseSize * y;
+                    CrosswordGrid.Children.Add(drawingBlock.Grid);
                 }
             }
+            CrosswordGrid.Width = double.NaN;
+            CrosswordGrid.Height = double.NaN;
         }
 
         private void ResizeBoard()
@@ -69,14 +97,11 @@ namespace CrosswordWPF
                 for (int x = 0; x < drawingBlocks.GetLength(0); x++)
                 {
                     DrawingBlock drawingBlock = drawingBlocks[x, y];
-                    drawingBlock.SquareSize = BaseSize * SizeFactor;
-                    drawingBlock.LocationX = drawingBlock.SquareSize * x;
-                    drawingBlock.LocationY = drawingBlock.SquareSize * y;
+                    drawingBlock.BlockSize = BaseSize * SizeFactor;
                 }
             }
-            CrosswordCanvas.Width = BaseSize * SizeFactor * generator.blocks.GetLength(0);
-            CrosswordCanvas.Height = BaseSize * SizeFactor * generator.blocks.GetLength(1);
-
+            CrosswordGrid.Width = double.NaN;
+            CrosswordGrid.Height = double.NaN;
         }
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -93,12 +118,8 @@ namespace CrosswordWPF
             }
             else if (e.Key == Key.Enter)
             {
-                if (!Generating)
-                {
-                    Generating = true;
-                    ShuffleAndRegnerate();
-                    Generating = false;
-                }
+                ShuffleAndRegnerate();
+
             }
         }
 
@@ -109,5 +130,6 @@ namespace CrosswordWPF
             GenerateCrossword();
             DrawCrossword();
         }
+
     }
 }

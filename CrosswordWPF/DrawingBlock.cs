@@ -1,61 +1,84 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Crosswords;
 
 namespace CrosswordWPF
 {
-    public abstract class DrawingBlock
+    public class DrawingBlock
     {
-        private double RectSize = 30;
-        public Border Square;
+        private double blockSize = 30;
+        private Border foreground;
+        private Border border;
+        public Grid Grid;
 
-        public double LocationX
+        private Letter Letter { get; set; }
+
+        private readonly TextBlock textBlock;
+
+        public string Text => textBlock.Text;
+
+        public DrawingBlock(Letter letter, int x, int y)
         {
+            Grid = new Grid();
+            Grid.SetRow(Grid, y);
+            Grid.SetColumn(Grid, x);
+            Grid.Width = Grid.Height = blockSize;
+            border = new Border
+            {
+                Background = new SolidColorBrush(Colors.Black),
+                Margin = new Thickness(-1, -1, 0, 0)
+            };
+            Grid.Children.Add(border);
+            foreground = new Border
+            {
+                Background = new SolidColorBrush(Colors.White),
+                Margin = new Thickness(0, 0, 1, 1)
+            };
+            Grid.Children.Add(foreground);
+            this.Letter = letter;
+            textBlock = new TextBlock
+            {
+                Text = letter.Character.ToString(),
+                Foreground = new SolidColorBrush(Colors.Black)
+            };
+            foreground.Child = textBlock;
+            textBlock.VerticalAlignment = VerticalAlignment.Center;
+            textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+        }
+
+
+        public double BlockSize
+        {
+            get => blockSize;
             set
             {
-                Thickness margin = Square.Margin;
-                margin.Left = value;
-                Square.Margin = margin;
+                blockSize = value;
+                Grid.Height = Grid.Width = blockSize;
             }
-            get => Square.Margin.Left;
         }
 
-        public double LocationY
+        public void SetBorder(bool leftEmpty, bool topEmpty)
         {
-            set
+            double BL = -1, BU = -1, FL = 0, FU = 0;
+
+            if (leftEmpty)
             {
-                Thickness margin = Square.Margin;
-                margin.Top = value;
-                Square.Margin = margin;
+                BL = 0;
+                FL = 1;
             }
-            get => Square.Margin.Top;
-        }
 
-        public double SquareSize
-        {
-            get => RectSize;
-            set
+            if (topEmpty)
             {
-                RectSize = value;
-                Square.Height = Square.Width = RectSize;
+                BU = 0;
+                FU = 1;
             }
+
+            border.Margin = new Thickness(BL, BU, 0, 0);
+            foreground.Margin = new Thickness(FL, FU, 1, 1);
         }
 
-        protected abstract Color Fill { get; }
-        protected abstract Color Border { get; }
 
-        protected DrawingBlock()
-        {
-            SetRectangle();
-        }
-
-        private void SetRectangle()
-        {
-            Square = new Border();
-            Square.Height = Square.Width = RectSize;
-            Square.BorderBrush = new SolidColorBrush(Border);
-            Square.Background = new SolidColorBrush(Fill);
-            Square.BorderThickness = new Thickness(1);
-        }
     }
 }

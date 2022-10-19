@@ -1,0 +1,11 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=828faebd_002Db0e9_002D4bc6_002D826c_002D77d5ef2daf4d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GenerationManager_ShufflesWordsWithEachGeneration" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests.GenerationManager_ShufflesWordsWithEachGeneration&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9f7d8100_002D4f69_002D44ef_002D9b42_002D7474105846ba/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GenerationManager_ShufflesWordsWithEachGeneration #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests.GenerationManager_ShufflesWordsWithEachGeneration&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -1,8 +1,9 @@
 packages/
 CrosswordGenerator/obj/
+CrosswordGenerator/bin/
 .vs/
-CrosswordTests/bin/
-CrosswordTests/obj/
-CrosswordTests/packages/
+CrosswordGeneratorTests/bin/
+CrosswordGeneratorTests/obj/
+CrosswordGeneratorTests/packages/
 CrosswordWPF/obj/
 CrosswordWPF/bin/Debug

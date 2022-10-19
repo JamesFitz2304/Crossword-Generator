@@ -6,5 +6,8 @@ namespace CrosswordGenerator
 {
     public class Generation
     {
+        public Block[,] blocks;
+        public List<Word> UnplacedWords;
+
     }
 }

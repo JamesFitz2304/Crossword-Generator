@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CrosswordGenerator.Interfaces;
 
 namespace CrosswordGenerator
 {
-    public class CrosswordGenerator
+    public class Generator : IGenerator
     {
+        private List<Word> words;
         public List<Word> UnplacedWords;
         public Block[,] blocks;
         private readonly Regex regex = new Regex(@"[^A-Z]");
         private int wordsPlaced = 0;
-        public CrosswordGenerator(List<Word> words)
+        public Generator(List<Word> words)
         {
             if (!AllWordsValid(words))
             {
@@ -21,33 +22,23 @@ namespace CrosswordGenerator
             words = words;
         }
 
-        public Generation Generate(List<Word> words)
+        public Generation Generate(IList<Word> words)
         {
-            UnplacedWords = words.ToList();
+            //ToDo: Uncomment
+            //UnplacedWords = words.ToList();
 
-            for (var i = 0; i < words.Count; i++)
-            {
-                wordsPlaced = 0;
-                if (PlaceFirstWord(i))
-                {
-                    UnplacedWords = null;
-                    return new Generation();
-                }
-            }
+            //for (var i = 0; i < words.Count; i++)
+            //{
+            //    wordsPlaced = 0;
+            //    if (PlaceFirstWord(i))
+            //    {
+            //        UnplacedWords = null;
+            //        return new Generation();
+            //    }
+            //}
             return new Generation();
         }
 
-        //public void ShuffleWords()
-        //{
-        //    Random random = new Random();
-        //    int n = words.Count;
-        //    while (n > 1)
-        //    {
-        //        n--;
-        //        int k = random.Next(n + 1);
-        //        (words[k], words[n]) = (words[n], words[k]);
-        //    }
-        //}
 
         private bool AllWordsValid(List<Word> words)
         {

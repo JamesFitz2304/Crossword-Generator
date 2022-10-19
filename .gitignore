@@ -1,6 +1,5 @@
 packages/
-Crosswords/obj/
-Crosswords/bin/
+CrosswordGenerator/obj/
 .vs/
 CrosswordTests/bin/
 CrosswordTests/obj/

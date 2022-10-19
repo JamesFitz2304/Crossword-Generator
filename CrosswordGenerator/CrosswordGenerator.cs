@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Crosswords
+namespace CrosswordGenerator
 {
     public class CrosswordGenerator
     {
-        private readonly List<Word> Words;
         public List<Word> UnplacedWords;
         public Block[,] blocks;
         private readonly Regex regex = new Regex(@"[^A-Z]");
@@ -17,8 +18,36 @@ namespace Crosswords
             {
                 throw new FormatException("Word list contained invalid characters");
             }
-            Words = words;
+            words = words;
         }
+
+        public Generation Generate(List<Word> words)
+        {
+            UnplacedWords = words.ToList();
+
+            for (var i = 0; i < words.Count; i++)
+            {
+                wordsPlaced = 0;
+                if (PlaceFirstWord(i))
+                {
+                    UnplacedWords = null;
+                    return new Generation();
+                }
+            }
+            return new Generation();
+        }
+
+        //public void ShuffleWords()
+        //{
+        //    Random random = new Random();
+        //    int n = words.Count;
+        //    while (n > 1)
+        //    {
+        //        n--;
+        //        int k = random.Next(n + 1);
+        //        (words[k], words[n]) = (words[n], words[k]);
+        //    }
+        //}
 
         private bool AllWordsValid(List<Word> words)
         {
@@ -30,27 +59,6 @@ namespace Crosswords
                 }
             }
             return true;
-        }
-
-        public bool Generate()
-        {
-            UnplacedWords = new List<Word>();
-
-            foreach (Word word in Words)
-            {
-                word.Placed = false;
-            }
-
-            for (int i = 0; i < Words.Count; i++)
-            {
-                wordsPlaced = 0;
-                if (PlaceFirstWord(Words[i]))
-                {
-                    UnplacedWords = null;
-                    return true;
-                }
-            }
-            return false;
         }
 
         private bool PlaceFirstWord(Word word)
@@ -77,26 +85,26 @@ namespace Crosswords
         private bool PlaceNextWord()
         {
             List<Placement> placements = new List<Placement>();
-            for (int i = 0; i < Words.Count; i++)
+            for (int i = 0; i < words.Count; i++)
             {
-                if (Words[i].Placed) continue;
-                placements.AddRange(FindPossibleWordPlacements(Words[i]));
+                if (words[i].Placed) continue;
+                placements.AddRange(FindPossibleWordPlacements(words[i]));
             }
             placements.Sort(new PlacementComparer()); //sort placements by least new letters added to board
 
             foreach (Placement placement in placements)
+            {
+                Block[,] blockState = (Block[,])blocks.Clone();
+                PlaceWordOnBoard(placement);
+                wordsPlaced++;
+                if (wordsPlaced == words.Count || PlaceNextWord())
                 {
-                    Block[,] blockState = (Block[,])blocks.Clone();
-                    PlaceWordOnBoard(placement);
-                    wordsPlaced++;
-                    if (wordsPlaced == Words.Count || PlaceNextWord())
-                    {
 
-                        return true;
-                    }
-                    blocks = blockState;
-                    ReverseWordPlacement(placement);
+                    return true;
                 }
+                blocks = blockState;
+                ReverseWordPlacement(placement);
+            }
             SetUnplacedWords();
             return false;
         }
@@ -104,7 +112,7 @@ namespace Crosswords
         private void SetUnplacedWords()
         {
             List<Word> unplacedWords = new List<Word>();
-            foreach (Word word in Words)
+            foreach (Word word in words)
             {
                 if (!word.Placed)
                 {
@@ -358,20 +366,6 @@ namespace Crosswords
         private bool OutOfBounds(int x, int y)
         {
             return !(x < blocks.GetLength(0) && x >= 0 && y < blocks.GetLength(1) && y >= 0);
-        }
-
-        public void ShuffleWords()
-        {
-            Random random = new Random();
-            int n = Words.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = random.Next(n + 1);
-                Word word = Words[k];
-                Words[k] = Words[n];
-                Words[n] = word;
-            }
         }
     }
 }

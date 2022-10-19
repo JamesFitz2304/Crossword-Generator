@@ -1,9 +1,9 @@
-﻿namespace Crosswords
+﻿namespace CrosswordGenerator
 {
     public class Word
     {
         private readonly Letter[] letters;
-        private bool placed;
+        private bool placed = false;
 
         public Word(string word)
         {

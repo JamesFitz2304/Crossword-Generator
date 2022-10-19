@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Crosswords
+namespace CrosswordGenerator
 {
     public class PlacementComparer : IComparer<Placement>
     {

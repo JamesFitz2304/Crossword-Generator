@@ -1,5 +1,5 @@
 ﻿
-namespace Crosswords
+namespace CrosswordGenerator
 {
     public class Expansion
     {

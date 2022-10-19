@@ -1,4 +1,4 @@
-﻿namespace Crosswords
+﻿namespace CrosswordGenerator
 {
     public class Letter
     {

@@ -41,18 +41,7 @@ namespace CrosswordGenerator
                 }
                 else if (unplacedWords == leastUnplacedWords)
                 {
-                    var generationUnique = true;
-
-                    foreach (var gen in generations)
-                    {
-                        if (BlocksAreIdentical(generation.blocks, gen.blocks))
-                        {
-                            generationUnique = false;
-                            break;
-                        }
-                    }
-
-                    if (generationUnique)
+                    if (generations.All(gen => !BlocksAreIdentical(generation.blocks, gen.blocks)))
                     {
                         generations.Add(generation);
 

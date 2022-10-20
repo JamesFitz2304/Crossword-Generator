@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CrosswordGenerator.Interfaces;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace CrosswordGenerator
 {
@@ -41,17 +42,31 @@ namespace CrosswordGenerator
                 }
                 else if (unplacedWords == leastUnplacedWords)
                 {
-                    if (generations.All(gen => !BlocksAreIdentical(generation.blocks, gen.blocks)))
-                    {
-                        generations.Add(generation);
-
-                    }
+                    generations.Add(generation);
                 }
             }
 
+            RemoveIdenticalGenerations(generations); 
+            
             return generations;
         }
 
+        private void RemoveIdenticalGenerations(IList<Generation> generations)
+        {
+            for (var x = 0; x < generations.Count - 1; x++)
+            {
+                for (var y = x + 1; y < generations.Count; y++)
+                {
+                    var xBlocks = generations[x].blocks;
+                    var yBlocks = generations[y].blocks;
+                    if (BlocksAreIdentical(xBlocks, yBlocks))
+                    {
+                        generations.RemoveAt(y);
+                        y--;
+                    }
+                }
+            }
+        }
 
 
         private IList<Word> ShuffleWords(IEnumerable<Word> words)
@@ -76,13 +91,10 @@ namespace CrosswordGenerator
                 return false;
             }
 
-            var flatBlock1 = blocks1.Cast<Block>();
-            var flatBlock2 = blocks2.Cast<Block>();
+            var flatBlocks1 = blocks1.Cast<Block>().Select(b => b?.letter.Character);
+            var flatBlocks2 = blocks2.Cast<Block>().Select(b => b?.letter.Character);
 
-            var flatBlock3 = blocks1.Cast<Block>().Select(b => b?.letter.Character);
-            var flatBlock4 = blocks2.Cast<Block>().Select(b => b?.letter.Character);
-
-            return flatBlock3.SequenceEqual(flatBlock4);
+            return flatBlocks1.SequenceEqual(flatBlocks2);
 
         }
     }

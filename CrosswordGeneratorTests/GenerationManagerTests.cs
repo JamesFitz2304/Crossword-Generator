@@ -223,36 +223,7 @@ namespace CrosswordGeneratorTests
         }
 
         [Test]
-        public void GenerateCrosswords_WhenBlocksAreIdentical_DoNotAddNewGeneration()
-        {
-            // Arrange
-            var generationOne = new Generation()
-            {
-                UnplacedWords = _unplacedWordsOne,
-                blocks = _blocks1
-            };
-
-            var generationTwo = new Generation()
-            {
-                UnplacedWords = _unplacedWordsOne,
-                blocks = _blocks1
-            };
-
-            _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
-                .Returns(generationTwo);
-
-            // Act
-            var result = _manager.GenerateCrosswords(new List<Word>(), 2, int.MaxValue).ToList();
-
-            // Assert
-            var generations = result;
-            Assert.AreEqual(1, generations.Count());
-            Assert.AreEqual(generationOne, generations.First());
-
-        }
-
-        [Test]
-        public void GenerateCrosswords_WhenBlocksAreNotIdentical_AddNewGeneration()
+        public void GenerateCrosswords_RemovesDuplicateGenerations()
         {
             // Arrange
             var generationOne = new Generation()
@@ -267,17 +238,31 @@ namespace CrosswordGeneratorTests
                 blocks = _blocks2
             };
 
+            var generationThree = new Generation()
+            {
+                UnplacedWords = _unplacedWordsOne,
+                blocks = _blocks1
+            };
+
+            var generationFour = new Generation()
+            {
+                UnplacedWords = _unplacedWordsOne,
+                blocks = _blocks2
+            };
+
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
-                .Returns(generationTwo);
+                .Returns(generationTwo).Returns(generationThree).Returns(generationFour);
 
             // Act
-            var result = _manager.GenerateCrosswords(new List<Word>(), 2, int.MaxValue).ToList();
+            var result = _manager.GenerateCrosswords(new List<Word>(), 4, int.MaxValue).ToList();
 
             // Assert
             var generations = result;
             Assert.AreEqual(2, generations.Count());
             Assert.AreEqual(generationOne, generations[0]);
             Assert.AreEqual(generationTwo, generations[1]);
+
+
         }
 
         private Generation CreateDefaultGeneration()

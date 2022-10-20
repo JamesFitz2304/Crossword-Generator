@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CrosswordGenerator.Interfaces;
@@ -15,17 +16,54 @@ namespace CrosswordGenerator
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(List<Word> words, int attempts, int timeoutLimit)
+        public IEnumerable<Generation> GenerateCrosswords(List<Word> words, int attempts = 100, int timeout = 3000)
         {
+
+            var generations = new List<Generation>();
+            var leastUnplacedWords = int.MaxValue;
+
+            var watch = new Stopwatch();
+            watch.Start();
+      
 
             for (var i = 0; i < attempts; i++)
             {
+                if (watch.ElapsedMilliseconds > timeout) break;
                 var shuffledWords = ShuffleWords(words);
-                _generator.Generate(shuffledWords);
+                var generation = _generator.Generate(shuffledWords);
+                var unplacedWords = generation.UnplacedWords.Count;
+
+                if (unplacedWords < leastUnplacedWords)
+                {
+                    leastUnplacedWords = unplacedWords;
+                    generations.Clear();
+                    generations.Add(generation);
+                }
+                else if (unplacedWords == leastUnplacedWords)
+                {
+                    var generationUnique = true;
+
+                    foreach (var gen in generations)
+                    {
+                        if (BlocksAreIdentical(generation.blocks, gen.blocks))
+                        {
+                            generationUnique = false;
+                            break;
+                        }
+                    }
+
+                    if (generationUnique)
+                    {
+                        generations.Add(generation);
+
+                    }
+                }
             }
 
-            return null;
+            return generations;
         }
+
+
 
         private IList<Word> ShuffleWords(IEnumerable<Word> words)
         {
@@ -40,6 +78,23 @@ namespace CrosswordGenerator
             }
 
             return shuffled;
+        }
+
+        private bool BlocksAreIdentical(Block[,] blocks1, Block[,] blocks2)
+        {
+            if (Enumerable.Range(0, blocks1.Rank).Any(dimension => blocks1.GetLength(dimension) != blocks2.GetLength(dimension)))
+            {
+                return false;
+            }
+
+            var flatBlock1 = blocks1.Cast<Block>();
+            var flatBlock2 = blocks2.Cast<Block>();
+
+            var flatBlock3 = blocks1.Cast<Block>().Select(b => b?.letter.Character);
+            var flatBlock4 = blocks2.Cast<Block>().Select(b => b?.letter.Character);
+
+            return flatBlock3.SequenceEqual(flatBlock4);
+
         }
     }
 }

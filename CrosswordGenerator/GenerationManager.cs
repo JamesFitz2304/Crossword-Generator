@@ -1,10 +1,9 @@
-﻿using System;
+﻿using CrosswordGenerator.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using CrosswordGenerator.Interfaces;
-using Microsoft.VisualBasic.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace CrosswordGenerator
 {
@@ -20,13 +19,16 @@ namespace CrosswordGenerator
 
         public IEnumerable<Generation> GenerateCrosswords(List<Word> words, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
         {
+            if (!AllWordsValid(words))
+            {
+                throw new FormatException("Word list contained invalid characters");
+            }
 
             var generations = new List<Generation>();
             var leastUnplacedWords = int.MaxValue;
 
             var watch = new Stopwatch();
             watch.Start();
-      
 
             for (var i = 0; i < attempts; i++)
             {
@@ -49,13 +51,22 @@ namespace CrosswordGenerator
                 {
                     break;
                 }
-
             }
 
-            if(cullIdenticals)
-                RemoveIdenticalGenerations(generations); 
-            
+            if (cullIdenticals)
+                RemoveIdenticalGenerations(generations);
+
             return generations;
+        }
+
+        private bool AllWordsValid(IList<Word> words)
+        {
+            var regex = new Regex(@"[^A-Z]");
+            if (words.Any(word => regex.IsMatch(word.WordAsString) || string.IsNullOrWhiteSpace(word.WordAsString)))
+            {
+                return false;
+            }
+            return true;
         }
 
         private void RemoveIdenticalGenerations(IList<Generation> generations)
@@ -74,7 +85,6 @@ namespace CrosswordGenerator
                 }
             }
         }
-
 
         private IList<Word> ShuffleWords(IEnumerable<Word> words)
         {
@@ -102,7 +112,6 @@ namespace CrosswordGenerator
             var flatBlocks2 = blocks2.Cast<Block>().Select(b => b?.letter.Character);
 
             return flatBlocks1.SequenceEqual(flatBlocks2);
-
         }
     }
 }

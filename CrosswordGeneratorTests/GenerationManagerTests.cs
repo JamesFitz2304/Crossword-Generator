@@ -249,8 +249,12 @@ namespace CrosswordGeneratorTests
             // Arrange
             var realGenerator = new Generator();
             var realManager = new GenerationManager(realGenerator);
-            var words = _wordsAllPlaceable.ToList();
-            words.Add(new Word("XYZ"));
+            var words = new List<Word>()
+            {
+                new Word("Moose"),
+                new Word("Goose"),
+                new Word("Xyz")
+            };
 
             // Act
             var result = realManager.GenerateCrosswords(words, timeout: int.MaxValue);
@@ -287,22 +291,26 @@ namespace CrosswordGeneratorTests
             var realManager = new GenerationManager(realGenerator);
             const int attempts = 100;
             double averageSuccess = 0;
+            double averageTime = 0;
+            int timesToRepeat = 100;
 
-            watch.Start();
             // Act
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < timesToRepeat; i++)
             {
+                watch.Start();
                 var result = realManager.GenerateCrosswords(_wordsAllPlaceable, attempts: attempts, timeout: int.MaxValue, cullIdenticals: false);
-                
+                watch.Stop();
+                averageTime += watch.ElapsedMilliseconds;
                 averageSuccess += (result.Count() / (double)attempts) * 100;
+                watch.Reset();
             }
 
             averageSuccess = (averageSuccess / 1000);
+            averageTime = (averageTime / timesToRepeat);
 
-            watch.Stop();
             // Assert
             TestContext.WriteLine($"Success rate: {averageSuccess}%");
-            TestContext.WriteLine($"Time taken: {watch.Elapsed.TotalSeconds}s");
+            TestContext.WriteLine($"Average time: {averageTime}ms");
 
             Assert.True(true);
         }

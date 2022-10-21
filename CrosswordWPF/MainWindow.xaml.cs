@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Crosswords;
+using CrosswordGenerator;
 
 namespace CrosswordWPF
 {
@@ -31,11 +32,36 @@ namespace CrosswordWPF
                 words.Add(new Word(input.WordBox.Text));
             }
 
-            CrosswordGenerator generator;
+            //words = new List<Word>()
+            //{
+            //        new Word("Dog"),
+            //        new Word("Cat"),
+            //        new Word("Chicken"),
+            //        new Word("Cow"),
+            //        new Word("Monkey"),
+            //        new Word("Salmon"),
+            //        new Word("Goat"),
+            //        new Word("Worm"),
+            //        new Word("Wasp"),
+            //        new Word("Bee"),
+            //        new Word("Ostrich"),
+            //        new Word("Parrot"),
+            //        new Word("Frog"),
+            //        new Word("Skunk"),
+            //        new Word("Tiger"),
+            //        new Word("Rabbit"),
+            //        new Word("Bat"),
+            //        new Word("Antelope"),
+            //        new Word("Tortoise")
+            //    };
+
+            GenerationManager manager = new GenerationManager(new Generator());
+
+            IList<Generation> generations;
 
             try
             {
-              generator = new CrosswordGenerator(words);
+                generations = manager.GenerateCrosswords(words, timeout: Int32.MaxValue).ToList();
             }
             catch (FormatException)
             {
@@ -43,9 +69,9 @@ namespace CrosswordWPF
                 return;
             }
 
-            CrosswordWindow crossword = new CrosswordWindow(generator);
+            CrosswordWindow crossword = new CrosswordWindow(generations);
 
-            if (!crossword.CrosswordFailed)
+            if (generations.Any())
             {
                 crossword.Show();
             }

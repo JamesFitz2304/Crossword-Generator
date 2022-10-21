@@ -10,14 +10,15 @@ namespace CrosswordGenerator
 {
     public class GenerationManager
     {
-        private IGenerator _generator;
+        private readonly IGenerator _generator;
+        private const int DefaultAttempts = 200;
 
         public GenerationManager(IGenerator generator)
         {
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(List<Word> words, int attempts = 100, int timeout = 3000)
+        public IEnumerable<Generation> GenerateCrosswords(List<Word> words, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
         {
 
             var generations = new List<Generation>();
@@ -32,21 +33,27 @@ namespace CrosswordGenerator
                 if (watch.ElapsedMilliseconds > timeout) break;
                 var shuffledWords = ShuffleWords(words);
                 var generation = _generator.Generate(shuffledWords);
-                var unplacedWords = generation.UnplacedWords.Count;
 
-                if (unplacedWords < leastUnplacedWords)
+                if (generation.NumberOfUnplacedWords < leastUnplacedWords)
                 {
-                    leastUnplacedWords = unplacedWords;
+                    leastUnplacedWords = generation.NumberOfUnplacedWords;
                     generations.Clear();
                     generations.Add(generation);
                 }
-                else if (unplacedWords == leastUnplacedWords)
+                else if (generation.NumberOfUnplacedWords == leastUnplacedWords)
                 {
                     generations.Add(generation);
                 }
+
+                if (leastUnplacedWords == 0 && generations.Count >= 10)
+                {
+                    break;
+                }
+
             }
 
-            RemoveIdenticalGenerations(generations); 
+            if(cullIdenticals)
+                RemoveIdenticalGenerations(generations); 
             
             return generations;
         }
@@ -57,8 +64,8 @@ namespace CrosswordGenerator
             {
                 for (var y = x + 1; y < generations.Count; y++)
                 {
-                    var xBlocks = generations[x].blocks;
-                    var yBlocks = generations[y].blocks;
+                    var xBlocks = generations[x].Blocks;
+                    var yBlocks = generations[y].Blocks;
                     if (BlocksAreIdentical(xBlocks, yBlocks))
                     {
                         generations.RemoveAt(y);

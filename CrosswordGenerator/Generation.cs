@@ -6,9 +6,14 @@ namespace CrosswordGenerator
 {
     public class Generation
     {
-        public Block[,] blocks;
-        public List<Word> UnplacedWords = new List<Word>();
+        public Block[,] Blocks;
+        private readonly List<Word> _unplacedWords;
+        public int NumberOfUnplacedWords => _unplacedWords.Count;
 
-        public int NumberOfUnplacedWords => UnplacedWords.Count;
+        public Generation(Block[,] blocks, List<Word> unplacedWords)
+        {
+            Blocks = blocks;
+            _unplacedWords = unplacedWords;
+        }
     }
 }

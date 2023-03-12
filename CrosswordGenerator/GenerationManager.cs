@@ -39,15 +39,12 @@ namespace CrosswordGenerator
                 if (generation.NumberOfUnplacedWords < leastUnplacedWords)
                 {
                     leastUnplacedWords = generation.NumberOfUnplacedWords;
-                    generations.Clear();
-                    generations.Add(generation);
-                }
-                else if (generation.NumberOfUnplacedWords == leastUnplacedWords)
-                {
-                    generations.Add(generation);
                 }
 
-                if (leastUnplacedWords == 0 && generations.Count >= 10)
+                generations.Add(generation);
+
+
+                if (generations.Count(x => x.NumberOfUnplacedWords == 0) >= 10)
                 {
                     break;
                 }

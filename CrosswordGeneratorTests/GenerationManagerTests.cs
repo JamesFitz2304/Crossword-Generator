@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Diagnostics;
 using CrosswordGenerator;
 using CrosswordGenerator.Interfaces;
 using Moq;
-using NUnit.Framework.Internal;
 
 namespace CrosswordGeneratorTests
 {
@@ -26,27 +24,46 @@ namespace CrosswordGeneratorTests
         };
 
 
-        private readonly List<Word> _wordsAllPlaceable = new()
+        private readonly List<Word> _5WordsAllPlaceable = new()
         {
-            new Word("Dog"),
-            new Word("Cat"),
-            new Word("Chicken"),
-            new Word("Cow"),
-            new Word("Monkey"),
-            new Word("Salmon"),
             new Word("Goat"),
-            new Word("Worm"),
-            new Word("Wasp"),
-            new Word("Bee"),
-            new Word("Ostrich"),
-            new Word("Parrot"),
-            new Word("Frog"),
-            new Word("Skunk"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit")
+        };
+
+        private readonly List<Word> _10WordsAllPlaceable = new()
+        {
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
             new Word("Tiger"),
             new Word("Rabbit"),
-            new Word("Bat"),
-            new Word("Antelope"),
-            new Word("Tortoise")
+            new Word("Baby"),
+            new Word("Yacht"),
+            new Word("Toaster"),
+            new Word("Railroad"),
+            new Word("Digger")
+        };
+
+        private readonly List<Word> _15WordsAllPlaceable = new()
+        {
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit"),
+            new Word("Baby"),
+            new Word("Yacht"),
+            new Word("Toaster"),
+            new Word("Railroad"),
+            new Word("Digger"),
+            new Word("Richard"),
+            new Word("Daniel"),
+            new Word("Liam"),
+            new Word("Michael"),
+            new Word("Larry")
         };
 
         private readonly Block[,] _blocks1 = new Block[,]
@@ -100,11 +117,11 @@ namespace CrosswordGeneratorTests
                 .Callback<IList<Word>>(l => list2 = l);
 
             // Act
-            _manager.GenerateCrosswords(_wordsAllPlaceable, attempts);
+            _manager.GenerateCrosswords(_5WordsAllPlaceable, attempts);
 
             // Assert
-            CollectionAssert.AreNotEqual(_wordsAllPlaceable, list1);
-            CollectionAssert.AreNotEqual(_wordsAllPlaceable, list2);
+            CollectionAssert.AreNotEqual(_5WordsAllPlaceable, list1);
+            CollectionAssert.AreNotEqual(_5WordsAllPlaceable, list2);
             CollectionAssert.AreNotEqual(list1, list2);
         }
 
@@ -138,26 +155,6 @@ namespace CrosswordGeneratorTests
 
             // Assert
             _generatorMock.Verify(g => g.Generate(It.IsAny<List<Word>>()), Times.AtMost(9));
-        }
-
-        [Test]
-        public void GenerateCrosswords_WhenNewGenerationPlacedMoreWords_ClearListAndAddNewGeneration()
-        {
-            // Arrange
-            var generationLess = new Generation(_blocks1, _oneUnplacedWords);
-
-            var generationMore = new Generation(_blocks1, _twoUnplacedWords);
-
-            _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationLess)
-                .Returns(generationMore);
-
-            // Act
-            var result = _manager.GenerateCrosswords(new List<Word>(), 2, int.MaxValue).ToList();
-
-            // Assert
-            var generations = result;
-            Assert.AreEqual(1, generations.Count());
-            Assert.AreEqual(generationMore, generations.First());
         }
 
         [Test]
@@ -236,7 +233,7 @@ namespace CrosswordGeneratorTests
             var realManager = new GenerationManager(realGenerator);
 
             // Act
-            var result = realManager.GenerateCrosswords(_wordsAllPlaceable, timeout: int.MaxValue);
+            var result = realManager.GenerateCrosswords(_5WordsAllPlaceable, timeout: int.MaxValue);
 
             // Assert
             Assert.AreEqual(0, result.First().NumberOfUnplacedWords);
@@ -289,23 +286,39 @@ namespace CrosswordGeneratorTests
             // Arrange
             var realGenerator = new Generator();
             var realManager = new GenerationManager(realGenerator);
-            const int attempts = 100;
+            const int attempts = 1000;
             double averageSuccess = 0;
             double averageTime = 0;
-            int timesToRepeat = 100;
-
+            int timesToRepeat = 1000;
+            var wordSelector = 1;
             // Act
             for (var i = 0; i < timesToRepeat; i++)
             {
+                List<Word> words;
+                if (wordSelector == 1)
+                {
+                    words = _5WordsAllPlaceable;
+                }
+                else if (wordSelector % 2 == 0)
+                {
+                    words = _10WordsAllPlaceable;
+                }
+                else
+                {
+                    words = _15WordsAllPlaceable;
+                }
+
                 watch.Start();
-                var result = realManager.GenerateCrosswords(_wordsAllPlaceable, attempts: attempts, timeout: int.MaxValue, cullIdenticals: false);
+                var result = realManager.GenerateCrosswords(words, attempts: attempts, timeout: int.MaxValue, cullIdenticals: false).ToList();
                 watch.Stop();
                 averageTime += watch.ElapsedMilliseconds;
-                averageSuccess += (result.Count() / (double)attempts) * 100;
                 watch.Reset();
+                var allWordsPlaced = result.Count(x => x.NumberOfUnplacedWords == 0);
+                averageSuccess += (allWordsPlaced / result.Count()) * 100;
+                wordSelector = wordSelector == 3 ? 1 : wordSelector + 1;
             }
 
-            averageSuccess = (averageSuccess / 1000);
+            averageSuccess = (averageSuccess / timesToRepeat);
             averageTime = (averageTime / timesToRepeat);
 
             // Assert

@@ -85,7 +85,10 @@ namespace CrosswordGenerator
 
         private IList<Word> ShuffleWords(IEnumerable<Word> words)
         {
-            var shuffled = words.ToList();
+            var shuffled = words.OrderByDescending(x => x.WordLength).ToList();
+            var numberToSort = 2;
+            var longest = shuffled.Take(numberToSort).ToList();
+            shuffled.RemoveRange(0, numberToSort);
             var random = new Random();
             var n = shuffled.Count;
             while (n > 1)
@@ -94,7 +97,7 @@ namespace CrosswordGenerator
                 var k = random.Next(n + 1);
                 (shuffled[k], shuffled[n]) = (shuffled[n], shuffled[k]);
             }
-
+            shuffled.InsertRange(0, longest);
             return shuffled;
         }
 

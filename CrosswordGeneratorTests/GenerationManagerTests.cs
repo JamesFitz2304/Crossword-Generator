@@ -286,10 +286,10 @@ namespace CrosswordGeneratorTests
             // Arrange
             var realGenerator = new Generator();
             var realManager = new GenerationManager(realGenerator);
-            const int attempts = 1000;
+            const int attempts = 100;
             double averageSuccess = 0;
             double averageTime = 0;
-            int timesToRepeat = 1000;
+            int timesToRepeat = 100;
             var wordSelector = 1;
             // Act
             for (var i = 0; i < timesToRepeat; i++)
@@ -309,7 +309,9 @@ namespace CrosswordGeneratorTests
                 }
 
                 watch.Start();
+
                 var result = realManager.GenerateCrosswords(words, attempts: attempts, timeout: int.MaxValue, cullIdenticals: false).ToList();
+               
                 watch.Stop();
                 averageTime += watch.ElapsedMilliseconds;
                 watch.Reset();

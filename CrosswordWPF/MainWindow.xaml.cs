@@ -27,33 +27,37 @@ namespace CrosswordWPF
         {
             List<Word> words = new List<Word>();
 
-            foreach (WordInput input in WordInputs)
+            foreach (var input in WordInputs)
             {
-                words.Add(new Word(input.WordBox.Text));
+                if(input.WordBox.Text.Trim().Length > 0) 
+                    words.Add(new Word(input.WordBox.Text));
             }
 
-            //words = new List<Word>()
-            //{
-            //        new Word("Dog"),
-            //        new Word("Cat"),
-            //        new Word("Chicken"),
-            //        new Word("Cow"),
-            //        new Word("Monkey"),
-            //        new Word("Salmon"),
-            //        new Word("Goat"),
-            //        new Word("Worm"),
-            //        new Word("Wasp"),
-            //        new Word("Bee"),
-            //        new Word("Ostrich"),
-            //        new Word("Parrot"),
-            //        new Word("Frog"),
-            //        new Word("Skunk"),
-            //        new Word("Tiger"),
-            //        new Word("Rabbit"),
-            //        new Word("Bat"),
-            //        new Word("Antelope"),
-            //        new Word("Tortoise")
-            //    };
+            if (!words.Any())
+            {
+                words = new List<Word>()
+                {
+                        new Word("Dog"),
+                        new Word("Cat"),
+                        new Word("Chicken"),
+                        new Word("Cow"),
+                        new Word("Monkey"),
+                        new Word("Salmon"),
+                        new Word("Goat"),
+                        new Word("Worm"),
+                        new Word("Wasp"),
+                        new Word("Bee"),
+                        new Word("Ostrich"),
+                        new Word("Parrot"),
+                        new Word("Frog"),
+                        new Word("Skunk"),
+                        new Word("Tiger"),
+                        new Word("Rabbit"),
+                        new Word("Bat"),
+                        new Word("Antelope"),
+                        new Word("Tortoise")
+                    };
+            }
 
             GenerationManager manager = new GenerationManager(new Generator());
 

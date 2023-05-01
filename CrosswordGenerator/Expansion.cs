@@ -11,5 +11,5 @@ namespace CrosswordGenerator
         public int TotalX => Left + Right;
         public int TotalY => Up + Down;
     }
-    
+
 }

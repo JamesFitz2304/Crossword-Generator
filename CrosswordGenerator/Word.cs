@@ -9,7 +9,7 @@
         {
             word = word.ToUpper();
             letters = new Letter[word.Length];
-            for(int i = 0; i < word.Length; i++)
+            for (int i = 0; i < word.Length; i++)
             {
                 letters[i] = new Letter(word[i]);
             }
@@ -18,7 +18,7 @@
         public int WordLength
         {
             get => letters.Length;
-        } 
+        }
 
         public Letter[] Letters
         {

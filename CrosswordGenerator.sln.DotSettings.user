@@ -1,12 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a9110552_002D802b_002D4db1_002D8741_002Dfd550c31ab7f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="EfficencyTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a9110552_002D802b_002D4db1_002D8741_002Dfd550c31ab7f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EfficencyTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ceabb688_002De14c_002D4570_002D965d_002D9154ca2d60ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GenerateCrosswords_WhenOneWordCanNotBePlaced_ShouldGenerateCrosswordWithOneWordUnplaced" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ceabb688_002De14c_002D4570_002D965d_002D9154ca2d60ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GenerateCrosswords_WhenOneWordCanNotBePlaced_ShouldGenerateCrosswordWithOneWordUnplaced" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests.GenerateCrosswords_WhenOneWordCanNotBePlaced_ShouldGenerateCrosswordWithOneWordUnplaced&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests.EfficencyTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -10,15 +10,20 @@ namespace CrosswordGenerator
     public class GenerationManager
     {
         private readonly IGenerator _generator;
-        private const int DefaultAttempts = 200;
+        private const int DefaultAttempts = 8;
+        private const int MaxAllPlaced = 3;
 
         public GenerationManager(IGenerator generator)
         {
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(List<Word> words, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
+        public IEnumerable<Generation> GenerateCrosswords(IList<Word> words, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
         {
+            if (words.Count < 2)
+            {
+                throw new FormatException("Word list must be greater than 1");
+            }
             if (!AllWordsValid(words))
             {
                 throw new FormatException("Word list contained invalid characters");
@@ -44,7 +49,7 @@ namespace CrosswordGenerator
                 generations.Add(generation);
 
 
-                if (generations.Count(x => x.NumberOfUnplacedWords == 0) >= 10)
+                if (generations.Count(x => x.NumberOfUnplacedWords == 0) >= MaxAllPlaced)
                 {
                     break;
                 }
@@ -56,7 +61,7 @@ namespace CrosswordGenerator
             return generations;
         }
 
-        private bool AllWordsValid(IList<Word> words)
+        private static bool AllWordsValid(IEnumerable<Word> words)
         {
             var regex = new Regex(@"[^A-Z]");
             if (words.Any(word => regex.IsMatch(word.WordAsString) || string.IsNullOrWhiteSpace(word.WordAsString)))
@@ -66,7 +71,7 @@ namespace CrosswordGenerator
             return true;
         }
 
-        private void RemoveIdenticalGenerations(IList<Generation> generations)
+        private static void RemoveIdenticalGenerations(IList<Generation> generations)
         {
             for (var x = 0; x < generations.Count - 1; x++)
             {
@@ -83,12 +88,15 @@ namespace CrosswordGenerator
             }
         }
 
-        private IList<Word> ShuffleWords(IEnumerable<Word> words)
+        private static IList<Word> ShuffleWords(IEnumerable<Word> words)
         {
             var shuffled = words.OrderByDescending(x => x.WordLength).ToList();
-            var numberToSort = 2;
+
+            // always start with the longest word
+            const int numberToSort = 1;
             var longest = shuffled.Take(numberToSort).ToList();
             shuffled.RemoveRange(0, numberToSort);
+
             var random = new Random();
             var n = shuffled.Count;
             while (n > 1)
@@ -101,7 +109,7 @@ namespace CrosswordGenerator
             return shuffled;
         }
 
-        private bool BlocksAreIdentical(Block[,] blocks1, Block[,] blocks2)
+        private static bool BlocksAreIdentical(Block[,] blocks1, Block[,] blocks2)
         {
             if (Enumerable.Range(0, blocks1.Rank).Any(dimension => blocks1.GetLength(dimension) != blocks2.GetLength(dimension)))
             {

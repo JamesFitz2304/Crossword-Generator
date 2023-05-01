@@ -1,7 +1,7 @@
-using System.Diagnostics;
 using CrosswordGenerator;
 using CrosswordGenerator.Interfaces;
 using Moq;
+using System.Diagnostics;
 
 namespace CrosswordGeneratorTests
 {
@@ -12,7 +12,7 @@ namespace CrosswordGeneratorTests
 
         private Mock<IGenerator> _generatorMock;
 
-        private readonly List<Word> _twoUnplacedWords = new List<Word>()
+        private readonly List<Word> _twoUnplacedWords = new()
         {
             new Word("Goat"),
             new Word("Turtle"),
@@ -20,7 +20,7 @@ namespace CrosswordGeneratorTests
             new Word("Zzz"),
         };
 
-        private readonly List<Word> _oneUnplacedWords = new List<Word>()
+        private readonly List<Word> _oneUnplacedWords = new()
         {
             new Word("Goat"),
             new Word("Turtle"),
@@ -70,16 +70,37 @@ namespace CrosswordGeneratorTests
             new Word("Larry")
         };
 
+        private readonly List<Word> _15Words3Unplaceable = new()
+        {
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit"),
+            new Word("Houmous"),
+            new Word("Toaster"),
+            new Word("Railroad"),
+            new Word("Digger"),
+            new Word("Richard"),
+            new Word("Daniel"),
+            new Word("Liam"),
+            new Word("Xxx"),
+            new Word("Yyy"),
+            new Word("Zzz"),
+        };
+
+
+
         private readonly Block[,] _blocks1 = new Block[,]
         {
             {
-                new Block(new Letter('A')), new Block(new Letter('B'))
+                new(new Letter('A')), new(new Letter('B'))
             },
             {
                 null!, null!
             },
             {
-                new Block(new Letter('C')), new Block(new Letter('D'))
+                new(new Letter('C')), new(new Letter('D'))
             }
 
         };
@@ -87,13 +108,13 @@ namespace CrosswordGeneratorTests
         private readonly Block[,] _blocks2 = new Block[,]
         {
             {
-                new Block(new Letter('E')), new Block(new Letter('F'))
+                new(new Letter('E')), new(new Letter('F'))
             },
             {
                 null!, null!
             },
             {
-                new Block(new Letter('G')), new Block(new Letter('H'))
+                new(new Letter('G')), new(new Letter('H'))
             }
 
         };
@@ -110,15 +131,15 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_ThrowsExceptionIfWordsContainInvalidCharacters()
         {
 
-        var invalidCharacters = new List<Word>()
+            var invalidCharacters = new List<Word>()
         {
-            new Word("Sausage"),
-            new Word("B4con"),
-            new Word("Eggs")
+            new("Sausage"),
+            new("B4con"),
+            new("Eggs")
         };
 
-        var exception = Assert.Throws<FormatException>(() => _manager.GenerateCrosswords(invalidCharacters));
-        Assert.AreEqual("Word list contained invalid characters", exception?.Message);
+            var exception = Assert.Throws<FormatException>(() => _manager.GenerateCrosswords(invalidCharacters));
+            Assert.AreEqual("Word list contained invalid characters", exception?.Message);
         }
 
         [Test]
@@ -126,7 +147,7 @@ namespace CrosswordGeneratorTests
         {
             var oneWord = new List<Word>()
             {
-                new Word("Sausage")
+                new("Sausage")
             };
 
             var exception = Assert.Throws<FormatException>(() => _manager.GenerateCrosswords(oneWord));
@@ -204,7 +225,7 @@ namespace CrosswordGeneratorTests
 
             // Assert
             var generations = result;
-            Assert.AreEqual(2, generations.Count());
+            Assert.AreEqual(2, generations.Count);
             Assert.AreEqual(generationOne, generations[0]);
             Assert.AreEqual(generationTwo, generations[1]);
 
@@ -226,7 +247,7 @@ namespace CrosswordGeneratorTests
 
             // Assert
             var generations = result;
-            Assert.AreEqual(1, generations.Count());
+            Assert.AreEqual(1, generations.Count);
             Assert.AreEqual(generationMore, generations.First());
 
         }
@@ -248,7 +269,7 @@ namespace CrosswordGeneratorTests
 
             // Assert
             var generations = result;
-            Assert.AreEqual(2, generations.Count());
+            Assert.AreEqual(2, generations.Count);
             Assert.AreEqual(generationOne, generations[0]);
             Assert.AreEqual(generationTwo, generations[1]);
         }
@@ -277,9 +298,9 @@ namespace CrosswordGeneratorTests
             var realManager = new GenerationManager(realGenerator);
             var words = new List<Word>()
             {
-                new Word("Moose"),
-                new Word("Goose"),
-                new Word("Xyz")
+                new("Moose"),
+                new("Goose"),
+                new("Xyz")
             };
 
             // Act
@@ -303,7 +324,7 @@ namespace CrosswordGeneratorTests
             _manager.GenerateCrosswords(_5WordsAllPlaceable);
 
             // Assert
-            _generatorMock.Verify(g => g.Generate(It.IsAny<List<Word>>()), Times.Exactly(10));
+            _generatorMock.Verify(g => g.Generate(It.IsAny<List<Word>>()), Times.Exactly(3));
         }
 
         [Test]
@@ -321,34 +342,32 @@ namespace CrosswordGeneratorTests
             // Act
             for (var i = 0; i < timesToRepeat; i++)
             {
-                List<Word> words;
-                if (wordSelector == 1)
+                var words = wordSelector switch
                 {
-                    words = _5WordsAllPlaceable;
-                }
-                else if (wordSelector % 2 == 0)
-                {
-                    words = _10WordsAllPlaceable;
-                }
-                else
-                {
-                    words = _15WordsAllPlaceable;
-                }
+                    1 => _5WordsAllPlaceable,
+                    2 => _10WordsAllPlaceable,
+                    3 => _15WordsAllPlaceable,
+                    _ => _15Words3Unplaceable,
+                };
 
                 watch.Start();
 
                 var result = realManager.GenerateCrosswords(words, timeout: int.MaxValue, cullIdenticals: false).ToList();
-               
+
                 watch.Stop();
                 averageTime += watch.ElapsedMilliseconds;
                 watch.Reset();
-                var success = Convert.ToInt32(result.Any(x => x.NumberOfUnplacedWords == 0));
+                // If all words placeable, success is all words placed
+                // If 3 words unplaceable, success is all but 3 words placed
+                var success = wordSelector == 4
+                    ? Convert.ToInt32(result.Any(x => x.NumberOfUnplacedWords == 3))
+                    : Convert.ToInt32(result.Any(x => x.NumberOfUnplacedWords == 0));
                 averageSuccess += success;
-                wordSelector = wordSelector == 3 ? 1 : wordSelector + 1;
+                wordSelector = wordSelector == 4 ? 1 : wordSelector + 1;
             }
 
             averageSuccess = (averageSuccess / timesToRepeat) * 100;
-            averageTime = (averageTime / timesToRepeat);
+            averageTime /= timesToRepeat;
 
             // Assert
             TestContext.WriteLine($"Success rate: {averageSuccess}%");

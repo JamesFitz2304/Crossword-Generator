@@ -33,6 +33,8 @@
 
         public string WordAsString
         {
+
+
             get
             {
                 string word = "";

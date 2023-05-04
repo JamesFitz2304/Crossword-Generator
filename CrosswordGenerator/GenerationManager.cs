@@ -18,14 +18,8 @@ namespace CrosswordGenerator
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(
-            IEnumerable<string> wordStrings,
-            int attempts = DefaultAttempts,
-            int timeout = 3000,
-            bool cullIdenticals = true)
+        public IEnumerable<Generation> GenerateCrosswords(IList<Word> words, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
         {
-            var words = wordStrings.Select(word => new Word(word)).ToList();
-
             if (words.Count < 2)
             {
                 throw new FormatException("Word list must be greater than 1");

@@ -12,82 +12,84 @@ namespace CrosswordGeneratorTests
 
         private Mock<IGenerator> _generatorMock;
 
-        private readonly List<string> _twoUnplacedWords = new()
+        private readonly List<Word> _twoUnplacedWords = new()
         {
-            "Goat",
-            "Turtle",
-            "Yyy",
-            "Zzz",
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Yyy"),
+            new Word("Zzz"),
         };
 
-        private readonly List<string> _oneUnplacedWords = new()
+        private readonly List<Word> _oneUnplacedWords = new()
         {
-            "Goat",
-            "Turtle",
-            "Zzz",
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Zzz"),
         };
 
 
-        private readonly List<string> _5WordsAllPlaceable = new()
+        private readonly List<Word> _5WordsAllPlaceable = new()
         {
-            "Goat",
-            "Turtle",
-            "Elephant",
-            "Tiger",
-            "Rabbit"
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit")
         };
 
-        private readonly List<string> _10WordsAllPlaceable = new()
+        private readonly List<Word> _10WordsAllPlaceable = new()
         {
-            "Goat",
-            "Turtle",
-            "Elephant",
-            "Tiger",
-            "Rabbit",
-            "Baby",
-            "Yacht",
-            "Toaster",
-            "Railroad",
-            "Digger"
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit"),
+            new Word("Baby"),
+            new Word("Yacht"),
+            new Word("Toaster"),
+            new Word("Railroad"),
+            new Word("Digger")
         };
 
-        private readonly List<string> _15WordsAllPlaceable = new()
+        private readonly List<Word> _15WordsAllPlaceable = new()
         {
-            "Goat",
-            "Turtle",
-            "Elephant",
-            "Tiger",
-            "Rabbit",
-            "Baby",
-            "Yacht",
-            "Toaster",
-            "Railroad",
-            "Digger",
-            "Richard",
-            "Daniel",
-            "Liam",
-            "Michael",
-            "Larry"
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit"),
+            new Word("Baby"),
+            new Word("Yacht"),
+            new Word("Toaster"),
+            new Word("Railroad"),
+            new Word("Digger"),
+            new Word("Richard"),
+            new Word("Daniel"),
+            new Word("Liam"),
+            new Word("Michael"),
+            new Word("Larry")
         };
 
-        private readonly List<string> _15Words3Unplaceable = new()
+        private readonly List<Word> _15Words3Unplaceable = new()
         {
-            "Goat",
-            "Turtle",
-            "Elephant",
-            "Tiger",
-            "Rabbit",
-            "Houmous",
-            "Toaster",
-            "Railroad",
-            "Digger",
-            "Richard",
-            "Daniel",
-            "Liam",
-            "Xxx",
-            "Yyy",
-            "Zzz",
+            new Word("Goat"),
+            new Word("Turtle"),
+            new Word("Elephant"),
+            new Word("Tiger"),
+            new Word("Rabbit"),
+            new Word("Houmous"),
+            new Word("Toaster"),
+            new Word("Railroad"),
+            new Word("Digger"),
+            new Word("Richard"),
+            new Word("Daniel"),
+            new Word("Liam"),
+            new Word("Xxx"),
+            new Word("Yyy"),
+            new Word("Zzz"),
         };
+
+
 
         private readonly Block[,] _blocks1 = new Block[,]
         {
@@ -129,11 +131,11 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_ThrowsExceptionIfWordsContainInvalidCharacters()
         {
 
-            var invalidCharacters = new List<string>()
+            var invalidCharacters = new List<Word>()
         {
-            "Sausage",
-            "B4con",
-            "Eggs"
+            new("Sausage"),
+            new("B4con"),
+            new("Eggs")
         };
 
             var exception = Assert.Throws<FormatException>(() => _manager.GenerateCrosswords(invalidCharacters));
@@ -143,9 +145,9 @@ namespace CrosswordGeneratorTests
         [Test]
         public void GenerateCrosswords_ThrowsExceptionIfLessThanTwoWords()
         {
-            var oneWord = new List<string>()
+            var oneWord = new List<Word>()
             {
-                "Sausage"
+                new("Sausage")
             };
 
             var exception = Assert.Throws<FormatException>(() => _manager.GenerateCrosswords(oneWord));
@@ -211,9 +213,9 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenNewGenerationPlacedSameAmountOfWords_AddNewGeneration()
         {
             // Arrange
-            var generationOne = new Generation(_blocks1, _oneUnplacedWords.Select(x => new Word(x)).ToList());
+            var generationOne = new Generation(_blocks1, _oneUnplacedWords);
 
-            var generationTwo = new Generation(_blocks2, _oneUnplacedWords.Select(x => new Word(x)).ToList());
+            var generationTwo = new Generation(_blocks2, _oneUnplacedWords);
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
                 .Returns(generationTwo);
@@ -233,9 +235,9 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenNewGenerationPlacedLessWords_DoNotAddNewGeneration()
         {
             // Arrange
-            var generationMore = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x)).ToList());
+            var generationMore = new Generation(_blocks1, _twoUnplacedWords);
 
-            var generationLess = new Generation(_blocks1, _oneUnplacedWords.Select(x => new Word(x)).ToList());
+            var generationLess = new Generation(_blocks1, _oneUnplacedWords);
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationMore)
                 .Returns(generationLess);
@@ -254,10 +256,10 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_RemovesDuplicateGenerations()
         {
             // Arrange
-            var generationOne = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x)).ToList());
-            var generationTwo = new Generation(_blocks2, _twoUnplacedWords.Select(x => new Word(x)).ToList());
-            var generationThree = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x)).ToList());
-            var generationFour = new Generation(_blocks2, _twoUnplacedWords.Select(x => new Word(x)).ToList());
+            var generationOne = new Generation(_blocks1, _twoUnplacedWords);
+            var generationTwo = new Generation(_blocks2, _twoUnplacedWords);
+            var generationThree = new Generation(_blocks1, _twoUnplacedWords);
+            var generationFour = new Generation(_blocks2, _twoUnplacedWords);
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
                 .Returns(generationTwo).Returns(generationThree).Returns(generationFour);
@@ -294,11 +296,11 @@ namespace CrosswordGeneratorTests
             // Arrange
             var realGenerator = new Generator();
             var realManager = new GenerationManager(realGenerator);
-            var words = new List<string>()
+            var words = new List<Word>()
             {
-                "Moose",
-                "Goose",
-                "Xyz"
+                new("Moose"),
+                new("Goose"),
+                new("Xyz")
             };
 
             // Act
@@ -376,7 +378,7 @@ namespace CrosswordGeneratorTests
 
         private Generation CreateDefaultGeneration()
         {
-            return new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x)).ToList());
+            return new Generation(_blocks1, _twoUnplacedWords);
 
         }
 

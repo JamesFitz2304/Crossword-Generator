@@ -13,50 +13,50 @@ namespace CrosswordWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly List<WordInput> _wordInputs = new List<WordInput>();
+
+        List<WordInput> WordInputs = new List<WordInput>();
 
         public MainWindow()
         {
             InitializeComponent();
-            _wordInputs.Add(new WordInput(boxWord1, boxClue1));
-            _wordInputs.Add(new WordInput(boxWord2, boxClue2));
+            WordInputs.Add(new WordInput(boxWord1, boxClue1));
+            WordInputs.Add(new WordInput(boxWord2, boxClue2));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var words = new List<string>();
+            List<Word> words = new List<Word>();
 
-            foreach (var input in _wordInputs)
+            foreach (var input in WordInputs)
             {
                 if(input.WordBox.Text.Trim().Length > 0) 
-                    words.Add(input.WordBox.Text.Trim());
+                    words.Add(new Word(input.WordBox.Text));
             }
 
             if (!words.Any())
             {
-                words = new List<string>()
+                words = new List<Word>()
                 {
-
-                    "Dog",
-                    "Cat",
-                    "Chicken",
-                    "Cow",
-                    "Monkey",
-                    "Salmon",
-                    "Goat",
-                    "Worm",
-                    "Wasp",
-                    "Bee",
-                    "Ostrich",
-                    "Parrot",
-                    "Frog",
-                    "Skunk",
-                    "Tiger",
-                    "Rabbit",
-                    "Bat",
-                    "Antelope",
-                    "Tortoise"
-                };
+                        new Word("Dog"),
+                        new Word("Cat"),
+                        new Word("Chicken"),
+                        new Word("Cow"),
+                        new Word("Monkey"),
+                        new Word("Salmon"),
+                        new Word("Goat"),
+                        new Word("Worm"),
+                        new Word("Wasp"),
+                        new Word("Bee"),
+                        new Word("Ostrich"),
+                        new Word("Parrot"),
+                        new Word("Frog"),
+                        new Word("Skunk"),
+                        new Word("Tiger"),
+                        new Word("Rabbit"),
+                        new Word("Bat"),
+                        new Word("Antelope"),
+                        new Word("Tortoise")
+                    };
             }
 
             GenerationManager manager = new GenerationManager(new Generator());
@@ -89,9 +89,9 @@ namespace CrosswordWPF
         private void AddNewWordLine()
         {
             AddNewGridRow();
-            _wordInputs.Add(new WordInput(_wordInputs, MainGrid));
+            WordInputs.Add(new WordInput(WordInputs, MainGrid));
 
-            if (_wordInputs.Count > 2)
+            if (WordInputs.Count > 2)
             {
                 btnRemove.Visibility = Visibility.Visible;
             }
@@ -116,11 +116,11 @@ namespace CrosswordWPF
 
         private void RemoveWordLine()
         {
-            MainGrid.Children.Remove(_wordInputs[_wordInputs.Count - 1].WordBox);
-            MainGrid.Children.Remove(_wordInputs[_wordInputs.Count - 1].ClueBox);
-            _wordInputs.RemoveAt(_wordInputs.Count - 1);
+            MainGrid.Children.Remove(WordInputs[WordInputs.Count - 1].WordBox);
+            MainGrid.Children.Remove(WordInputs[WordInputs.Count - 1].ClueBox);
+            WordInputs.RemoveAt(WordInputs.Count - 1);
             RemoveGridRow();
-            if (_wordInputs.Count < 3)
+            if (WordInputs.Count < 3)
             {
                 btnRemove.Visibility = Visibility.Hidden;
             }
@@ -137,7 +137,7 @@ namespace CrosswordWPF
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Tab && _wordInputs[_wordInputs.Count - 1].ClueBox.IsFocused)
+            if (e.Key == Key.Tab && WordInputs[WordInputs.Count - 1].ClueBox.IsFocused)
             {
                 AddNewWordLine();
             }

@@ -216,9 +216,9 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenNewGenerationPlacedSameAmountOfWords_AddNewGeneration()
         {
             // Arrange
-            var generationOne = new Generation(_blocks1, _oneUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationOne = new Generation(_blocks1);
 
-            var generationTwo = new Generation(_blocks2, _oneUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationTwo = new Generation(_blocks2);
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
                 .Returns(generationTwo);
@@ -238,9 +238,9 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenNewGenerationPlacedLessWords_DoNotAddNewGeneration()
         {
             // Arrange
-            var generationMore = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationMore = new Generation(_blocks1);
 
-            var generationLess = new Generation(_blocks1, _oneUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationLess = new Generation(_blocks1);
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationMore)
                 .Returns(generationLess);
@@ -259,10 +259,10 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_RemovesDuplicateGenerations()
         {
             // Arrange
-            var generationOne = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
-            var generationTwo = new Generation(_blocks2, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
-            var generationThree = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
-            var generationFour = new Generation(_blocks2, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationOne = new Generation(_blocks1);
+            var generationTwo = new Generation(_blocks2);
+            var generationThree = new Generation(_blocks1);
+            var generationFour = new Generation(_blocks2);
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
                 .Returns(generationTwo).Returns(generationThree).Returns(generationFour);
@@ -318,7 +318,7 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenTenCompleteCrosswordsGenerated_ShouldStopGeneratingAndReturn()
         {
             // Arrange
-            var successfulGeneration = new Generation(_blocks1, new List<Word>());
+            var successfulGeneration = new Generation(_blocks1);
 
             _generatorMock.Setup(g => g.Generate(It.IsAny<IList<Word>>()))
                 .Returns(successfulGeneration);
@@ -381,7 +381,7 @@ namespace CrosswordGeneratorTests
 
         private Generation CreateDefaultGeneration()
         {
-            return new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            return new Generation(_blocks1);
 
         }
 

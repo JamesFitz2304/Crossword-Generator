@@ -48,7 +48,7 @@ namespace CrosswordWPF
                 for (int x = 0; x < generation.Blocks.GetLength(0); x++)
                 {
                     if (generation.Blocks[x, y] == null) continue;
-                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[x, y].letter, x, y);
+                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[x, y].Letter, x, y);
                     drawingBlocks[x, y] = drawingBlock;
                     CrosswordGrid.Children.Add(drawingBlock.Grid);
                 }

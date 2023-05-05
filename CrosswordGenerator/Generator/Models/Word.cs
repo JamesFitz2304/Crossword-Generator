@@ -18,9 +18,13 @@ namespace CrosswordGenerator.Generator.Models
 
         public int Id { get; }
 
+        public bool Placed { get; set; }
+
         public int WordLength => Letters.Length;
 
         public Letter[] Letters { get; }
+
+        public BlockCoordinates StartBlock { get; set; }
 
     }
 

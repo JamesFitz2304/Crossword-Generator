@@ -2,8 +2,9 @@
 {
     public class BlockCoordinates
     {
-        public int Y;
-        public int X;
+        public int Y { get; set; }
+        public int X { get; set; }
+
 
         public int ArrayY => Y - 1;
         public int ArrayX => X - 1;

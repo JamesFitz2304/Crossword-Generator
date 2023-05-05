@@ -124,8 +124,8 @@ namespace CrosswordGenerator.GenerationManager
                 return false;
             }
 
-            var flatBlocks1 = blocks1.Cast<Block>().Select(b => b?.letter.Character);
-            var flatBlocks2 = blocks2.Cast<Block>().Select(b => b?.letter.Character);
+            var flatBlocks1 = blocks1.Cast<Block>().Select(b => b?.Letter.Character);
+            var flatBlocks2 = blocks2.Cast<Block>().Select(b => b?.Letter.Character);
 
             return flatBlocks1.SequenceEqual(flatBlocks2);
         }

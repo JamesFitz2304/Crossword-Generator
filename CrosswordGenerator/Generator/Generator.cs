@@ -13,16 +13,14 @@ namespace CrosswordGenerator.Generator
     {
         public Generation Generate(IList<Word> words)
         {
-            var unplacedWords = words.ToList();
             var firstWord = words.OrderByDescending(w => w.WordLength).First();
             var blocks = new Block[firstWord.WordLength, 1];
             PlaceFirstWord(ref blocks, firstWord);
-            unplacedWords.Remove(firstWord);
-            PlaceRestOfWords(ref blocks, unplacedWords);
-            return new Generation(blocks, unplacedWords);
+            PlaceRestOfWords(ref blocks, words);
+            return new Generation(blocks, words);
         }
 
-        private static void PlaceFirstWord(ref Block[,] blocks, Word word)
+        private void PlaceFirstWord(ref Block[,] blocks, Word word)
         {
             var placement = new Placement(word);
 
@@ -35,11 +33,12 @@ namespace CrosswordGenerator.Generator
             PlaceWordOnBoard(ref blocks, placement);
         }
 
-        private static void PlaceRestOfWords(ref Block[,] blocks, List<Word> unplacedWords)
+        private void PlaceRestOfWords(ref Block[,] blocks, IList<Word> words)
         {
             while (true)
             {
                 var placements = new List<Placement>();
+                var unplacedWords = words.Where(word => !word.Placed).ToList();
 
                 foreach (var word in unplacedWords)
                 {
@@ -56,7 +55,6 @@ namespace CrosswordGenerator.Generator
                 var bestPlacement = placements.First();
                 //ToDo: Maybe choose a random placement, instead of the "best" one. Otherwise the same solutions will keep being generated.
                 PlaceWordOnBoard(ref blocks, bestPlacement);
-
                 unplacedWords.Remove(bestPlacement.Word);
 
                 if (!unplacedWords.Any())
@@ -66,7 +64,7 @@ namespace CrosswordGenerator.Generator
             }
         }
 
-        private static IEnumerable<Placement> FindPossibleWordPlacements(ref Block[,] blocks, Word word)
+        private IEnumerable<Placement> FindPossibleWordPlacements(ref Block[,] blocks, Word word)
         {
             var placements = new List<Placement>();
 
@@ -77,7 +75,7 @@ namespace CrosswordGenerator.Generator
                     for (var x = 0; x < blocks.GetLength(0); x++)
                     {
                         var block = blocks[x, y];
-                        if (block != null && block.letter.Character == word.Letters[i].Character) // check if block == letter
+                        if (block != null && block.Letter.Character == word.Letters[i].Character) // check if block == letter
                         {
                             if (WordCanBePlacedVertically(ref blocks, word, new BlockCoordinates(x + 1, y + 1), i + 1, out var placement))
                             {
@@ -95,7 +93,7 @@ namespace CrosswordGenerator.Generator
             return placements;
         }
 
-        private static bool WordCanBePlacedHorizontally(ref Block[,] blocks, Word word, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
+        private bool WordCanBePlacedHorizontally(ref Block[,] blocks, Word word, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
             placement = new Placement(word);
             var currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
@@ -152,7 +150,7 @@ namespace CrosswordGenerator.Generator
             return true;
         }
 
-        private static bool WordCanBePlacedVertically(ref Block[,] blocks, Word word, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
+        private bool WordCanBePlacedVertically(ref Block[,] blocks, Word word, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
         {
             placement = new Placement(word);
             var currentBlock = new BlockCoordinates(blockCoordinates.X, blockCoordinates.Y);
@@ -209,7 +207,7 @@ namespace CrosswordGenerator.Generator
             return true;
         }
 
-        private static bool LetterCanBePlaced(ref Block[,] blocks, BlockCoordinates blockCoordinates, Letter[] letters, int letterIndex, int nextLetterStep, string direction, BlockCoordinates nextBlockCoordinates, Placement placement)
+        private bool LetterCanBePlaced(ref Block[,] blocks, BlockCoordinates blockCoordinates, Letter[] letters, int letterIndex, int nextLetterStep, string direction, BlockCoordinates nextBlockCoordinates, Placement placement)
         {
             var letter = letters[letterIndex - 1];
             var nextBlock = OutOfBounds(ref blocks, nextBlockCoordinates.ArrayX, nextBlockCoordinates.ArrayY)
@@ -219,7 +217,7 @@ namespace CrosswordGenerator.Generator
 
             if (blocks[blockCoordinates.ArrayX, blockCoordinates.ArrayY] != null)
             {
-                if (blocks[blockCoordinates.ArrayX, blockCoordinates.ArrayY].letter.Character != letter.Character)
+                if (blocks[blockCoordinates.ArrayX, blockCoordinates.ArrayY].Letter.Character != letter.Character)
                 {
                     return false;
                 }
@@ -248,7 +246,7 @@ namespace CrosswordGenerator.Generator
                 }
             }
             placement.NewLetters++;
-            return nextLetter == null && nextBlock == null || nextLetter != null && (nextBlock == null || nextBlock.letter.Character == nextLetter.Character);
+            return nextLetter == null && nextBlock == null || nextLetter != null && (nextBlock == null || nextBlock.Letter.Character == nextLetter.Character);
         }
 
 
@@ -262,6 +260,8 @@ namespace CrosswordGenerator.Generator
             {
                 blocks[letter.Coordinates.ArrayX, letter.Coordinates.ArrayY] = new Block(letter);
             }
+            placement.Word.StartBlock = placement.Coordinates.First();
+            placement.Word.Placed = true;
         }
 
         private static Block[,] ExpandCrosswordSpace(ref Block[,] blocks, Placement placement)
@@ -272,7 +272,7 @@ namespace CrosswordGenerator.Generator
             {
                 for (var x = 0; x < blocks.GetLength(0); x++)
                 {
-                    blocks[x, y]?.letter.Coordinates.ShiftCoordinates(placement.Expansion.Left, placement.Expansion.Up);
+                    blocks[x, y]?.Letter.Coordinates.ShiftCoordinates(placement.Expansion.Left, placement.Expansion.Up);
                     newBlocks[x + placement.Expansion.Left, y + placement.Expansion.Up] = blocks[x, y];
                 }
             }

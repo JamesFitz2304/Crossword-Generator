@@ -41,8 +41,6 @@ namespace CrosswordGenerator.Generator
             {
                 var placements = new List<Placement>();
 
-                //var wordToPlace = unplacedWords.First();
-
                 foreach (var word in unplacedWords)
                 {
                     placements.AddRange(FindPossibleWordPlacements(ref blocks, word));
@@ -59,7 +57,6 @@ namespace CrosswordGenerator.Generator
                 //ToDo: Maybe choose a random placement, instead of the "best" one. Otherwise the same solutions will keep being generated.
                 PlaceWordOnBoard(ref blocks, bestPlacement);
 
-                //ToDo: Do I still need this Placed attribute?
                 unplacedWords.Remove(bestPlacement.Word);
 
                 if (!unplacedWords.Any())

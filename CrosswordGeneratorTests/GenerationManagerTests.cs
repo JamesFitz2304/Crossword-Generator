@@ -3,6 +3,8 @@ using CrosswordGenerator.Generator.Interfaces;
 using CrosswordGenerator.Generator.Models;
 using Moq;
 using System.Diagnostics;
+using CrosswordGenerator.Generator;
+using CrosswordGenerator.Models;
 
 namespace CrosswordGeneratorTests
 {
@@ -13,81 +15,81 @@ namespace CrosswordGeneratorTests
 
         private Mock<IGenerator> _generatorMock;
 
-        private readonly List<Word> _twoUnplacedWords = new()
+        private readonly List<WordCluePair> _twoUnplacedWords = new()
         {
-            new Word("Goat"),
-            new Word("Turtle"),
-            new Word("Yyy"),
-            new Word("Zzz"),
+            new WordCluePair("Goat"),
+            new WordCluePair("Turtle"),
+            new WordCluePair("Yyy"),
+            new WordCluePair("Zzz"),
         };
 
-        private readonly List<Word> _oneUnplacedWords = new()
+        private readonly List<WordCluePair> _oneUnplacedWords = new()
         {
-            new Word("Goat"),
-            new Word("Turtle"),
-            new Word("Zzz"),
+            new WordCluePair("Goat"),
+            new WordCluePair("Turtle"),
+            new WordCluePair("Zzz"),
         };
 
 
-        private readonly List<Word> _5WordsAllPlaceable = new()
+        private readonly List<WordCluePair> _5WordsAllPlaceable = new()
         {
-            new Word("Goat"),
-            new Word("Turtle"),
-            new Word("Elephant"),
-            new Word("Tiger"),
-            new Word("Rabbit")
+            new WordCluePair("Goat"),
+            new WordCluePair("Turtle"),
+            new WordCluePair("Elephant"),
+            new WordCluePair("Tiger"),
+            new WordCluePair("Rabbit")
         };
 
-        private readonly List<Word> _10WordsAllPlaceable = new()
+        private readonly List<WordCluePair> _10WordsAllPlaceable = new()
         {
-            new Word("Goat"),
-            new Word("Turtle"),
-            new Word("Elephant"),
-            new Word("Tiger"),
-            new Word("Rabbit"),
-            new Word("Baby"),
-            new Word("Yacht"),
-            new Word("Toaster"),
-            new Word("Railroad"),
-            new Word("Digger")
+            new WordCluePair("Goat"),
+            new WordCluePair("Turtle"),
+            new WordCluePair("Elephant"),
+            new WordCluePair("Tiger"),
+            new WordCluePair("Rabbit"),
+            new WordCluePair("Baby"),
+            new WordCluePair("Yacht"),
+            new WordCluePair("Toaster"),
+            new WordCluePair("Railroad"),
+            new WordCluePair("Digger")
         };
 
-        private readonly List<Word> _15WordsAllPlaceable = new()
+        private readonly List<WordCluePair> _15WordsAllPlaceable = new()
         {
-            new Word("Goat"),
-            new Word("Turtle"),
-            new Word("Elephant"),
-            new Word("Tiger"),
-            new Word("Rabbit"),
-            new Word("Baby"),
-            new Word("Yacht"),
-            new Word("Toaster"),
-            new Word("Railroad"),
-            new Word("Digger"),
-            new Word("Richard"),
-            new Word("Daniel"),
-            new Word("Liam"),
-            new Word("Michael"),
-            new Word("Larry")
+            new WordCluePair("Goat"),
+            new WordCluePair("Turtle"),
+            new WordCluePair("Elephant"),
+            new WordCluePair("Tiger"),
+            new WordCluePair("Rabbit"),
+            new WordCluePair("Baby"),
+            new WordCluePair("Yacht"),
+            new WordCluePair("Toaster"),
+            new WordCluePair("Railroad"),
+            new WordCluePair("Digger"),
+            new WordCluePair("Richard"),
+            new WordCluePair("Daniel"),
+            new WordCluePair("Liam"),
+            new WordCluePair("Michael"),
+            new WordCluePair("Larry")
         };
 
-        private readonly List<Word> _15Words3Unplaceable = new()
+        private readonly List<WordCluePair> _15Words3Unplaceable = new()
         {
-            new Word("Goat"),
-            new Word("Turtle"),
-            new Word("Elephant"),
-            new Word("Tiger"),
-            new Word("Rabbit"),
-            new Word("Houmous"),
-            new Word("Toaster"),
-            new Word("Railroad"),
-            new Word("Digger"),
-            new Word("Richard"),
-            new Word("Daniel"),
-            new Word("Liam"),
-            new Word("Xxx"),
-            new Word("Yyy"),
-            new Word("Zzz"),
+            new WordCluePair("Goat"),
+            new WordCluePair("Turtle"),
+            new WordCluePair("Elephant"),
+            new WordCluePair("Tiger"),
+            new WordCluePair("Rabbit"),
+            new WordCluePair("Houmous"),
+            new WordCluePair("Toaster"),
+            new WordCluePair("Railroad"),
+            new WordCluePair("Digger"),
+            new WordCluePair("Richard"),
+            new WordCluePair("Daniel"),
+            new WordCluePair("Liam"),
+            new WordCluePair("Xxx"),
+            new WordCluePair("Yyy"),
+            new WordCluePair("Zzz"),
         };
 
 
@@ -132,7 +134,7 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_ThrowsExceptionIfWordsContainInvalidCharacters()
         {
 
-            var invalidCharacters = new List<Word>()
+            var invalidCharacters = new List<WordCluePair>()
         {
             new("Sausage"),
             new("B4con"),
@@ -146,7 +148,7 @@ namespace CrosswordGeneratorTests
         [Test]
         public void GenerateCrosswords_ThrowsExceptionIfLessThanTwoWords()
         {
-            var oneWord = new List<Word>()
+            var oneWord = new List<WordCluePair>()
             {
                 new("Sausage")
             };
@@ -165,7 +167,7 @@ namespace CrosswordGeneratorTests
             IList<Word> list2 = new List<Word>();
 
             _generatorMock.InSequence(sequence).Setup(g => g.Generate(It.IsAny<IList<Word>>())).Returns(CreateDefaultGeneration)
-                .Callback<IList<Word>>(l => list1 = l);
+                .Callback<IList<Word>>(l => list1 = (List<Word>)l);
             _generatorMock.InSequence(sequence).Setup(g => g.Generate(It.IsAny<IList<Word>>())).Returns(CreateDefaultGeneration)
                 .Callback<IList<Word>>(l => list2 = l);
 
@@ -214,9 +216,9 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenNewGenerationPlacedSameAmountOfWords_AddNewGeneration()
         {
             // Arrange
-            var generationOne = new Generation(_blocks1, _oneUnplacedWords);
+            var generationOne = new Generation(_blocks1, _oneUnplacedWords.Select(x => new Word(x.Word)).ToList());
 
-            var generationTwo = new Generation(_blocks2, _oneUnplacedWords);
+            var generationTwo = new Generation(_blocks2, _oneUnplacedWords.Select(x => new Word(x.Word)).ToList());
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
                 .Returns(generationTwo);
@@ -236,9 +238,9 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenNewGenerationPlacedLessWords_DoNotAddNewGeneration()
         {
             // Arrange
-            var generationMore = new Generation(_blocks1, _twoUnplacedWords);
+            var generationMore = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
 
-            var generationLess = new Generation(_blocks1, _oneUnplacedWords);
+            var generationLess = new Generation(_blocks1, _oneUnplacedWords.Select(x => new Word(x.Word)).ToList());
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationMore)
                 .Returns(generationLess);
@@ -257,10 +259,10 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_RemovesDuplicateGenerations()
         {
             // Arrange
-            var generationOne = new Generation(_blocks1, _twoUnplacedWords);
-            var generationTwo = new Generation(_blocks2, _twoUnplacedWords);
-            var generationThree = new Generation(_blocks1, _twoUnplacedWords);
-            var generationFour = new Generation(_blocks2, _twoUnplacedWords);
+            var generationOne = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationTwo = new Generation(_blocks2, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationThree = new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
+            var generationFour = new Generation(_blocks2, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
 
             _generatorMock.SetupSequence(g => g.Generate(It.IsAny<List<Word>>())).Returns(generationOne)
                 .Returns(generationTwo).Returns(generationThree).Returns(generationFour);
@@ -297,7 +299,7 @@ namespace CrosswordGeneratorTests
             // Arrange
             var realGenerator = new Generator();
             var realManager = new GenerationManager(realGenerator);
-            var words = new List<Word>()
+            var words = new List<WordCluePair>()
             {
                 new("Moose"),
                 new("Goose"),
@@ -379,7 +381,7 @@ namespace CrosswordGeneratorTests
 
         private Generation CreateDefaultGeneration()
         {
-            return new Generation(_blocks1, _twoUnplacedWords);
+            return new Generation(_blocks1, _twoUnplacedWords.Select(x => new Word(x.Word)).ToList());
 
         }
 

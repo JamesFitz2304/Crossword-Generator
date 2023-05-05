@@ -4,7 +4,7 @@ namespace CrosswordGenerator.Generator.Models
 {
     public class Word
     {
-        public Word(string word, int id)
+        public Word(string word, int id = 0)
         {
             word = word.ToUpper();
             Letters = new Letter[word.Length];

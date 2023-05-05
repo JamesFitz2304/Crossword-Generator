@@ -72,7 +72,7 @@ namespace CrosswordGenerator.GenerationManager
         private static bool AllWordsValid(IEnumerable<WordCluePair> wordCluePairs)
         {
             var regex = new Regex(@"[^A-Z]");
-            if (wordCluePairs.Any(word => !regex.IsMatch(word.Word) || string.IsNullOrWhiteSpace(word.Word)))
+            if (wordCluePairs.Any(word => regex.IsMatch(word.Word) || string.IsNullOrWhiteSpace(word.Word)))
             {
                 return false;
             }

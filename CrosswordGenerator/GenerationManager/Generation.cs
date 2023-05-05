@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using CrosswordGenerator.Generator.Models;
-using CrosswordGenerator.Generator.Models;
-
 
 namespace CrosswordGenerator.GenerationManager
 {

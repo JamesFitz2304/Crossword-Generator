@@ -2,11 +2,11 @@
 {
     public class Block
     {
-        public Letter letter;
+        public Letter Letter;
 
         public Block(Letter letter)
         {
-            this.letter = letter;
+            this.Letter = letter;
         }
     }
 }

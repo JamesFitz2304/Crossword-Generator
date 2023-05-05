@@ -1,11 +1,13 @@
-﻿using CrosswordGenerator.Interfaces;
+﻿using CrosswordGenerator.Generator.Interfaces;
+using CrosswordGenerator.Generator.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CrosswordGenerator.Models;
 
-namespace CrosswordGenerator
+namespace CrosswordGenerator.GenerationManager
 {
     public class GenerationManager
     {
@@ -18,16 +20,18 @@ namespace CrosswordGenerator
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(IList<Word> words, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
+        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
         {
-            if (words.Count < 2)
+            if (wordCluePairs.Count < 2)
             {
                 throw new FormatException("Word list must be greater than 1");
             }
-            if (!AllWordsValid(words))
+            if (!AllWordsValid(wordCluePairs))
             {
                 throw new FormatException("Word list contained invalid characters");
             }
+
+            var words = wordCluePairs.Select(x => new Word(x.Word, x.Id)).ToList();
 
             var generations = new List<Generation>();
             var leastUnplacedWords = int.MaxValue;
@@ -58,13 +62,17 @@ namespace CrosswordGenerator
             if (cullIdenticals)
                 RemoveIdenticalGenerations(generations);
 
+            // Setup word numbers and clues here?
+
+            // Puzzle: Blocks, Unplaceable Words, Words with number & across & clue
+
             return generations;
         }
 
-        private static bool AllWordsValid(IEnumerable<Word> words)
+        private static bool AllWordsValid(IEnumerable<WordCluePair> wordCluePairs)
         {
             var regex = new Regex(@"[^A-Z]");
-            if (words.Any(word => regex.IsMatch(word.WordAsString) || string.IsNullOrWhiteSpace(word.WordAsString)))
+            if (wordCluePairs.Any(word => !regex.IsMatch(word.Word) || string.IsNullOrWhiteSpace(word.Word)))
             {
                 return false;
             }

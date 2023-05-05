@@ -1,4 +1,4 @@
-﻿namespace CrosswordGenerator
+﻿namespace CrosswordGenerator.Generator.Models
 {
     public class BlockCoordinates
     {

@@ -14,4 +14,8 @@
     <ProjectReference Include="..\CrosswordGenerator\CrosswordGenerator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

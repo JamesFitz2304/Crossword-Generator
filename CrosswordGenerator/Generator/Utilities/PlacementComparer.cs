@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using CrosswordGenerator.Generator.Models;
 
-namespace CrosswordGenerator
+namespace CrosswordGenerator.Generator.Utilities
 {
     public class PlacementComparer : IComparer<Placement>
     {

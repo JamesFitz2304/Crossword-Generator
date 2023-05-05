@@ -4,7 +4,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CrosswordGenerator;
+using CrosswordGenerator.GenerationManager;
+using CrosswordGenerator.Generator;
+using CrosswordGenerator.Generator.Models;
+using CrosswordGenerator.Models;
 
 namespace CrosswordWPF
 {
@@ -25,37 +28,38 @@ namespace CrosswordWPF
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            List<Word> words = new List<Word>();
-
+            var words = new List<WordCluePair>();
+            var x = 1;
             foreach (var input in WordInputs)
             {
                 if(input.WordBox.Text.Trim().Length > 0) 
-                    words.Add(new Word(input.WordBox.Text));
+                    words.Add(new WordCluePair(input.WordBox.Text, x));
+                x++;
             }
 
             if (!words.Any())
             {
-                words = new List<Word>()
+                words = new List<WordCluePair>()
                 {
-                        new Word("Dog"),
-                        new Word("Cat"),
-                        new Word("Chicken"),
-                        new Word("Cow"),
-                        new Word("Monkey"),
-                        new Word("Salmon"),
-                        new Word("Goat"),
-                        new Word("Worm"),
-                        new Word("Wasp"),
-                        new Word("Bee"),
-                        new Word("Ostrich"),
-                        new Word("Parrot"),
-                        new Word("Frog"),
-                        new Word("Skunk"),
-                        new Word("Tiger"),
-                        new Word("Rabbit"),
-                        new Word("Bat"),
-                        new Word("Antelope"),
-                        new Word("Tortoise")
+                        new WordCluePair("Dog",1),
+                        new WordCluePair("Cat",2),
+                        new WordCluePair("Chicken", 3),
+                        new WordCluePair("Cow", 4),
+                        new WordCluePair("Monkey", 5),
+                        new WordCluePair("Salmon", 5),
+                        new WordCluePair("Goat", 6),
+                        new WordCluePair("Worm", 7),
+                        new WordCluePair("Wasp", 8),
+                        new WordCluePair("Bee", 9),
+                        new WordCluePair("Ostrich", 10),
+                        new WordCluePair("Parrot", 11),
+                        new WordCluePair("Frog", 12),
+                        new WordCluePair("Skunk", 13),
+                        new WordCluePair("Tiger", 14),
+                        new WordCluePair("Rabbit", 15),
+                        new WordCluePair("Bat", 16),
+                        new WordCluePair("Antelope", 17),
+                        new WordCluePair("Tortoise", 18)
                     };
             }
 

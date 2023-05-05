@@ -1,15 +1,17 @@
-﻿using CrosswordGenerator.Interfaces;
+﻿using CrosswordGenerator.Generator.Interfaces;
+using CrosswordGenerator.Generator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CrosswordGenerator.GenerationManager;
+using CrosswordGenerator.Generator.Utilities;
 
-namespace CrosswordGenerator
+namespace CrosswordGenerator.Generator
 {
     public class Generator : IGenerator
     {
         public Generation Generate(IList<Word> words)
         {
-
             var unplacedWords = words.ToList();
             var firstWord = words.OrderByDescending(w => w.WordLength).First();
             Block[,] blocks = new Block[firstWord.WordLength, 1];

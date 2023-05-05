@@ -1,4 +1,4 @@
-﻿namespace CrosswordGenerator
+﻿namespace CrosswordGenerator.Generator.Models
 {
     public class Placement
     {
@@ -10,7 +10,7 @@
         public Placement(Word word)
         {
             Coordinates = new BlockCoordinates[word.WordLength];
-            this.Word = word;
+            Word = word;
         }
     }
 }

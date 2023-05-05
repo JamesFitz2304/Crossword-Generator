@@ -1,5 +1,6 @@
-using CrosswordGenerator;
-using CrosswordGenerator.Interfaces;
+using CrosswordGenerator.GenerationManager;
+using CrosswordGenerator.Generator.Interfaces;
+using CrosswordGenerator.Generator.Models;
 using Moq;
 using System.Diagnostics;
 

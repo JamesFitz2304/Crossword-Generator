@@ -1,4 +1,5 @@
-using CrosswordGenerator;
+using CrosswordGenerator.GenerationManager;
+using CrosswordGenerator.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrosswordAPI.Controllers
@@ -17,10 +18,10 @@ namespace CrosswordAPI.Controllers
             _generationManager = generationManager;
         }
 
-        [HttpGet(Name = "GenerateCrosswords")]
-        public IEnumerable<Generation>? Get(IEnumerable<string> wordStrings)
+        [HttpGet]
+        public IEnumerable<Generation>? GenerateCrosswords(IList<WordCluePair> wordCluePairs)
         {
-            return _generationManager.GenerateCrosswords(wordStrings);
+            return _generationManager.GenerateCrosswords(wordCluePairs);
         }
     }
 }

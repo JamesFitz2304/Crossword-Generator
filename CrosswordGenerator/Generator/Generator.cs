@@ -262,7 +262,6 @@ namespace CrosswordGenerator.Generator
             {
                 blocks[letter.Coordinates.ArrayX, letter.Coordinates.ArrayY] = new Block(letter);
             }
-            placement.Word.Placed = true;
         }
 
         private static Block[,] ExpandCrosswordSpace(ref Block[,] blocks, Placement placement)

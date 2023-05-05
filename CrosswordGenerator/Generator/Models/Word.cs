@@ -22,10 +22,6 @@ namespace CrosswordGenerator.Generator.Models
 
         public Letter[] Letters { get; }
 
-        public bool Placed { get; set; } = false;
-
-        public string WordAsString => new string(Letters.Select(x => x.Character).ToArray());
-
     }
 
 }

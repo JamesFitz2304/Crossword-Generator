@@ -6,12 +6,12 @@ namespace CrosswordGenerator.GenerationManager
 {
     public class Generation
     {
-        public Block[,] Blocks;
+        public LetterBlock[,] Blocks;
         public readonly IList<Word> Words;
 
         public int NumberOfUnplacedWords => Words.Count(word => !word.Placed);
 
-        public Generation(Block[,] blocks, IList<Word> words)
+        public Generation(LetterBlock[,] blocks, IList<Word> words)
         {
             Blocks = blocks;
             Words = words;

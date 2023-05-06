@@ -97,13 +97,13 @@ namespace CrosswordGeneratorTests
         private readonly Block[,] _blocks1 = new Block[,]
         {
             {
-                new(new Letter('A')), new(new Letter('B'))
+                new(new LetterBlock('A')), new(new LetterBlock('B'))
             },
             {
                 null!, null!
             },
             {
-                new(new Letter('C')), new(new Letter('D'))
+                new(new LetterBlock('C')), new(new LetterBlock('D'))
             }
 
         };
@@ -111,13 +111,13 @@ namespace CrosswordGeneratorTests
         private readonly Block[,] _blocks2 = new Block[,]
         {
             {
-                new(new Letter('E')), new(new Letter('F'))
+                new(new LetterBlock('E')), new(new LetterBlock('F'))
             },
             {
                 null!, null!
             },
             {
-                new(new Letter('G')), new(new Letter('H'))
+                new(new LetterBlock('G')), new(new LetterBlock('H'))
             }
 
         };

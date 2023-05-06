@@ -2,15 +2,16 @@
 {
     public class Placement
     {
-        public BlockCoordinates[] Coordinates;
-        public Word Word;
+        public LetterBlock[] LetterBlocks;
         public Expansion Expansion = new Expansion();
+        public Word Word;
         public int NewLetters = 0;
 
         public Placement(Word word)
         {
-            Coordinates = new BlockCoordinates[word.WordLength];
+            LetterBlocks = new LetterBlock[word.WordLength];
             Word = word;
         }
+
     }
 }

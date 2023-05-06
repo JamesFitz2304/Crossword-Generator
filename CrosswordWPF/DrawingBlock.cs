@@ -17,7 +17,7 @@ namespace CrosswordWPF
 
         public string Text => _textBlock.Text;
 
-        public DrawingBlock(Letter letter, int x, int y)
+        public DrawingBlock(LetterBlock letterBlock, int x, int y)
         {
             Grid = new Grid();
             Grid.SetRow(Grid, y);
@@ -37,7 +37,7 @@ namespace CrosswordWPF
             Grid.Children.Add(_foreground);
             _textBlock = new TextBlock
             {
-                Text = letter.Character.ToString(),
+                Text = letterBlock.Character.ToString(),
                 Foreground = new SolidColorBrush(Colors.Black)
             };
             _foreground.Child = _textBlock;

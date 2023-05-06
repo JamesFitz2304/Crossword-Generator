@@ -48,8 +48,8 @@ namespace CrosswordWPF
                 for (int x = 0; x < generation.Blocks.GetLength(1); x++)
                 {
                     if (generation.Blocks[y, x] == null) continue;
-                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[y, x].Letter, x, y);
-                    drawingBlocks[x, y] = drawingBlock;
+                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[y, x], x, y);
+                    drawingBlocks[y, x] = drawingBlock;
                     CrosswordGrid.Children.Add(drawingBlock.Grid);
                 }
             }
@@ -82,7 +82,7 @@ namespace CrosswordWPF
             {
                 for (int x = 0; x < drawingBlocks.GetLength(1); x++)
                 {
-                    DrawingBlock drawingBlock = drawingBlocks[x, y];
+                    DrawingBlock drawingBlock = drawingBlocks[y, x];
                     drawingBlock.BlockSize = BaseSize * SizeFactor;
                 }
             }

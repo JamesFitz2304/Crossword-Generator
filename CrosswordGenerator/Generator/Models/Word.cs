@@ -7,27 +7,21 @@ namespace CrosswordGenerator.Generator.Models
     {
         public Word(string word, int id = 0)
         {
-            word = word.ToUpper();
-            Letters = new Letter[word.Length];
-            for (var i = 0; i < word.Length; i++)
-            {
-                Letters[i] = new Letter(word[i]);
-            }
-
+            WordString = word.ToUpper();
             Id = id;
         }
+
+        public string WordString { get; set; }
 
         public int Id { get; }
 
         public bool Placed { get; set; }
 
-        public int WordLength => Letters.Length;
+        public int WordLength => WordString.Length;
 
-        public Letter[] Letters { get; }
+        public char[] WordAsCharArray => WordString.ToCharArray();
 
-        public string WordAsString => new string(Letters.Select(l => l.Character).ToArray());
-
-        public string LetterCoordinates => string.Join(", ", Letters.Select(l => $"({l.Coordinates.X}, {l.Coordinates.Y})"));
+        //public string LetterCoordinates => string.Join(", ", Letters.Select(l => $"({l.Coordinates.X}, {l.Coordinates.Y})"));
 
 
 

@@ -64,7 +64,7 @@ namespace CrosswordGenerator.GenerationManager
 
             // Setup word numbers and clues here?
 
-            // Puzzle: Blocks, Unplaceable Words, Words with number & across & clue
+            // Puzzle: LetterBlocks, Unplaceable Words, Words with number & across & clue
 
             return generations;
         }
@@ -85,9 +85,9 @@ namespace CrosswordGenerator.GenerationManager
             {
                 for (var y = x + 1; y < generations.Count; y++)
                 {
-                    var xBlocks = generations[x].Blocks;
-                    var yBlocks = generations[y].Blocks;
-                    if (BlocksAreIdentical(xBlocks, yBlocks))
+                    var xLetterBlocks = generations[x].Blocks;
+                    var yLetterBlocks = generations[y].Blocks;
+                    if (BlocksAreIdentical(xLetterBlocks, yLetterBlocks))
                     {
                         generations.RemoveAt(y);
                         y--;
@@ -117,17 +117,17 @@ namespace CrosswordGenerator.GenerationManager
             return shuffled;
         }
 
-        private static bool BlocksAreIdentical(Block[,] blocks1, Block[,] blocks2)
+        private static bool BlocksAreIdentical(LetterBlock[,] LetterBlocks1, LetterBlock[,] LetterBlocks2)
         {
-            if (Enumerable.Range(0, blocks1.Rank).Any(dimension => blocks1.GetLength(dimension) != blocks2.GetLength(dimension)))
+            if (Enumerable.Range(0, LetterBlocks1.Rank).Any(dimension => LetterBlocks1.GetLength(dimension) != LetterBlocks2.GetLength(dimension)))
             {
                 return false;
             }
 
-            var flatBlocks1 = blocks1.Cast<Block>().Select(b => b?.Letter.Character);
-            var flatBlocks2 = blocks2.Cast<Block>().Select(b => b?.Letter.Character);
+            var flatLetterBlocks1 = LetterBlocks1.Cast<LetterBlock>().Select(b => b?.Character);
+            var flatLetterBlocks2 = LetterBlocks2.Cast<LetterBlock>().Select(b => b?.Character);
 
-            return flatBlocks1.SequenceEqual(flatBlocks2);
+            return flatLetterBlocks1.SequenceEqual(flatLetterBlocks2);
         }
     }
 }

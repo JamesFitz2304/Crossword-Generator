@@ -7,4 +7,6 @@ CrosswordGeneratorTests/obj/
 CrosswordGeneratorTests/packages/
 CrosswordWPF/obj/
 CrosswordWPF/bin/Debug
-CrosswordWPF_OLD
+CrosswordAPI/bin/
+CrosswordAPI/obj/
+/CrosswordAPI/bin/Debug/net6.0/CrosswordAPI.dll

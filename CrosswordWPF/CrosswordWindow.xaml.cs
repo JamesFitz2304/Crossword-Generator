@@ -39,16 +39,16 @@ namespace CrosswordWPF
                 Background = new SolidColorBrush(backgroundColor)
             };
             CrosswordGrid.Children.Add(background);
-            Grid.SetRowSpan(background, drawingBlocks.GetLength(1));
-            Grid.SetColumnSpan(background, drawingBlocks.GetLength(0));
+            Grid.SetRowSpan(background, drawingBlocks.GetLength(0));
+            Grid.SetColumnSpan(background, drawingBlocks.GetLength(1));
 
             GenerateGridRowsAndColumns();
-            for (int y = 0; y < generation.Blocks.GetLength(1); y++)
+            for (int y = 0; y < generation.Blocks.GetLength(0); y++)
             {
-                for (int x = 0; x < generation.Blocks.GetLength(0); x++)
+                for (int x = 0; x < generation.Blocks.GetLength(1); x++)
                 {
-                    if (generation.Blocks[x, y] == null) continue;
-                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[x, y].Letter, x, y);
+                    if (generation.Blocks[y, x] == null) continue;
+                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[y, x].Letter, x, y);
                     drawingBlocks[x, y] = drawingBlock;
                     CrosswordGrid.Children.Add(drawingBlock.Grid);
                 }
@@ -63,13 +63,13 @@ namespace CrosswordWPF
             CrosswordGrid.RowDefinitions.Clear();
             CrosswordGrid.ColumnDefinitions.Clear();
 
-            for (int i = 0; i < drawingBlocks.GetLength(0); i++)
+            for (int i = 0; i < drawingBlocks.GetLength(1); i++)
             {
                 ColumnDefinition column = new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) };
                 CrosswordGrid.ColumnDefinitions.Add(column);
             }
 
-            for (int i = 0; i < drawingBlocks.GetLength(1); i++)
+            for (int i = 0; i < drawingBlocks.GetLength(0); i++)
             {
                 RowDefinition row = new RowDefinition { Height = new GridLength(1, GridUnitType.Star) };
                 CrosswordGrid.RowDefinitions.Add(row);
@@ -78,9 +78,9 @@ namespace CrosswordWPF
 
         private void ResizeBoard()
         {
-            for (int y = 0; y < drawingBlocks.GetLength(1); y++)
+            for (int y = 0; y < drawingBlocks.GetLength(0); y++)
             {
-                for (int x = 0; x < drawingBlocks.GetLength(0); x++)
+                for (int x = 0; x < drawingBlocks.GetLength(1); x++)
                 {
                     DrawingBlock drawingBlock = drawingBlocks[x, y];
                     drawingBlock.BlockSize = BaseSize * SizeFactor;

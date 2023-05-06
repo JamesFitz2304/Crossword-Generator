@@ -7,14 +7,14 @@ namespace CrosswordGenerator.GenerationManager
     public class Generation
     {
         public Block[,] Blocks;
-        private IList<Word> _words;
+        public readonly IList<Word> Words;
 
-        public int NumberOfUnplacedWords => _words.Count(word => word.Placed);
+        public int NumberOfUnplacedWords => Words.Count(word => !word.Placed);
 
         public Generation(Block[,] blocks, IList<Word> words)
         {
             Blocks = blocks;
-            _words = words;
+            Words = words;
         }
     }
 }

@@ -2,11 +2,11 @@
 {
     public class Block
     {
-        public Letter Letter;
+        public Letter Letter { get; }
 
         public Block(Letter letter)
         {
-            this.Letter = letter;
+            Letter = letter;
         }
     }
 }

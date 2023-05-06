@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace CrosswordGenerator.Generator.Models
 {
@@ -24,7 +25,11 @@ namespace CrosswordGenerator.Generator.Models
 
         public Letter[] Letters { get; }
 
-        public BlockCoordinates StartBlock { get; set; }
+        public string WordAsString => new string(Letters.Select(l => l.Character).ToArray());
+
+        public string LetterCoordinates => string.Join(", ", Letters.Select(l => $"({l.Coordinates.X}, {l.Coordinates.Y})"));
+
+
 
     }
 

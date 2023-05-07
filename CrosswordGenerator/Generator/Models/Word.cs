@@ -21,9 +21,6 @@ namespace CrosswordGenerator.Generator.Models
 
         public char[] WordAsCharArray => WordString.ToCharArray();
 
-        //public string LetterCoordinates => string.Join(", ", Letters.Select(l => $"({l.Coordinates.X}, {l.Coordinates.Y})"));
-
-
 
     }
 

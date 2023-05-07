@@ -11,7 +11,7 @@ namespace CrosswordGenerator.GenerationManager
 
         public int NumberOfUnplacedWords => Words.Count(word => !word.Placed);
 
-        public Generation(LetterBlock[,] blocks, IList<Word> words)
+        public Generation(LetterBlock[,] blocks, IList<Word> words, List<PlacedWord> placedWords)
         {
             Blocks = blocks;
             Words = words;

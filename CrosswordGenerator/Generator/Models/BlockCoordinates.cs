@@ -1,23 +1,21 @@
-﻿namespace CrosswordGenerator.Generator.Models
+﻿using System.Drawing;
+
+namespace CrosswordGenerator.Generator.Models
 {
     public class BlockCoordinates
     {
         public BlockCoordinates(int x, int y)
         {
-            X = x;
-            Y = y;
+            Coordinates = new Point(x, y);
         }
 
-        public int Y { get; set; }
-        public int X { get; set; }
+        public Point Coordinates;
 
-        public int ArrayY => Y - 1;
-        public int ArrayX => X - 1;
+        public Point ArrayCoordinates => new Point(Coordinates.X-1, Coordinates.Y-1);
 
         public void ShiftCoordinates(int x, int y)
         {
-            X += x;
-            Y += y;
+            Coordinates = new Point(Coordinates.X+x, Coordinates.Y+y);
         }
     }
 }

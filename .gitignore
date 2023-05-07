@@ -9,4 +9,4 @@ CrosswordWPF/obj/
 CrosswordWPF/bin/Debug
 CrosswordAPI/bin/
 CrosswordAPI/obj/
-/CrosswordAPI/bin/Debug/net6.0/CrosswordAPI.dll
+CrosswordAPI/bin/Debug/net6.0/CrosswordAPI.dll

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CrosswordGenerator.Generator.Models;
 
 namespace CrosswordGenerator.GenerationManager
@@ -11,7 +10,7 @@ namespace CrosswordGenerator.GenerationManager
         public readonly IList<PlacedWord> PlacedWords;
         public readonly IList<string> UnplacedWords;
 
-        public Generation(LetterBlock[,] blocks, IList<Word> words, IList<PlacedWord> placedWords, IList<string> unplacedWords)
+        public Generation(LetterBlock[,] blocks, IList<PlacedWord> placedWords, IList<string> unplacedWords)
         {
             Blocks = blocks;
             PlacedWords = placedWords;

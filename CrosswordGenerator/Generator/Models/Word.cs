@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace CrosswordGenerator.Generator.Models
+﻿namespace CrosswordGenerator.Generator.Models
 {
     public class Word
     {
@@ -11,7 +8,7 @@ namespace CrosswordGenerator.Generator.Models
             Id = id;
         }
 
-        public string WordString { get; set; }
+        public string WordString { get; }
 
         public int Id { get; }
 

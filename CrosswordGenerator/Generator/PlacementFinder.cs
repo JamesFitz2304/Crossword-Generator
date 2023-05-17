@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CrosswordGenerator.Generator.Interfaces;
 using CrosswordGenerator.Generator.Models;
 
 namespace CrosswordGenerator.Generator
@@ -30,7 +31,6 @@ namespace CrosswordGenerator.Generator
                     }
                 }
             }
-            //add each new possible placement to list
             return placements;
         }
 
@@ -65,6 +65,7 @@ namespace CrosswordGenerator.Generator
             }
 
             currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
+
             for (var i = letterIndex + 1; i <= word.WordLength; i++) //check all succeeding letters
             {
                 currentBlock.Coordinates.X++;

@@ -108,15 +108,15 @@ namespace CrosswordGenerator.GenerationManager
             }
         }
 
-        private static bool BlocksAreIdentical(LetterBlock[,] LetterBlocks1, LetterBlock[,] LetterBlocks2)
+        private static bool BlocksAreIdentical(LetterBlock[,] letterBlocks1, LetterBlock[,] letterBlocks2)
         {
-            if (Enumerable.Range(0, LetterBlocks1.Rank).Any(dimension => LetterBlocks1.GetLength(dimension) != LetterBlocks2.GetLength(dimension)))
+            if (Enumerable.Range(0, letterBlocks1.Rank).Any(dimension => letterBlocks1.GetLength(dimension) != letterBlocks2.GetLength(dimension)))
             {
                 return false;
             }
 
-            var flatLetterBlocks1 = LetterBlocks1.Cast<LetterBlock>().Select(b => b?.Character);
-            var flatLetterBlocks2 = LetterBlocks2.Cast<LetterBlock>().Select(b => b?.Character);
+            var flatLetterBlocks1 = letterBlocks1.Cast<LetterBlock>().Select(b => b?.Character);
+            var flatLetterBlocks2 = letterBlocks2.Cast<LetterBlock>().Select(b => b?.Character);
 
             return flatLetterBlocks1.SequenceEqual(flatLetterBlocks2);
         }

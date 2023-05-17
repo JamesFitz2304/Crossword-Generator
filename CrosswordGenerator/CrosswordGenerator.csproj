@@ -8,4 +8,8 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Generator\Utilities\" />
+  </ItemGroup>
+
 </Project>

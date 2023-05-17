@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CrosswordGenerator.Generator.Models;
 
-namespace CrosswordGenerator.Generator
+namespace CrosswordGenerator.Generator.Interfaces
 {
     public interface IPlacementFinder
     {

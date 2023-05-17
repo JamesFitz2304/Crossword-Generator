@@ -9,7 +9,12 @@ using CrosswordGenerator.Models;
 
 namespace CrosswordGenerator.GenerationManager
 {
-    public class GenerationManager
+    public interface IGenerationManager
+    {
+        IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 100, int timeout = 3000, bool cullIdenticals = true);
+    }
+
+    public class GenerationManager : IGenerationManager
     {
         private readonly IGenerator _generator;
         private const int DefaultMaxAttempts = 100;

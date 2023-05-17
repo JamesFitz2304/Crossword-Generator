@@ -122,6 +122,18 @@ namespace CrosswordGeneratorTests
 
         };
 
+        private PlacementFinder _realPlacementFinder;
+        private Generator _realGenerator;
+        private GenerationManager _realManager;
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
+        {
+            _realPlacementFinder = new PlacementFinder();
+            _realGenerator = new Generator(_realPlacementFinder);
+            _realManager = new GenerationManager(_realGenerator);
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -282,7 +294,8 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenGivenAListOfWordsThatCanAllBePlaced_ShouldGenerateCrosswordWithAllWordsPlaced()
         {
             // Arrange
-            var realGenerator = new Generator();
+            var placementFinder = new PlacementFinder();
+            var realGenerator = new Generator(placementFinder);
             var realManager = new GenerationManager(realGenerator);
 
             // Act
@@ -297,8 +310,6 @@ namespace CrosswordGeneratorTests
         public void GenerateCrosswords_WhenOneWordCanNotBePlaced_ShouldGenerateCrosswordWithOneWordUnplaced()
         {
             // Arrange
-            var realGenerator = new Generator();
-            var realManager = new GenerationManager(realGenerator);
             var words = new List<WordCluePair>()
             {
                 new("Moose"),
@@ -307,7 +318,7 @@ namespace CrosswordGeneratorTests
             };
 
             // Act
-            var result = realManager.GenerateCrosswords(words, timeout: int.MaxValue);
+            var result = _realManager.GenerateCrosswords(words, timeout: int.MaxValue);
 
             // Assert
             var unplacedWords = result.First().NumberOfUnplacedWords;
@@ -336,8 +347,6 @@ namespace CrosswordGeneratorTests
             var watch = new Stopwatch();
 
             // Arrange
-            var realGenerator = new Generator();
-            var realManager = new GenerationManager(realGenerator);
             double averageSuccess = 0;
             double averageTime = 0;
             const int timesToRepeat = 2000;
@@ -355,7 +364,7 @@ namespace CrosswordGeneratorTests
 
                 watch.Start();
 
-                var result = realManager.GenerateCrosswords(words, timeout: int.MaxValue, cullIdenticals: false).ToList();
+                var result = _realManager.GenerateCrosswords(words, timeout: int.MaxValue, cullIdenticals: false).ToList();
 
                 watch.Stop();
                 averageTime += watch.ElapsedMilliseconds;

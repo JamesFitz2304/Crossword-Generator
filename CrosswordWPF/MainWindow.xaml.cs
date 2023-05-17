@@ -18,9 +18,11 @@ namespace CrosswordWPF
     {
 
         List<WordInput> WordInputs = new List<WordInput>();
+        private readonly IGenerationManager _manager;
 
-        public MainWindow()
+        public MainWindow(IGenerationManager manager)
         {
+            _manager = manager;
             InitializeComponent();
             WordInputs.Add(new WordInput(boxWord1, boxClue1));
             WordInputs.Add(new WordInput(boxWord2, boxClue2));
@@ -63,13 +65,11 @@ namespace CrosswordWPF
                     };
             }
 
-            GenerationManager manager = new GenerationManager(new Generator());
-
             IList<Generation> generations;
 
             try
             {
-                generations = manager.GenerateCrosswords(words, timeout: int.MaxValue).ToList();
+                generations = _manager.GenerateCrosswords(words, timeout: int.MaxValue).ToList();
             }
             catch (FormatException)
             {

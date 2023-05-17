@@ -12,7 +12,7 @@ namespace CrosswordGenerator.GenerationManager
     public class GenerationManager
     {
         private readonly IGenerator _generator;
-        private const int DefaultAttempts = 8;
+        private const int DefaultMaxAttempts = 100;
         private const int MaxAllPlaced = 3;
 
         public GenerationManager(IGenerator generator)
@@ -20,7 +20,7 @@ namespace CrosswordGenerator.GenerationManager
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int attempts = DefaultAttempts, int timeout = 3000, bool cullIdenticals = true)
+        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = DefaultMaxAttempts, int timeout = 3000, bool cullIdenticals = true)
         {
             if (wordCluePairs.Count < 2)
             {
@@ -31,7 +31,7 @@ namespace CrosswordGenerator.GenerationManager
                 throw new FormatException("Word list contained invalid characters");
             }
 
-            var words = wordCluePairs.Select(x => new Word(x.Word, x.Id)).ToList();
+            var words = wordCluePairs.Select(x => new Word(x.Word, x.Id)).OrderByDescending(x => x.WordLength).ToList();
 
             var generations = new List<Generation>();
             var leastUnplacedWords = int.MaxValue;
@@ -39,14 +39,21 @@ namespace CrosswordGenerator.GenerationManager
             var watch = new Stopwatch();
             watch.Start();
 
-            for (var i = 0; i < attempts; i++)
+            for (var i = 0; i < maxAttempts; i++)
             {
                 if (watch.ElapsedMilliseconds > timeout) break;
-                var shuffledWords = ShuffleWords(words);
-                var generation = _generator.Generate(shuffledWords);
+                var generation = _generator.Generate(words);
+
+                if (generation.SizeRatio < 0.8)
+                {
+                    continue;
+                }
+
+                if (generation.NumberOfUnplacedWords > leastUnplacedWords) break;
 
                 if (generation.NumberOfUnplacedWords < leastUnplacedWords)
                 {
+                    generations.Clear();
                     leastUnplacedWords = generation.NumberOfUnplacedWords;
                 }
 
@@ -96,27 +103,6 @@ namespace CrosswordGenerator.GenerationManager
             }
         }
 
-        private static IList<Word> ShuffleWords(IEnumerable<Word> words)
-        {
-            var shuffled = words.OrderByDescending(x => x.WordLength).ToList();
-
-            // always start with the longest word
-            const int numberToSort = 1;
-            var longest = shuffled.Take(numberToSort).ToList();
-            shuffled.RemoveRange(0, numberToSort);
-
-            var random = new Random();
-            var n = shuffled.Count;
-            while (n > 1)
-            {
-                n--;
-                var k = random.Next(n + 1);
-                (shuffled[k], shuffled[n]) = (shuffled[n], shuffled[k]);
-            }
-            shuffled.InsertRange(0, longest);
-            return shuffled;
-        }
-
         private static bool BlocksAreIdentical(LetterBlock[,] LetterBlocks1, LetterBlock[,] LetterBlocks2)
         {
             if (Enumerable.Range(0, LetterBlocks1.Rank).Any(dimension => LetterBlocks1.GetLength(dimension) != LetterBlocks2.GetLength(dimension)))
@@ -129,5 +115,6 @@ namespace CrosswordGenerator.GenerationManager
 
             return flatLetterBlocks1.SequenceEqual(flatLetterBlocks2);
         }
+
     }
 }

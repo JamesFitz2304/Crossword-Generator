@@ -19,7 +19,7 @@ namespace CrosswordGenerator.Generator.Models
 
         public int WordLength => WordString.Length;
 
-        public char[] WordAsCharArray => WordString.ToCharArray();
+        public char[] CharArray => WordString.ToCharArray();
 
 
     }

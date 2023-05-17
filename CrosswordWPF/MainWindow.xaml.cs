@@ -69,7 +69,7 @@ namespace CrosswordWPF
 
             try
             {
-                generations = manager.GenerateCrosswords(words, attempts:100, timeout: int.MaxValue).ToList();
+                generations = manager.GenerateCrosswords(words, timeout: int.MaxValue).ToList();
             }
             catch (FormatException)
             {
@@ -77,11 +77,24 @@ namespace CrosswordWPF
                 return;
             }
 
-            CrosswordWindow crossword = new CrosswordWindow(generations);
+            var generationsSorted = generations
+                .OrderBy(g => g.BlocksSize)
+                .ThenByDescending(g => g.SizeRatio);
+
+            var generation = generationsSorted.First();
+
+            CrosswordWindow crossword = new CrosswordWindow(generation);
 
             if (generations.Any())
             {
                 crossword.Show();
+                //var message = generation.PlacedWords.Aggregate("Word Starts\n", (current, placedWord) => current + (placedWord.Word + ' ' + placedWord.FirstLetterCoordinates + "\n"));
+
+                //message += "\nUnplaced Words\n";
+
+                //message = generation.UnplacedWords.Aggregate(message, (current, unplaced) => current + (unplaced + "\n"));
+
+                //MessageBox.Show(message);
             }
         }
 

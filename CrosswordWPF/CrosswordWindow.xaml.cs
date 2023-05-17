@@ -21,15 +21,14 @@ namespace CrosswordWPF
         private double SizeFactor = 1;
         private double BaseSize = 30;
         public bool CrosswordFailed = false;
-        private Color backgroundColor = Colors.Black;
+        private Color backgroundColor = Colors.DarkSlateGray;
         private IList<Generation> _generations;
-        public CrosswordWindow(IList<Generation> generations)
+        public CrosswordWindow(Generation generation)
         {
             InitializeComponent();
-            _generations = generations;
-            var firstGen = generations.First();
-            drawingBlocks = new DrawingBlock[firstGen.Blocks.GetLength(0), firstGen.Blocks.GetLength(1)];
-            DrawCrossword(firstGen);
+            drawingBlocks = new DrawingBlock[generation.Blocks.GetLength(0), generation.Blocks.GetLength(1)];
+            DrawCrossword(generation);
+
         }
         private void DrawCrossword(Generation generation)
         {

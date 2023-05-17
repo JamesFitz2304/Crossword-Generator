@@ -118,3 +118,7 @@ namespace CrosswordGenerator.GenerationManager
 
     }
 }
+
+//ToDo: Create puzzle model with all completed puzzle fields. Should include hints, placement info etc
+//ToDo: Convert from using array of blocks to a Dictionary<point, block>
+//ToDo: Extract out placement finding to PlacementFinder?

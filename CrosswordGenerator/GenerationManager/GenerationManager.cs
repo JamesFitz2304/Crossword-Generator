@@ -12,21 +12,21 @@ namespace CrosswordGenerator.GenerationManager
 {
     public interface IGenerationManager
     {
-        IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 100, int timeout = 3000, bool cullIdenticals = true);
+        IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 35,
+            int maxGenerations = 15, int timeout = 3000 , bool cullIdenticals = true);
     }
 
     public class GenerationManager : IGenerationManager
     {
         private readonly IGenerator _generator;
-        private const int DefaultMaxAttempts = 100;
-        private const int MaxAllPlaced = 3;
 
         public GenerationManager(IGenerator generator)
         {
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = DefaultMaxAttempts, int timeout = 3000, bool cullIdenticals = true)
+        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 35,
+            int maxGenerations = 15, int timeout = 3000, bool cullIdenticals = true)
         {
             if (wordCluePairs.Count < 2)
             {
@@ -55,7 +55,7 @@ namespace CrosswordGenerator.GenerationManager
                     continue;
                 }
 
-                if (generation.NumberOfUnplacedWords > leastUnplacedWords) break;
+                if (generation.NumberOfUnplacedWords > leastUnplacedWords) continue;
 
                 if (generation.NumberOfUnplacedWords < leastUnplacedWords)
                 {
@@ -66,7 +66,7 @@ namespace CrosswordGenerator.GenerationManager
                 generations.Add(generation);
 
 
-                if (generations.Count(x => x.NumberOfUnplacedWords == 0) >= MaxAllPlaced)
+                if (generations.Count(x => x.NumberOfUnplacedWords == 0) >= maxGenerations)
                 {
                     break;
                 }

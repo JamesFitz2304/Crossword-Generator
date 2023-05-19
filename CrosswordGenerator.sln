@@ -15,8 +15,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrosswordWPF", "CrosswordWPF\CrosswordWPF.csproj", "{6DDD2890-70C6-49B3-8A2D-61FCBD26F258}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{07E99E18-8A27-495A-B651-34CDA3E39361}"
+	ProjectSection(SolutionItems) = preProject
+		Test Results.txt = Test Results.txt
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrosswordAPI", "CrosswordAPI\CrosswordAPI.csproj", "{1F5794F1-C404-47A5-AF8B-BCD4107C6254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrosswordAPI", "CrosswordAPI\CrosswordAPI.csproj", "{1F5794F1-C404-47A5-AF8B-BCD4107C6254}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

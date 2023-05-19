@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Annotations;
@@ -9,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using CrosswordGenerator.GenerationManager;
+using Color = System.Windows.Media.Color;
+using Point = System.Drawing.Point;
 
 namespace CrosswordWPF
 {
@@ -26,7 +29,7 @@ namespace CrosswordWPF
         public CrosswordWindow(Generation generation)
         {
             InitializeComponent();
-            drawingBlocks = new DrawingBlock[generation.Blocks.GetLength(0), generation.Blocks.GetLength(1)];
+            drawingBlocks = new DrawingBlock[generation.YSize, generation.XSize];
             DrawCrossword(generation);
 
         }
@@ -42,13 +45,14 @@ namespace CrosswordWPF
             Grid.SetColumnSpan(background, drawingBlocks.GetLength(1));
 
             GenerateGridRowsAndColumns();
-            for (int y = 0; y < generation.Blocks.GetLength(0); y++)
+            for (int y = 1; y <= generation.YSize; y++)
             {
-                for (int x = 0; x < generation.Blocks.GetLength(1); x++)
+                for (int x = 1; x <= generation.XSize; x++)
                 {
-                    if (generation.Blocks[y, x] == null) continue;
-                    DrawingBlock drawingBlock = new DrawingBlock(generation.Blocks[y, x], x, y);
-                    drawingBlocks[y, x] = drawingBlock;
+                    var point = new Point(x, y);
+                    if (!generation.Blocks.TryGetValue(point, out var block)) continue;
+                    DrawingBlock drawingBlock = new DrawingBlock(block, x-1, y-1);
+                    drawingBlocks[y-1, x-1] = drawingBlock;
                     CrosswordGrid.Children.Add(drawingBlock.Grid);
                 }
             }

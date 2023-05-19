@@ -4,6 +4,11 @@
     &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ca87797b_002D7191_002D4738_002D9b65_002D56143be18929/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EfficiencyTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests.EfficiencyTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ceabb688_002De14c_002D4570_002D965d_002D9154ca2d60ae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GenerateCrosswords_WhenOneWordCanNotBePlaced_ShouldGenerateCrosswordWithOneWordUnplaced" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::458C4FE4-75EA-41C9-B39B-A391F776900A::net6.0::CrosswordGeneratorTests.GenerationManagerTests&lt;/TestId&gt;&#xD;

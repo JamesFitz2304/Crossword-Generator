@@ -2,6 +2,7 @@
 using CrosswordGenerator.Generator.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CrosswordGenerator.GenerationManager;
 // ReSharper disable InvertIf
@@ -22,23 +23,25 @@ namespace CrosswordGenerator.Generator
             foreach (var word in words) word.Placed = false;
 
             var firstWord = words.First();
-            var blocks = new LetterBlock[1, firstWord.WordLength];
+
+            var blocksDict = new Dictionary<Point, LetterBlock>();
             var placedWords = new List<PlacedWord>();
 
-            PlaceFirstWord(ref blocks, firstWord, placedWords);
-            PlaceRestOfWords(ref blocks, words, placedWords);
+            PlaceFirstWord(blocksDict, firstWord, placedWords);
+            PlaceRestOfWords(blocksDict, words, placedWords);
 
             var unplacedWords = words.Where(w => !w.Placed).Select(w => w.WordString).ToList();
 
-            return new Generation(blocks, placedWords, unplacedWords);
+            return new Generation(blocksDict, placedWords, unplacedWords);
         }
 
-        private static void PlaceFirstWord(ref LetterBlock[,] blocks, Word word, ICollection<PlacedWord> placedWords)
+        private static void PlaceFirstWord(Dictionary<Point, LetterBlock> blocksDict, Word word,
+            ICollection<PlacedWord> placedWords)
         {
             var placement = new Placement(word, true);
             for (var i = 1; i <= word.WordLength; i++)
             {
-                var coordinates = new BlockCoordinates(i, 1);
+                var coordinates = new Point(i, 1);
                 var newBlock = new LetterBlock(word.CharArray[i - 1])
                 {
                     Coordinates = coordinates
@@ -47,10 +50,11 @@ namespace CrosswordGenerator.Generator
                 placement.LetterBlocks[i - 1] = newBlock;
             }
 
-            PlaceWordOnBoard(ref blocks, placement, placedWords);
+            PlaceWordOnBoard(blocksDict, placement, placedWords);
         }
 
-        private void PlaceRestOfWords(ref LetterBlock[,] blocks, IList<Word> words, ICollection<PlacedWord> placedWords)
+        private void PlaceRestOfWords(Dictionary<Point, LetterBlock> blocksDict, IList<Word> words,
+            ICollection<PlacedWord> placedWords)
         {
             while (true)
             {
@@ -59,7 +63,7 @@ namespace CrosswordGenerator.Generator
 
                 foreach (var word in unplacedWords)
                 {
-                    placements.AddRange(_placementFinder.FindWordPlacements(blocks, word));
+                    placements.AddRange(_placementFinder.FindWordPlacements(blocksDict, word));
                 }
 
                 if (!placements.Any())
@@ -74,7 +78,7 @@ namespace CrosswordGenerator.Generator
 
                 var bestPlacements = orderedPlacements.Take(3).ToList();
                 var randomPlacement = bestPlacements[new Random().Next(0, bestPlacements.Count-1)];
-                PlaceWordOnBoard(ref blocks, randomPlacement, placedWords);
+                PlaceWordOnBoard(blocksDict, randomPlacement, placedWords);
                 unplacedWords.Remove(randomPlacement.Word);
 
                 if (!unplacedWords.Any())
@@ -84,14 +88,15 @@ namespace CrosswordGenerator.Generator
             }
         }
 
-        private static void PlaceWordOnBoard(ref LetterBlock[,] blocks, Placement placement, ICollection<PlacedWord> placedWords)
+        private static void PlaceWordOnBoard(Dictionary<Point, LetterBlock> blocksDict, Placement placement,
+            ICollection<PlacedWord> placedWords)
         {
             if (placement.Expansion.TotalX != 0 || placement.Expansion.TotalY != 0)
-                ExpandCrosswordSpace(ref blocks, placement, placedWords);
+                ExpandCrosswordSpace(blocksDict, placement, placedWords);
 
             foreach (var block in placement.LetterBlocks)
             {
-                blocks[block.Coordinates.ArrayCoordinates.Y, block.Coordinates.ArrayCoordinates.X] = block;
+                blocksDict.TryAdd(block.Coordinates, block);
             }
 
             placement.Word.Placed = true;
@@ -105,17 +110,18 @@ namespace CrosswordGenerator.Generator
             );
         }
 
-        private static void ExpandCrosswordSpace(ref LetterBlock[,] blocks, Placement placement, IEnumerable<PlacedWord> placedWords)
+        private static void ExpandCrosswordSpace(Dictionary<Point, LetterBlock> blocksDict, Placement placement, IEnumerable<PlacedWord> placedWords)
         {
-            var newBlocks = new LetterBlock[blocks.GetLength(0) + Math.Abs(placement.Expansion.TotalY), blocks.GetLength(1) + Math.Abs(placement.Expansion.TotalX)];
+            var points = blocksDict.Keys
+                .OrderByDescending(point => point.Y)
+                .ThenByDescending(point => point.X);
 
-            for (var y = 0; y < blocks.GetLength(0); y++)
+            foreach (var point in points)
             {
-                for (var x = 0; x < blocks.GetLength(1); x++)
-                {
-                    blocks[y, x]?.Coordinates.ShiftCoordinates(placement.Expansion.Left, placement.Expansion.Up);
-                    newBlocks[y + placement.Expansion.Up, x + placement.Expansion.Left] = blocks[y, x];
-                }
+                var block = blocksDict[point];
+                block.Coordinates.Offset(placement.Expansion.Left, placement.Expansion.Up);
+                blocksDict.Remove(point);
+                blocksDict.Add(block.Coordinates, block);
             }
 
             if (placement.Expansion.Left > 0 || placement.Expansion.Up > 0)
@@ -125,8 +131,6 @@ namespace CrosswordGenerator.Generator
                     placedWord.ShiftFirstLetterCoordinates(placement.Expansion.Left, placement.Expansion.Up);
                 }
             }
-
-            blocks = newBlocks;
         }
     }
 }

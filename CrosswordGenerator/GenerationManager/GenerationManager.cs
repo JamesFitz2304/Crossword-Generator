@@ -3,6 +3,7 @@ using CrosswordGenerator.Generator.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CrosswordGenerator.Models;
@@ -72,7 +73,10 @@ namespace CrosswordGenerator.GenerationManager
             }
 
             if (cullIdenticals)
-                RemoveIdenticalGenerations(generations);
+            {
+                //ToDo: Uncomment
+                //RemoveIdenticalGenerations(generations);
+            }
 
             // Setup word numbers and clues here?
 
@@ -91,39 +95,41 @@ namespace CrosswordGenerator.GenerationManager
             return true;
         }
 
-        private static void RemoveIdenticalGenerations(IList<Generation> generations)
-        {
-            for (var x = 0; x < generations.Count - 1; x++)
-            {
-                for (var y = x + 1; y < generations.Count; y++)
-                {
-                    var xLetterBlocks = generations[x].Blocks;
-                    var yLetterBlocks = generations[y].Blocks;
-                    if (BlocksAreIdentical(xLetterBlocks, yLetterBlocks))
-                    {
-                        generations.RemoveAt(y);
-                        y--;
-                    }
-                }
-            }
-        }
+        //ToDo: Uncomment
+        //private static void RemoveIdenticalGenerations(IList<Generation> generations)
+        //{
+        //    for (var x = 0; x < generations.Count - 1; x++)
+        //    {
+        //        for (var y = x + 1; y < generations.Count; y++)
+        //        {
+        //            var xLetterBlocks = generations[x].Blocks;
+        //            var yLetterBlocks = generations[y].Blocks;
+        //            if (BlocksAreIdentical(xLetterBlocks, yLetterBlocks))
+        //            {
+        //                generations.RemoveAt(y);
+        //                y--;
+        //            }
+        //        }
+        //    }
+        //}
 
-        private static bool BlocksAreIdentical(LetterBlock[,] letterBlocks1, LetterBlock[,] letterBlocks2)
-        {
-            if (Enumerable.Range(0, letterBlocks1.Rank).Any(dimension => letterBlocks1.GetLength(dimension) != letterBlocks2.GetLength(dimension)))
-            {
-                return false;
-            }
 
-            var flatLetterBlocks1 = letterBlocks1.Cast<LetterBlock>().Select(b => b?.Character);
-            var flatLetterBlocks2 = letterBlocks2.Cast<LetterBlock>().Select(b => b?.Character);
+        //ToDo: Uncomment
+        //private static bool BlocksAreIdentical(Dictionary<Point, LetterBlock> letterBlocks1, Dictionary<Point, LetterBlock> letterBlocks2)
+        //{
+        //    if (Enumerable.Range(0, letterBlocks1.Rank).Any(dimension => letterBlocks1.GetLength(dimension) != letterBlocks2.GetLength(dimension)))
+        //    {
+        //        return false;
+        //    }
 
-            return flatLetterBlocks1.SequenceEqual(flatLetterBlocks2);
-        }
+        //    var flatLetterBlocks1 = letterBlocks1.Cast<LetterBlock>().Select(b => b?.Character);
+        //    var flatLetterBlocks2 = letterBlocks2.Cast<LetterBlock>().Select(b => b?.Character);
+
+        //    return flatLetterBlocks1.SequenceEqual(flatLetterBlocks2);
+        //}
 
     }
 }
 
 //ToDo: Create puzzle model with all completed puzzle fields. Should include hints, placement info etc
 //ToDo: Convert from using array of blocks to a Dictionary<point, block>
-//ToDo: Extract out placement finding to PlacementFinder?

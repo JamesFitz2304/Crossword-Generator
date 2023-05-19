@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using CrosswordGenerator.Generator.Interfaces;
 using CrosswordGenerator.Generator.Models;
 
@@ -6,196 +9,226 @@ namespace CrosswordGenerator.Generator
 {
     public class PlacementFinder : IPlacementFinder
     {
-        public IEnumerable<Placement> FindWordPlacements(LetterBlock[,] blocks, Word word)
+        public IEnumerable<Placement> FindWordPlacements(Dictionary<Point, LetterBlock> blocksDict, Word word)
         {
             var placements = new List<Placement>();
+            var points = blocksDict.Keys
+                .OrderBy(point => point.Y)
+                .ThenBy(point => point.X).ToList();
+
+            var boardSize = GetBoardSize(blocksDict);
 
             for (var i = 0; i < word.WordLength; i++)
             {
-                for (var y = 0; y < blocks.GetLength(0); y++)
+                foreach (var point in points)
                 {
-                    for (var x = 0; x < blocks.GetLength(1); x++)
+                    var block = blocksDict[point];
+                    if (block.Character != word.CharArray[i]) continue;
+                    if (WordCanBePlacedVertically(blocksDict, word, point, i + 1, out var placement, boardSize.Y))
                     {
-                        var block = blocks[y, x];
-                        if (block != null && block.Character == word.CharArray[i]) // check if block == letter
-                        {
-                            if (WordCanBePlacedVertically(blocks, word, new BlockCoordinates(x + 1, y + 1), i + 1, out var placement))
-                            {
-                                if (placement != null) placements.Add(placement);
-                            }
-                            else if (WordCanBePlacedHorizontally(blocks, word, new BlockCoordinates(x + 1, y + 1), i + 1, out placement))
-                            {
-                                if (placement != null) placements.Add(placement);
-                            }
-                        }
+                        if (placement != null) placements.Add(placement);
+                    }
+                    else if (WordCanBePlacedHorizontally(blocksDict, word, point, i + 1, out placement, boardSize.X))
+                    {
+                        if (placement != null) placements.Add(placement);
                     }
                 }
             }
             return placements;
         }
 
-        private static bool WordCanBePlacedHorizontally(LetterBlock[,] blocks, Word word, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
+        private static bool WordCanBePlacedHorizontally(Dictionary<Point, LetterBlock> blocksDict, Word word,
+            Point coordinates, int letterIndex, out Placement placement, int xSize)
         {
             placement = new Placement(word, true);
-            var currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
+            var currentCoordinates = coordinates;
 
-            if (!OutOfBounds(blocks, currentBlock.ArrayCoordinates.X - 1, currentBlock.ArrayCoordinates.Y) && blocks[currentBlock.ArrayCoordinates.Y, currentBlock.ArrayCoordinates.X - 1] != null ||
-                !OutOfBounds(blocks, currentBlock.ArrayCoordinates.X + 1, currentBlock.ArrayCoordinates.Y) && blocks[currentBlock.ArrayCoordinates.Y, currentBlock.ArrayCoordinates.X + 1] != null)
+            // If there are blocks to the left or right of the current block
+            var left = GetPointWithOffset(currentCoordinates, -1, 0);
+            var right = GetPointWithOffset(currentCoordinates, 1, 0);
+            if (!OutOfBounds(blocksDict, left) && blocksDict.ContainsKey(left) ||
+                !OutOfBounds(blocksDict, right) && blocksDict.ContainsKey(right))
             {
                 return false;
             }
 
             placement.LetterBlocks[letterIndex - 1] =
-                new LetterBlock(word.CharArray[letterIndex - 1], blockCoordinates);
-
+                new LetterBlock(word.CharArray[letterIndex - 1], coordinates);
 
             for (var i = letterIndex - 1; i > 0; i--) //check all preceding letters
             {
-                currentBlock.Coordinates.X--;
-                if (currentBlock.Coordinates.X < 1)
+                currentCoordinates.X--;
+                if (currentCoordinates.X < 1)
                 {
                     placement.Expansion.Left++;
                     placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(blocks, currentBlock, word.CharArray, i, -1, "L", new BlockCoordinates(currentBlock.Coordinates.X - 1, currentBlock.Coordinates.Y), placement))
+                else if (!LetterCanBePlaced(blocksDict, currentCoordinates, word.CharArray, i, -1, "L", new Point(currentCoordinates.X - 1, currentCoordinates.Y), placement))
                 {
                     return false;
                 }
-                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new BlockCoordinates(currentBlock.Coordinates.X, currentBlock.Coordinates.Y));
+                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new Point(currentCoordinates.X, currentCoordinates.Y));
             }
 
-            currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
+            currentCoordinates = new Point(coordinates.X, coordinates.Y);
 
             for (var i = letterIndex + 1; i <= word.WordLength; i++) //check all succeeding letters
             {
-                currentBlock.Coordinates.X++;
-                if (currentBlock.Coordinates.X > blocks.GetLength(1))
+                currentCoordinates.X++;
+                if (currentCoordinates.X > xSize)
                 {
                     placement.Expansion.Right++;
                     placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(blocks, currentBlock, word.CharArray, i, 1, "R", new BlockCoordinates(currentBlock.Coordinates.X + 1, currentBlock.Coordinates.Y), placement))
+                else if (!LetterCanBePlaced(blocksDict, currentCoordinates, word.CharArray, i, 1, "R", new Point(currentCoordinates.X + 1, currentCoordinates.Y), placement))
                 {
                     return false;
                 }
-                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new BlockCoordinates(currentBlock.Coordinates.X, currentBlock.Coordinates.Y));
+                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new Point(currentCoordinates.X, currentCoordinates.Y));
             }
 
             if (placement.Expansion.Left > 0)
             {
                 foreach (var letterBlock in placement.LetterBlocks)
                 {
-                    letterBlock.Coordinates.Coordinates.X += placement.Expansion.Left;
+                    letterBlock.Coordinates.X += placement.Expansion.Left;
                 }
             }
 
             return true;
         }
 
-        private static bool WordCanBePlacedVertically(LetterBlock[,] blocks, Word word, BlockCoordinates blockCoordinates, int letterIndex, out Placement placement)
+        private static bool WordCanBePlacedVertically(Dictionary<Point, LetterBlock> blocksDict, Word word,
+            Point currentCoordinates, int letterIndex, out Placement placement, int ySize)
         {
             placement = new Placement(word, false);
-            var currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
+            var coordinates = currentCoordinates;
 
-            if (!OutOfBounds(blocks, currentBlock.ArrayCoordinates.X, currentBlock.ArrayCoordinates.Y + 1) && blocks[currentBlock.ArrayCoordinates.Y + 1, currentBlock.ArrayCoordinates.X] != null ||
-                !OutOfBounds(blocks, currentBlock.ArrayCoordinates.X, currentBlock.ArrayCoordinates.Y - 1) && blocks[currentBlock.ArrayCoordinates.Y - 1, currentBlock.ArrayCoordinates.X] != null)
+            // If there are blocks above or below the current block
+            var below = GetPointWithOffset(coordinates, 0, 1);
+            var above = GetPointWithOffset(coordinates, 0, -1);
+            if (!OutOfBounds(blocksDict, below) && blocksDict.ContainsKey(above) ||
+                !OutOfBounds(blocksDict, above) && blocksDict.ContainsKey(below))
             {
                 return false;
             }
 
-            placement.LetterBlocks[letterIndex - 1] = new LetterBlock(word.CharArray[letterIndex - 1], blockCoordinates);
+            placement.LetterBlocks[letterIndex - 1] = new LetterBlock(word.CharArray[letterIndex - 1], currentCoordinates);
 
 
             for (var i = letterIndex - 1; i > 0; i--) //check all preceding letters
             {
-                currentBlock.Coordinates.Y--;
-                if (currentBlock.Coordinates.Y < 1)
+                coordinates.Y--;
+                if (coordinates.Y < 1)
                 {
                     placement.Expansion.Up++;
                     placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(blocks, currentBlock, word.CharArray, i, -1, "U", new BlockCoordinates(currentBlock.Coordinates.X, currentBlock.Coordinates.Y - 1), placement))
+                else if (!LetterCanBePlaced(blocksDict, coordinates, word.CharArray, i, -1, "U", new Point(coordinates.X, coordinates.Y - 1), placement))
                 {
                     return false;
                 }
-                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new BlockCoordinates(currentBlock.Coordinates.X, currentBlock.Coordinates.Y));
+                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new Point(coordinates.X, coordinates.Y));
             }
 
-            currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
+            coordinates = new Point(currentCoordinates.X, currentCoordinates.Y);
             for (var i = letterIndex + 1; i <= word.WordLength; i++) //check all succeeding letters
             {
-                currentBlock.Coordinates.Y++;
-                if (currentBlock.Coordinates.Y > blocks.GetLength(0))
+                coordinates.Y++;
+                if (coordinates.Y > ySize)
                 {
                     placement.Expansion.Down++;
                     placement.NewLetters++;
                 }
-                else if (!LetterCanBePlaced(blocks, currentBlock, word.CharArray, i, 1, "D", new BlockCoordinates(currentBlock.Coordinates.X, currentBlock.Coordinates.Y + 1), placement))
+                else if (!LetterCanBePlaced(blocksDict, coordinates, word.CharArray, i, 1, "D", new Point(coordinates.X, coordinates.Y + 1), placement))
                 {
                     return false;
                 }
-                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new BlockCoordinates(currentBlock.Coordinates.X, currentBlock.Coordinates.Y));
+                placement.LetterBlocks[i - 1] = new LetterBlock(word.CharArray[i - 1], new Point(coordinates.X, coordinates.Y));
             }
 
             if (placement.Expansion.Up > 0)
             {
                 foreach (var letterBlock in placement.LetterBlocks)
                 {
-                    letterBlock.Coordinates.Coordinates.Y += placement.Expansion.Up;
+                    letterBlock.Coordinates.Y += placement.Expansion.Up;
                 }
             }
 
             return true;
         }
 
-        private static bool LetterCanBePlaced(LetterBlock[,] blocks, BlockCoordinates blockCoordinates, char[] letters, int letterIndex, int nextLetterStep, string direction, BlockCoordinates nextBlockCoordinates, Placement placement)
+        private static bool LetterCanBePlaced(Dictionary<Point, LetterBlock> blocksDict,
+            Point coordinates, IReadOnlyList<char> letters, int letterIndex, int nextLetterStep, string direction,
+            Point nextPoint, Placement placement)
         {
             var letter = letters[letterIndex - 1];
-            var nextBlock = OutOfBounds(blocks, nextBlockCoordinates.ArrayCoordinates.X, nextBlockCoordinates.ArrayCoordinates.Y)
-                ? null
-                : blocks[nextBlockCoordinates.ArrayCoordinates.Y, nextBlockCoordinates.ArrayCoordinates.X];
 
+            var blockOccupied = blocksDict.TryGetValue(new Point(coordinates.X, coordinates.Y), out var block);
+            var nextBlockOccupied = blocksDict.TryGetValue(new Point(nextPoint.X, nextPoint.Y), out var nextBlock);
 
-            if (blocks[blockCoordinates.ArrayCoordinates.Y, blockCoordinates.ArrayCoordinates.X] != null)
+            if (blockOccupied)
             {
-                if (blocks[blockCoordinates.ArrayCoordinates.Y, blockCoordinates.ArrayCoordinates.X].Character != letter)
+                if (block.Character != letter)
                 {
                     return false;
                 }
-                return nextBlock == null;
+
+                return !nextBlockOccupied;
             }
 
-            var nextLetter = letterIndex + nextLetterStep > letters.Length || letterIndex + nextLetterStep < 1
+            var nextLetter = letterIndex + nextLetterStep > letters.Count || letterIndex + nextLetterStep < 1
                 ? ' '
                 : letters[letterIndex + nextLetterStep - 1];
 
             //Fail if the above/below or left/right blocks have letters when direction is horizontal/vertical
             if (direction == "L" || direction == "R")
             {
-                if (!OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X, blockCoordinates.ArrayCoordinates.Y + 1) && blocks[blockCoordinates.ArrayCoordinates.Y + 1, blockCoordinates.ArrayCoordinates.X] != null ||
-                    !OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X, blockCoordinates.ArrayCoordinates.Y - 1) && blocks[blockCoordinates.ArrayCoordinates.Y - 1, blockCoordinates.ArrayCoordinates.X] != null)
+                var below = GetPointWithOffset(coordinates, 0, 1);
+                var above = GetPointWithOffset(coordinates, 0, -1);
+                if (!OutOfBounds(blocksDict, above) && blocksDict.ContainsKey(above) || !OutOfBounds(blocksDict, below) && blocksDict.ContainsKey(below))
                 {
                     return false;
                 }
             }
             else
             {
-                if (!OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X + 1, blockCoordinates.ArrayCoordinates.Y) && blocks[blockCoordinates.ArrayCoordinates.Y, blockCoordinates.ArrayCoordinates.X + 1] != null ||
-                    !OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X - 1, blockCoordinates.ArrayCoordinates.Y) && blocks[blockCoordinates.ArrayCoordinates.Y, blockCoordinates.ArrayCoordinates.X - 1] != null)
+                var right = GetPointWithOffset(coordinates, 1, 0);
+                var left = GetPointWithOffset(coordinates, -1, 0);
+                if (!OutOfBounds(blocksDict, right) && blocksDict.ContainsKey(right) || !OutOfBounds(blocksDict, left) && blocksDict.ContainsKey(left))
                 {
                     return false;
                 }
             }
+
             placement.NewLetters++;
-            // True if next two blocks are empty
-            return char.IsWhiteSpace(nextLetter) && nextBlock == null
-                   // True if next block is empty or next block has same character as next letter
-                   || !char.IsWhiteSpace(nextLetter) && (nextBlock == null || nextBlock.Character == nextLetter);
+
+            return
+                // True if next two blocks are empty
+                char.IsWhiteSpace(nextLetter) && !nextBlockOccupied ||
+                // True if next block is empty or next block has same character as next letter
+                !char.IsWhiteSpace(nextLetter) && (!nextBlockOccupied || nextBlock.Character == nextLetter);
         }
 
-        private static bool OutOfBounds(LetterBlock[,] blocks, int x, int y)
+        private static bool OutOfBounds(Dictionary<Point, LetterBlock> blocksDict, Point coordinates)
         {
-            return !(x < blocks.GetLength(1) && x >= 0 && y < blocks.GetLength(0) && y >= 0);
+            return !(coordinates.X <= blocksDict.Keys.Max(p => p.X) && 
+                     coordinates.X > 0 &&
+                     coordinates.Y <= blocksDict.Keys.Max(p => p.Y) && 
+                     coordinates.Y > 0); 
+        }
+
+        private static Point GetBoardSize(Dictionary<Point, LetterBlock> blocksDict)
+        {
+            return new Point(blocksDict.Keys.Max(x => x.X), blocksDict.Keys.Max(y => y.Y));
+        }
+
+        private static Point GetPointWithOffset(Point point, int xOffset, int yOffset)
+        {
+            var newPoint = point;
+            newPoint.Offset(xOffset, yOffset);
+            return newPoint;
+
         }
     }
 }

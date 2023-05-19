@@ -1,0 +1,679 @@
+
+-- MAX ATTEMPTS: 1 --
+Success rate: 42%
+Average time: 2.61ms
+Average size score: 35.08%
+
+-- MAX ATTEMPTS: 2 --
+Success rate: 69%
+Average time: 4.56ms
+Average size score: 58.66%
+
+-- MAX ATTEMPTS: 3 --
+Success rate: 84%
+Average time: 7.04ms
+Average size score: 65.52%
+
+-- MAX ATTEMPTS: 4 --
+Success rate: 87%
+Average time: 9.02ms
+Average size score: 73.85%
+
+-- MAX ATTEMPTS: 5 --
+Success rate: 98%
+Average time: 11.32ms
+Average size score: 75.79%
+
+-- MAX ATTEMPTS: 6 --
+Success rate: 98%
+Average time: 14.49ms
+Average size score: 80.75%
+
+-- MAX ATTEMPTS: 7 --
+Success rate: 97%
+Average time: 15.88ms
+Average size score: 80.07%
+
+-- MAX ATTEMPTS: 8 --
+Success rate: 98%
+Average time: 18.37ms
+Average size score: 80.15%
+
+-- MAX ATTEMPTS: 9 --
+Success rate: 99%
+Average time: 20.82ms
+Average size score: 81.32%
+
+-- MAX ATTEMPTS: 10 --
+Success rate: 98%
+Average time: 23.05ms
+Average size score: 82.14%
+
+-- MAX ATTEMPTS: 11 --
+Success rate: 98%
+Average time: 25.45ms
+Average size score: 83.62%
+
+-- MAX ATTEMPTS: 12 --
+Success rate: 99%
+Average time: 27.99ms
+Average size score: 82.85%
+
+-- MAX ATTEMPTS: 13 --
+Success rate: 99%
+Average time: 30.03ms
+Average size score: 83.89%
+
+-- MAX ATTEMPTS: 14 --
+Success rate: 100%
+Average time: 32.46ms
+Average size score: 84.82%
+
+-- MAX ATTEMPTS: 15 --
+Success rate: 100%
+Average time: 34.85ms
+Average size score: 85.46%
+
+-- MAX ATTEMPTS: 16 --
+Success rate: 100%
+Average time: 37.8ms
+Average size score: 83.42%
+
+-- MAX ATTEMPTS: 17 --
+Success rate: 100%
+Average time: 39.56ms
+Average size score: 85.06%
+
+-- MAX ATTEMPTS: 18 --
+Success rate: 100%
+Average time: 41.79ms
+Average size score: 86.48%
+
+-- MAX ATTEMPTS: 19 --
+Success rate: 100%
+Average time: 44.28ms
+Average size score: 86.62%
+
+-- MAX ATTEMPTS: 20 --
+Success rate: 100%
+Average time: 46.57ms
+Average size score: 87.18%
+
+-- MAX ATTEMPTS: 21 --
+Success rate: 100%
+Average time: 48.81ms
+Average size score: 87.94%
+
+-- MAX ATTEMPTS: 22 --
+Success rate: 100%
+Average time: 51.76ms
+Average size score: 87.23%
+
+-- MAX ATTEMPTS: 23 --
+Success rate: 100%
+Average time: 53.77ms
+Average size score: 86.81%
+
+-- MAX ATTEMPTS: 24 --
+Success rate: 100%
+Average time: 56.36ms
+Average size score: 87.61%
+
+-- MAX ATTEMPTS: 25 --
+Success rate: 100%
+Average time: 58.56ms
+Average size score: 87.61%
+
+-- MAX ATTEMPTS: 26 --
+Success rate: 100%
+Average time: 60.7ms
+Average size score: 88.07%
+
+-- MAX ATTEMPTS: 27 --
+Success rate: 100%
+Average time: 64.06ms
+Average size score: 88.17%
+
+-- MAX ATTEMPTS: 28 --
+Success rate: 100%
+Average time: 65.51ms
+Average size score: 87.96%
+
+-- MAX ATTEMPTS: 29 --
+Success rate: 100%
+Average time: 67.89ms
+Average size score: 88.21%
+
+-- MAX ATTEMPTS: 30 --
+Success rate: 100%
+Average time: 70.7ms
+Average size score: 88.97%
+
+-- MAX ATTEMPTS: 31 --
+Success rate: 100%
+Average time: 72.11ms
+Average size score: 88.01%
+
+-- MAX ATTEMPTS: 32 --
+Success rate: 100%
+Average time: 74.71ms
+Average size score: 88.48%
+
+-- MAX ATTEMPTS: 33 --
+Success rate: 100%
+Average time: 77.16ms
+Average size score: 90.08%
+
+-- MAX ATTEMPTS: 34 --
+Success rate: 100%
+Average time: 82.34ms
+Average size score: 90.29%
+
+-- MAX ATTEMPTS: 35 --
+Success rate: 100%
+Average time: 82.55ms
+Average size score: 89.86%
+
+-- MAX ATTEMPTS: 36 --
+Success rate: 100%
+Average time: 84.37ms
+Average size score: 89.86%
+
+-- MAX ATTEMPTS: 37 --
+Success rate: 100%
+Average time: 87.32ms
+Average size score: 89.65%
+
+-- MAX ATTEMPTS: 38 --
+Success rate: 100%
+Average time: 89.77ms
+Average size score: 91.32%
+
+-- MAX ATTEMPTS: 39 --
+Success rate: 100%
+Average time: 91.32ms
+Average size score: 90.53%
+
+-- MAX ATTEMPTS: 40 --
+Success rate: 100%
+Average time: 94.68ms
+Average size score: 90.51%
+
+-- MAX ATTEMPTS: 41 --
+Success rate: 100%
+Average time: 96.2ms
+Average size score: 90.44%
+
+-- MAX ATTEMPTS: 42 --
+Success rate: 100%
+Average time: 99.04ms
+Average size score: 90.69%
+
+-- MAX ATTEMPTS: 43 --
+Success rate: 100%
+Average time: 102.59ms
+Average size score: 90.44%
+
+-- MAX ATTEMPTS: 44 --
+Success rate: 100%
+Average time: 103.37ms
+Average size score: 90.78%
+
+-- MAX ATTEMPTS: 45 --
+Success rate: 100%
+Average time: 110.47ms
+Average size score: 90.19%
+
+-- MAX ATTEMPTS: 46 --
+Success rate: 100%
+Average time: 108.59ms
+Average size score: 89.49%
+
+-- MAX ATTEMPTS: 47 --
+Success rate: 100%
+Average time: 111.84ms
+Average size score: 90.40%
+
+-- MAX ATTEMPTS: 48 --
+Success rate: 100%
+Average time: 113.14ms
+Average size score: 91.44%
+
+-- MAX ATTEMPTS: 49 --
+Success rate: 100%
+Average time: 114.74ms
+Average size score: 91.12%
+
+-- MAX ATTEMPTS: 50 --
+Success rate: 100%
+Average time: 118.58ms
+Average size score: 90.98%
+
+-- MAX ATTEMPTS: 51 --
+Success rate: 100%
+Average time: 125.01ms
+Average size score: 90.38%
+
+-- MAX ATTEMPTS: 52 --
+Success rate: 100%
+Average time: 122.72ms
+Average size score: 90.55%
+
+-- MAX ATTEMPTS: 53 --
+Success rate: 100%
+Average time: 124.91ms
+Average size score: 91.30%
+
+-- MAX ATTEMPTS: 54 --
+Success rate: 100%
+Average time: 126.78ms
+Average size score: 91.00%
+
+-- MAX ATTEMPTS: 55 --
+Success rate: 100%
+Average time: 129.25ms
+Average size score: 91.29%
+
+-- MAX ATTEMPTS: 56 --
+Success rate: 100%
+Average time: 134.83ms
+Average size score: 90.80%
+
+-- MAX ATTEMPTS: 57 --
+Success rate: 100%
+Average time: 134.24ms
+Average size score: 90.95%
+
+-- MAX ATTEMPTS: 58 --
+Success rate: 100%
+Average time: 138.56ms
+Average size score: 92.00%
+
+-- MAX ATTEMPTS: 59 --
+Success rate: 100%
+Average time: 138.61ms
+Average size score: 91.78%
+
+-- MAX ATTEMPTS: 60 --
+Success rate: 100%
+Average time: 141.25ms
+Average size score: 91.70%
+
+-- MAX ATTEMPTS: 61 --
+Success rate: 100%
+Average time: 145.78ms
+Average size score: 91.07%
+
+-- MAX ATTEMPTS: 62 --
+Success rate: 100%
+Average time: 146.81ms
+Average size score: 91.90%
+
+-- MAX ATTEMPTS: 63 --
+Success rate: 100%
+Average time: 147.69ms
+Average size score: 91.62%
+
+-- MAX ATTEMPTS: 64 --
+Success rate: 100%
+Average time: 151.19ms
+Average size score: 91.75%
+
+-- MAX ATTEMPTS: 65 --
+Success rate: 100%
+Average time: 154.15ms
+Average size score: 92.06%
+
+-- MAX ATTEMPTS: 66 --
+Success rate: 100%
+Average time: 154.58ms
+Average size score: 91.43%
+
+-- MAX ATTEMPTS: 67 --
+Success rate: 100%
+Average time: 157.16ms
+Average size score: 92.61%
+
+-- MAX ATTEMPTS: 68 --
+Success rate: 100%
+Average time: 160.42ms
+Average size score: 92.05%
+
+-- MAX ATTEMPTS: 69 --
+Success rate: 100%
+Average time: 163.52ms
+Average size score: 91.53%
+
+-- MAX ATTEMPTS: 70 --
+Success rate: 100%
+Average time: 164.42ms
+Average size score: 92.50%
+
+-- MAX ATTEMPTS: 71 --
+Success rate: 100%
+Average time: 167.46ms
+Average size score: 91.91%
+
+-- MAX ATTEMPTS: 72 --
+Success rate: 100%
+Average time: 168.61ms
+Average size score: 91.85%
+
+-- MAX ATTEMPTS: 73 --
+Success rate: 100%
+Average time: 171.1ms
+Average size score: 91.46%
+
+-- MAX ATTEMPTS: 74 --
+Success rate: 100%
+Average time: 172.68ms
+Average size score: 91.48%
+
+-- MAX ATTEMPTS: 75 --
+Success rate: 100%
+Average time: 174.46ms
+Average size score: 92.88%
+
+-- MAX ATTEMPTS: 76 --
+Success rate: 100%
+Average time: 175.62ms
+Average size score: 92.95%
+
+-- MAX ATTEMPTS: 77 --
+Success rate: 100%
+Average time: 178.51ms
+Average size score: 92.51%
+
+-- MAX ATTEMPTS: 78 --
+Success rate: 100%
+Average time: 181.83ms
+Average size score: 92.83%
+
+-- MAX ATTEMPTS: 79 --
+Success rate: 100%
+Average time: 187.52ms
+Average size score: 93.36%
+
+-- MAX ATTEMPTS: 80 --
+Success rate: 100%
+Average time: 189.96ms
+Average size score: 92.92%
+
+-- MAX ATTEMPTS: 81 --
+Success rate: 100%
+Average time: 190.46ms
+Average size score: 92.31%
+
+-- MAX ATTEMPTS: 82 --
+Success rate: 100%
+Average time: 193.18ms
+Average size score: 92.25%
+
+-- MAX ATTEMPTS: 83 --
+Success rate: 100%
+Average time: 196.37ms
+Average size score: 92.97%
+
+-- MAX ATTEMPTS: 84 --
+Success rate: 100%
+Average time: 195.83ms
+Average size score: 92.40%
+
+-- MAX ATTEMPTS: 85 --
+Success rate: 100%
+Average time: 199.08ms
+Average size score: 93.14%
+
+-- MAX ATTEMPTS: 86 --
+Success rate: 100%
+Average time: 203.18ms
+Average size score: 93.21%
+
+-- MAX ATTEMPTS: 87 --
+Success rate: 100%
+Average time: 204.69ms
+Average size score: 92.69%
+
+-- MAX ATTEMPTS: 88 --
+Success rate: 100%
+Average time: 206.59ms
+Average size score: 92.55%
+
+-- MAX ATTEMPTS: 89 --
+Success rate: 100%
+Average time: 214.9ms
+Average size score: 92.66%
+
+-- MAX ATTEMPTS: 90 --
+Success rate: 100%
+Average time: 213.19ms
+Average size score: 93.16%
+
+-- MAX ATTEMPTS: 91 --
+Success rate: 100%
+Average time: 213.62ms
+Average size score: 93.33%
+
+-- MAX ATTEMPTS: 92 --
+Success rate: 100%
+Average time: 215.3ms
+Average size score: 93.31%
+
+-- MAX ATTEMPTS: 93 --
+Success rate: 100%
+Average time: 217.91ms
+Average size score: 93.67%
+
+-- MAX ATTEMPTS: 94 --
+Success rate: 100%
+Average time: 221.26ms
+Average size score: 93.43%
+
+-- MAX ATTEMPTS: 95 --
+Success rate: 100%
+Average time: 222.99ms
+Average size score: 92.98%
+
+-- MAX ATTEMPTS: 96 --
+Success rate: 100%
+Average time: 225.46ms
+Average size score: 93.07%
+
+-- MAX ATTEMPTS: 97 --
+Success rate: 100%
+Average time: 227.42ms
+Average size score: 92.90%
+
+-- MAX ATTEMPTS: 98 --
+Success rate: 100%
+Average time: 230.18ms
+Average size score: 93.76%
+
+-- MAX ATTEMPTS: 99 --
+Success rate: 100%
+Average time: 233.27ms
+Average size score: 92.86%
+
+-- MAX ATTEMPTS: 100 --
+Success rate: 100%
+Average time: 235.65ms
+Average size score: 93.00%
+
+
+
+
+-- MAX Generations: 1 --
+Success rate: 100%
+Average time: 29.12ms
+Average size score: 76.38%
+
+-- MAX Generations: 2 --
+Success rate: 100%
+Average time: 34.28ms
+Average size score: 79.32%
+
+-- MAX Generations: 3 --
+Success rate: 100%
+Average time: 38.6ms
+Average size score: 82.02%
+
+-- MAX Generations: 4 --
+Success rate: 100%
+Average time: 41.06ms
+Average size score: 83.49%
+
+-- MAX Generations: 5 --
+Success rate: 100%
+Average time: 45.92ms
+Average size score: 85.38%
+
+-- MAX Generations: 6 --
+Success rate: 100%
+Average time: 46.45ms
+Average size score: 85.77%
+
+-- MAX Generations: 7 --
+Success rate: 100%
+Average time: 53.64ms
+Average size score: 84.91%
+
+-- MAX Generations: 8 --
+Success rate: 100%
+Average time: 58.39ms
+Average size score: 86.67%
+
+-- MAX Generations: 9 --
+Success rate: 100%
+Average time: 61.68ms
+Average size score: 87.82%
+
+-- MAX Generations: 10 --
+Success rate: 100%
+Average time: 63.52ms
+Average size score: 87.64%
+
+-- MAX Generations: 11 --
+Success rate: 100%
+Average time: 69.64ms
+Average size score: 86.74%
+
+-- MAX Generations: 12 --
+Success rate: 100%
+Average time: 74.55ms
+Average size score: 88.02%
+
+-- MAX Generations: 13 --
+Success rate: 100%
+Average time: 73.11ms
+Average size score: 89.33%
+
+-- MAX Generations: 14 --
+Success rate: 100%
+Average time: 81.37ms
+Average size score: 87.61%
+
+-- MAX Generations: 15 --
+Success rate: 100%
+Average time: 79.23ms
+Average size score: 90.47%
+
+-- MAX Generations: 16 --
+Success rate: 100%
+Average time: 80.02ms
+Average size score: 90.20%
+
+-- MAX Generations: 17 --
+Success rate: 100%
+Average time: 79.7ms
+Average size score: 89.55%
+
+-- MAX Generations: 18 --
+Success rate: 100%
+Average time: 79.75ms
+Average size score: 90.02%
+
+-- MAX Generations: 19 --
+Success rate: 100%
+Average time: 79.65ms
+Average size score: 89.77%
+
+-- MAX Generations: 20 --
+Success rate: 100%
+Average time: 80.1ms
+Average size score: 89.43%
+
+-- MAX Generations: 21 --
+Success rate: 100%
+Average time: 82.05ms
+Average size score: 89.96%
+
+-- MAX Generations: 22 --
+Success rate: 100%
+Average time: 81.02ms
+Average size score: 89.97%
+
+-- MAX Generations: 23 --
+Success rate: 100%
+Average time: 80.96ms
+Average size score: 89.86%
+
+-- MAX Generations: 24 --
+Success rate: 100%
+Average time: 80.57ms
+Average size score: 90.22%
+
+-- MAX Generations: 25 --
+Success rate: 100%
+Average time: 80.26ms
+Average size score: 89.40%
+
+-- MAX Generations: 26 --
+Success rate: 100%
+Average time: 80.19ms
+Average size score: 88.83%
+
+-- MAX Generations: 27 --
+Success rate: 100%
+Average time: 80.13ms
+Average size score: 89.79%
+
+-- MAX Generations: 28 --
+Success rate: 100%
+Average time: 80.49ms
+Average size score: 89.02%
+
+-- MAX Generations: 29 --
+Success rate: 100%
+Average time: 80.33ms
+Average size score: 88.79%
+
+-- MAX Generations: 30 --
+Success rate: 100%
+Average time: 80.23ms
+Average size score: 88.86%
+
+-- MAX Generations: 31 --
+Success rate: 100%
+Average time: 80.79ms
+Average size score: 89.81%
+
+-- MAX Generations: 32 --
+Success rate: 100%
+Average time: 80.7ms
+Average size score: 89.23%
+
+-- MAX Generations: 33 --
+Success rate: 100%
+Average time: 80.49ms
+Average size score: 90.34%
+
+-- MAX Generations: 34 --
+Success rate: 100%
+Average time: 80.65ms
+Average size score: 89.50%
+
+-- MAX Generations: 35 --
+Success rate: 100%
+Average time: 79.66ms
+Average size score: 90.05%
+

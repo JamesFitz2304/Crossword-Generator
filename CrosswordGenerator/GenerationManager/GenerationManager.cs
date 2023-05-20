@@ -54,7 +54,7 @@ namespace CrosswordGenerator.GenerationManager
                     continue;
                 }
 
-                if (generation.NumberOfUnplacedWords > leastUnplacedWords) break;
+                if (generation.NumberOfUnplacedWords > leastUnplacedWords) continue;
 
                 if (generation.NumberOfUnplacedWords < leastUnplacedWords)
                 {

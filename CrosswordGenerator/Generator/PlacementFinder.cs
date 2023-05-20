@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using CrosswordGenerator.Generator.Interfaces;
 using CrosswordGenerator.Generator.Models;
 
@@ -39,8 +40,10 @@ namespace CrosswordGenerator.Generator
             placement = new Placement(word, true);
             var currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
 
-            if (!OutOfBounds(blocks, currentBlock.ArrayCoordinates.X - 1, currentBlock.ArrayCoordinates.Y) && blocks[currentBlock.ArrayCoordinates.Y, currentBlock.ArrayCoordinates.X - 1] != null ||
-                !OutOfBounds(blocks, currentBlock.ArrayCoordinates.X + 1, currentBlock.ArrayCoordinates.Y) && blocks[currentBlock.ArrayCoordinates.Y, currentBlock.ArrayCoordinates.X + 1] != null)
+            var left = GetPointWithOffset(currentBlock.ArrayCoordinates, -1, 0);
+            var right = GetPointWithOffset(currentBlock.ArrayCoordinates, 1, 0);
+            if (!OutOfBounds(blocks, left.X, left.Y) && blocks[left.Y, left.X] != null ||
+                !OutOfBounds(blocks, right.X, right.Y) && blocks[right.Y, right.X] != null)
             {
                 return false;
             }
@@ -97,8 +100,10 @@ namespace CrosswordGenerator.Generator
             placement = new Placement(word, false);
             var currentBlock = new BlockCoordinates(blockCoordinates.Coordinates.X, blockCoordinates.Coordinates.Y);
 
-            if (!OutOfBounds(blocks, currentBlock.ArrayCoordinates.X, currentBlock.ArrayCoordinates.Y + 1) && blocks[currentBlock.ArrayCoordinates.Y + 1, currentBlock.ArrayCoordinates.X] != null ||
-                !OutOfBounds(blocks, currentBlock.ArrayCoordinates.X, currentBlock.ArrayCoordinates.Y - 1) && blocks[currentBlock.ArrayCoordinates.Y - 1, currentBlock.ArrayCoordinates.X] != null)
+            var below = GetPointWithOffset(currentBlock.ArrayCoordinates, 0, 1);
+            var above = GetPointWithOffset(currentBlock.ArrayCoordinates, 0, -1);
+            if (!OutOfBounds(blocks,below.X, below.Y) && blocks[below.Y, below.X] != null ||
+                !OutOfBounds(blocks, above.X, above.Y) && blocks[above.Y, above.X] != null)
             {
                 return false;
             }
@@ -172,16 +177,20 @@ namespace CrosswordGenerator.Generator
             //Fail if the above/below or left/right blocks have letters when direction is horizontal/vertical
             if (direction == "L" || direction == "R")
             {
-                if (!OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X, blockCoordinates.ArrayCoordinates.Y + 1) && blocks[blockCoordinates.ArrayCoordinates.Y + 1, blockCoordinates.ArrayCoordinates.X] != null ||
-                    !OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X, blockCoordinates.ArrayCoordinates.Y - 1) && blocks[blockCoordinates.ArrayCoordinates.Y - 1, blockCoordinates.ArrayCoordinates.X] != null)
+                var below = GetPointWithOffset(blockCoordinates.ArrayCoordinates, 0, 1);
+                var above = GetPointWithOffset(blockCoordinates.ArrayCoordinates, 0, -1);
+                if (!OutOfBounds(blocks, below.X, below.Y) && blocks[below.Y, below.X] != null ||
+                    !OutOfBounds(blocks,above.X, above.Y) && blocks[above.Y, above.X] != null)
                 {
                     return false;
                 }
             }
             else
             {
-                if (!OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X + 1, blockCoordinates.ArrayCoordinates.Y) && blocks[blockCoordinates.ArrayCoordinates.Y, blockCoordinates.ArrayCoordinates.X + 1] != null ||
-                    !OutOfBounds(blocks, blockCoordinates.ArrayCoordinates.X - 1, blockCoordinates.ArrayCoordinates.Y) && blocks[blockCoordinates.ArrayCoordinates.Y, blockCoordinates.ArrayCoordinates.X - 1] != null)
+                var left = GetPointWithOffset(blockCoordinates.ArrayCoordinates, -1, 0);
+                var right = GetPointWithOffset(blockCoordinates.ArrayCoordinates, 1, 0);
+                if (!OutOfBounds(blocks, right.X,right.Y) && blocks[right.Y,right.X] != null ||
+                    !OutOfBounds(blocks, left.X, left.Y) && blocks[left.Y, left.X] != null)
                 {
                     return false;
                 }
@@ -196,6 +205,15 @@ namespace CrosswordGenerator.Generator
         private static bool OutOfBounds(LetterBlock[,] blocks, int x, int y)
         {
             return !(x < blocks.GetLength(1) && x >= 0 && y < blocks.GetLength(0) && y >= 0);
+
         }
+
+        private static Point GetPointWithOffset(Point point, int xOffset, int yOffset)
+        {
+            var newPoint = point;
+            newPoint.Offset(xOffset, yOffset);
+            return newPoint;
+        }
+
     }
 }

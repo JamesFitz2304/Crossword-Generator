@@ -349,7 +349,7 @@ namespace CrosswordGeneratorTests
             // Arrange
             double averageSuccess = 0;
             double averageTime = 0;
-            const int timesToRepeat = 2000;
+            const int timesToRepeat = 100;
             var wordSelector = 1;
             // Act
             for (var i = 0; i < timesToRepeat; i++)

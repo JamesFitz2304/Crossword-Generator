@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <Compile Remove="Generator\Utilities\**" />
+    <EmbeddedResource Remove="Generator\Utilities\**" />
+    <None Remove="Generator\Utilities\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Generator\Utilities\" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>

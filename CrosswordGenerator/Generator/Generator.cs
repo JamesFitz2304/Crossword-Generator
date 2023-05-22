@@ -72,8 +72,8 @@ namespace CrosswordGenerator.Generator
                     .ThenBy(p => p.Expansion.TotalX + p.Expansion.TotalY)
                     .ThenByDescending(p => p.Word.WordLength);
 
-                var bestPlacements = orderedPlacements.Take(3).ToList();
-                var randomPlacement = bestPlacements[new Random().Next(0, bestPlacements.Count-1)];
+                var bestPlacements = orderedPlacements.Take(2).ToList();
+                var randomPlacement = bestPlacements[new Random().Next(0, bestPlacements.Count)];
                 PlaceWordOnBoard(ref blocks, randomPlacement, placedWords);
                 unplacedWords.Remove(randomPlacement.Word);
 

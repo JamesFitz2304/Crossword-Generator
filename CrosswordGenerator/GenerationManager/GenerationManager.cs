@@ -11,7 +11,7 @@ namespace CrosswordGenerator.GenerationManager
 {
     public interface IGenerationManager
     {
-        IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 35,
+        IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 30,
             int maxGenerations = 15, int timeout = 3000, bool cullIdenticals = true);
     }
 
@@ -24,7 +24,7 @@ namespace CrosswordGenerator.GenerationManager
             _generator = generator;
         }
 
-        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 35,
+        public IEnumerable<Generation> GenerateCrosswords(IList<WordCluePair> wordCluePairs, int maxAttempts = 30,
             int maxGenerations = 15, int timeout = 3000, bool cullIdenticals = true)
         {
             if (wordCluePairs.Count < 2)

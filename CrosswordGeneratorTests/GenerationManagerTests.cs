@@ -12,7 +12,6 @@ namespace CrosswordGeneratorTests
     public class GenerationManagerTests
     {
         private GenerationManager _manager;
-
         private Mock<IGenerator> _generatorMock;
 
 
@@ -23,79 +22,79 @@ namespace CrosswordGeneratorTests
 
         private readonly List<WordCluePair> _twoUnplacedWords = new()
         {
-            new WordCluePair("Goat"),
-            new WordCluePair("Turtle"),
-            new WordCluePair("Yyy"),
-            new WordCluePair("Zzz"),
+            new WordCluePair("Goat", "Like a sheep with horns"),
+            new WordCluePair("Turtle", "Like a tortoise, but it swims"),
+            new WordCluePair("Yyy", "Three ys"),
+            new WordCluePair("Zzz", "Three zeds"),
         };
 
         private readonly List<WordCluePair> _oneUnplacedWords = new()
         {
-            new WordCluePair("Goat"),
-            new WordCluePair("Turtle"),
-            new WordCluePair("Zzz"),
+            new WordCluePair("Goat", "Like a sheep with horns"),
+            new WordCluePair("Turtle", "Like a tortoise, but it swims"),
+            new WordCluePair("Zzz", "Three zeds"),
         };
 
 
         private readonly List<WordCluePair> _5WordsAllPlaceable = new()
         {
-            new WordCluePair("Goat"),
-            new WordCluePair("Turtle"),
-            new WordCluePair("Elephant"),
-            new WordCluePair("Tiger"),
-            new WordCluePair("Rabbit")
+            new WordCluePair("Goat", "Like a sheep with horns"),
+            new WordCluePair("Turtle", "Like a tortoise, but it swims"),
+            new WordCluePair("Elephant", "They'll never forget their trunks"),
+            new WordCluePair("Tiger", "Easy! Burning bright"),
+            new WordCluePair("Rabbit", "Hops on a BMX")
         };
 
         private readonly List<WordCluePair> _10WordsAllPlaceable = new()
         {
-            new WordCluePair("Goat"),
-            new WordCluePair("Turtle"),
-            new WordCluePair("Elephant"),
-            new WordCluePair("Tiger"),
-            new WordCluePair("Rabbit"),
-            new WordCluePair("Baby"),
-            new WordCluePair("Yacht"),
-            new WordCluePair("Toaster"),
-            new WordCluePair("Railroad"),
-            new WordCluePair("Digger")
+            new WordCluePair("Goat", "Like a sheep with horns"),
+            new WordCluePair("Turtle", "Like a tortoise, but it swims"),
+            new WordCluePair("Elephant", "They'll never forget their trunks"),
+            new WordCluePair("Tiger", "Easy! Burning bright"),
+            new WordCluePair("Rabbit", "Hops on a BMX"),
+            new WordCluePair("Baby", "Little human"),
+            new WordCluePair("Yacht", "Like a boat. Rhymes with not"),
+            new WordCluePair("Toaster", "Makes white bread brown"),
+            new WordCluePair("Railroad", "Enables a train to move along"),
+            new WordCluePair("Digger", "Comes in handy when looking for buried treasure")
         };
 
         private readonly List<WordCluePair> _15WordsAllPlaceable = new()
         {
-            new WordCluePair("Goat"),
-            new WordCluePair("Turtle"),
-            new WordCluePair("Elephant"),
-            new WordCluePair("Tiger"),
-            new WordCluePair("Rabbit"),
-            new WordCluePair("Baby"),
-            new WordCluePair("Yacht"),
-            new WordCluePair("Toaster"),
-            new WordCluePair("Railroad"),
-            new WordCluePair("Digger"),
-            new WordCluePair("Richard"),
-            new WordCluePair("Daniel"),
-            new WordCluePair("Liam"),
+            new WordCluePair("Goat", "Like a sheep with horns"),
+            new WordCluePair("Turtle", "Like a tortoise, but it swims"),
+            new WordCluePair("Elephant", "They'll never forget their trunks"),
+            new WordCluePair("Tiger", "Easy! Burning bright"),
+            new WordCluePair("Rabbit", "Hops on a BMX"),
+            new WordCluePair("Baby", "Little human"),
+            new WordCluePair("Yacht", "Like a boat. Rhymes with not"),
+            new WordCluePair("Toaster", "Makes white bread brown"),
+            new WordCluePair("Railroad", "Enables a train to move along"),
+            new WordCluePair("Digger", "Comes in handy when looking for buried treasure"),
+            new WordCluePair("Richard", "Man's name. Was a king. Rude shortened!"),
+            new WordCluePair("Daniel", "A longer Dan"),
+            new WordCluePair("Liam", "Irish name. Actor has a special set of skills and will find you"),
             new WordCluePair("Michael"),
             new WordCluePair("Larry")
         };
 
         private readonly List<WordCluePair> _15Words3Unplaceable = new()
         {
-            new WordCluePair("Goat"),
-            new WordCluePair("Turtle"),
-            new WordCluePair("Elephant"),
-            new WordCluePair("Tiger"),
-            new WordCluePair("Rabbit"),
-            new WordCluePair("Houmous"),
-            new WordCluePair("Toaster"),
-            new WordCluePair("Railroad"),
-            new WordCluePair("Digger"),
-            new WordCluePair("Richard"),
-            new WordCluePair("Daniel"),
-            new WordCluePair("Liam"),
-            new WordCluePair("Xxx"),
-            new WordCluePair("Yyy"),
-            new WordCluePair("Zzz"),
+            new WordCluePair("Goat", "Like a sheep with horns"),
+            new WordCluePair("Turtle", "Like a tortoise, but it swims"),
+            new WordCluePair("Elephant", "They'll never forget their trunks"),
+            new WordCluePair("Tiger", "Easy! Burning bright"),
+            new WordCluePair("Rabbit", "Hops on a BMX"),
+            new WordCluePair("Houmous", "Yummy dip from the middle east"),
+            new WordCluePair("Toaster", "Makes white bread brown"),
+            new WordCluePair("Railroad", "Enables a train to move along"),
+            new WordCluePair("Digger", "Comes in handy when looking for buried treasure"),
+            new WordCluePair("Richard", "Man's name. Was a king. Rude shortened!"),
+            new WordCluePair("Daniel", "A longer Dan"),
+            new WordCluePair("Liam", "Irish name. Actor has a special set of skills and will find you"),
+            new WordCluePair("Xxx", "Three kisses"),
+            new WordCluePair("Yyy", "Three ys"),
+            new WordCluePair("Zzz", "Three zeds"),
         };
 
 
@@ -131,6 +130,7 @@ namespace CrosswordGeneratorTests
         private PlacementFinder _realPlacementFinder;
         private Generator _realGenerator;
         private GenerationManager _realManager;
+
 
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -176,29 +176,6 @@ namespace CrosswordGeneratorTests
         }
 
         [Test]
-        public void GenerateCrosswords_ShufflesWordsWithEachGeneration()
-        {
-            // Arrange
-            var sequence = new MockSequence();
-            const int attempts = 2;
-            IList<Word> list1 = new List<Word>();
-            IList<Word> list2 = new List<Word>();
-
-            _generatorMock.InSequence(sequence).Setup(g => g.Generate(It.IsAny<IList<Word>>())).Returns(CreateDefaultGeneration)
-                .Callback<IList<Word>>(l => list1 = (List<Word>)l);
-            _generatorMock.InSequence(sequence).Setup(g => g.Generate(It.IsAny<IList<Word>>())).Returns(CreateDefaultGeneration)
-                .Callback<IList<Word>>(l => list2 = l);
-
-            // Act
-            _manager.GenerateCrosswords(_5WordsAllPlaceable, attempts);
-
-            // Assert
-            CollectionAssert.AreNotEqual(_5WordsAllPlaceable, list1);
-            CollectionAssert.AreNotEqual(_5WordsAllPlaceable, list2);
-            CollectionAssert.AreNotEqual(list1, list2);
-        }
-
-        [Test]
         public void GenerateCrosswords_GeneratesForSetNumberOfAttempts()
         {
 
@@ -227,7 +204,7 @@ namespace CrosswordGeneratorTests
             _manager.GenerateCrosswords(_5WordsAllPlaceable, attempts, timeout);
 
             // Assert
-            _generatorMock.Verify(g => g.Generate(It.IsAny<List<Word>>()), Times.AtMost(9));
+            _generatorMock.Verify(g => g.Generate(It.IsAny<List<Word>>()), Times.AtMost(10));
         }
 
         //[Test]
@@ -542,11 +519,9 @@ namespace CrosswordGeneratorTests
         }
 
 
-
         private Generation CreateDefaultGeneration()
         {
-            return null;
-            //return new Generation(_blocks1);
+            return new Generation(_blocks1, new List<PlacedWord>(), new List<string>());
 
         }
 

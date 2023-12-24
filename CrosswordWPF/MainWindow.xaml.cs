@@ -35,7 +35,7 @@ namespace CrosswordWPF
             foreach (var input in WordInputs)
             {
                 if(input.WordBox.Text.Trim().Length > 0) 
-                    words.Add(new WordCluePair(input.WordBox.Text, x));
+                    words.Add(new WordCluePair(input.WordBox.Text, id: x));
                 x++;
             }
 
@@ -43,25 +43,25 @@ namespace CrosswordWPF
             {
                 words = new List<WordCluePair>()
                 {
-                        new WordCluePair("Dog",1),
-                        new WordCluePair("Cat",2),
-                        new WordCluePair("Chicken", 3),
-                        new WordCluePair("Cow", 4),
-                        new WordCluePair("Monkey", 5),
-                        new WordCluePair("Salmon", 5),
-                        new WordCluePair("Goat", 6),
-                        new WordCluePair("Worm", 7),
-                        new WordCluePair("Wasp", 8),
-                        new WordCluePair("Bee", 9),
-                        new WordCluePair("Ostrich", 10),
-                        new WordCluePair("Parrot", 11),
-                        new WordCluePair("Frog", 12),
-                        new WordCluePair("Skunk", 13),
-                        new WordCluePair("Tiger", 14),
-                        new WordCluePair("Rabbit", 15),
-                        new WordCluePair("Bat", 16),
-                        new WordCluePair("Antelope", 17),
-                        new WordCluePair("Tortoise", 18)
+                        new WordCluePair("Dog", id: 1),
+                        new WordCluePair("Cat",id:2),
+                        new WordCluePair("Chicken", id:3),
+                        new WordCluePair("Cow", id:4),
+                        new WordCluePair("Monkey", id:5),
+                        new WordCluePair("Salmon", id:5),
+                        new WordCluePair("Goat", id:6),
+                        new WordCluePair("Worm", id:7),
+                        new WordCluePair("Wasp", id:8),
+                        new WordCluePair("Bee", id:9),
+                        new WordCluePair("Ostrich", id:10),
+                        new WordCluePair("Parrot", id:11),
+                        new WordCluePair("Frog", id:12),
+                        new WordCluePair("Skunk", id:13),
+                        new WordCluePair("Tiger", id:14),
+                        new WordCluePair("Rabbit", id:15),
+                        new WordCluePair("Bat", id:16),
+                        new WordCluePair("Antelope", id:17),
+                        new WordCluePair("Tortoise", id:18)
                     };
             }
 
@@ -88,7 +88,7 @@ namespace CrosswordWPF
             if (generations.Any())
             {
                 crossword.Show();
-                //var message = generation.PlacedWords.Aggregate("Word Starts\n", (current, placedWord) => current + (placedWord.Word + ' ' + placedWord.FirstLetterCoordinates + "\n"));
+                //var message = generation.PlacedWords.Aggregate("Word Starts\n", (current, placedWord) => current + (placedWord.Word + ' ' + placedWord.Start + "\n"));
 
                 //message += "\nUnplaced Words\n";
 

@@ -9,7 +9,7 @@ namespace CrosswordGenerator.Generator.Models
             Id = id;
             Word = word;
             Across = across;
-            FirstLetterCoordinates  = coordinates;
+            Start  = coordinates;
         }
 
         public int Id { get; }
@@ -18,11 +18,11 @@ namespace CrosswordGenerator.Generator.Models
 
         public bool Across { get; }
 
-        public Point FirstLetterCoordinates { get; private set; }
+        public Point Start { get; private set; }
 
         public void ShiftFirstLetterCoordinates(int x, int y)
         {
-            FirstLetterCoordinates = new Point(FirstLetterCoordinates.X + x, FirstLetterCoordinates.Y + y);
+            Start = new Point(Start.X + x, Start.Y + y);
         }
     }
 

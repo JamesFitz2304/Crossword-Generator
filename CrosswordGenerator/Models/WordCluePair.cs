@@ -2,9 +2,10 @@
 {
     public class WordCluePair
     {
-        public WordCluePair(string word, int id = 0)
+        public WordCluePair(string word, string clue = "", int id = 0)
         {
             Word = word.ToUpper();
+            Clue = clue;
             Id = id;
         }
 

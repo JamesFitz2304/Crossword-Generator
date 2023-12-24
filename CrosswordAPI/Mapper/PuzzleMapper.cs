@@ -11,8 +11,17 @@ namespace CrosswordAPI.Mapper
         {
             return generations.Select(g => new Puzzle
             {
-                Blocks = g.Blocks,
+                Blocks = MapBlocks(g.Blocks),
                 Words = MapWords(g.PlacedWords, wordCluePairs)
+            });
+        }
+
+        private static IEnumerable<PuzzleBlock> MapBlocks(LetterBlock[,] blocks)
+        {
+            return blocks.Cast<LetterBlock>().Where(b => b != null).Select(b => new PuzzleBlock
+            {
+                Character = b.Character,
+                Coordinate = b.Coordinates.Coordinates
             });
         }
 

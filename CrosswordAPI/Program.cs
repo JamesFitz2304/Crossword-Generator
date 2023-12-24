@@ -1,3 +1,8 @@
+using CrosswordAPI.Mapper;
+using CrosswordGenerator.GenerationManager;
+using CrosswordGenerator.Generator;
+using CrosswordGenerator.Generator.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +11,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IGenerationManager, GenerationManager>();
+builder.Services.AddScoped<IGenerator, Generator>();
+builder.Services.AddScoped<IPlacementFinder, PlacementFinder>();
+builder.Services.AddScoped<IPuzzleMapper, PuzzleMapper>();
+
 
 var app = builder.Build();
 

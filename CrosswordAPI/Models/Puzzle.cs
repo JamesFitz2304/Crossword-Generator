@@ -1,12 +1,17 @@
 ﻿using System.Drawing;
-using CrosswordGenerator.Generator.Models;
 
 namespace CrosswordAPI.Models
 {
     public class Puzzle
     {
-        public LetterBlock[,] Blocks;
+        public IEnumerable<PuzzleBlock> Blocks { get; set; }
         public IEnumerable<PuzzleWord> Words { get; set; }
+    }
+
+    public class PuzzleBlock
+    {
+        public Point Coordinate { get; set; }
+        public char Character { get; set; }
     }
 
     public class PuzzleWord

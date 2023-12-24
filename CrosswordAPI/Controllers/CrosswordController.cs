@@ -12,17 +12,17 @@ namespace CrosswordAPI.Controllers
     {
  
         private readonly ILogger<CrosswordController> _logger;
-        private readonly GenerationManager _generationManager;
-        private readonly PuzzleMapper _mapper;
+        private readonly IGenerationManager _generationManager;
+        private readonly IPuzzleMapper _mapper;
 
-        public CrosswordController(ILogger<CrosswordController> logger, GenerationManager generationManager, PuzzleMapper mapper)
+        public CrosswordController(ILogger<CrosswordController> logger, IGenerationManager generationManager, IPuzzleMapper mapper)
         {
             _logger = logger;
             _generationManager = generationManager;
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpPost]
         public IEnumerable<Puzzle>? GenerateCrosswords(IList<WordCluePair> wordCluePairs)
         {
             var generations = _generationManager.GenerateCrosswords(wordCluePairs);

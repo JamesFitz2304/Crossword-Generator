@@ -84,13 +84,13 @@ namespace CrosswordWPF
                 .OrderBy(g => g.BlocksSize)
                 .ThenByDescending(g => g.SizeRatio);
 
-            var generation = generationsSorted.First();
+            //var generation = generationsSorted.First();
             
 
             if (generations.Any())
             {
-                var puzzle = _mapper.Map(generation, words);
-                var crossword = new CrosswordWindow(puzzle);
+                var puzzles = _mapper.Map(generationsSorted, words).ToList();
+                var crossword = new CrosswordWindow(puzzles);
                 crossword.Show();
                 //var message = generation.PlacedWords.Aggregate("Word Starts\n", (current, placedWord) => current + (placedWord.Word + ' ' + placedWord.Start + "\n"));
 

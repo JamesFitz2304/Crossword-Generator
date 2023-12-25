@@ -15,22 +15,28 @@ namespace CrosswordWPF
     /// </summary>
     public partial class CrosswordWindow : Window
     {
-        private readonly DrawingBlock[,] _drawingBlocks;
+        private DrawingBlock[,] _drawingBlocks;
         private double _sizeFactor = 1;
         private const double BaseSize = 30;
-        public bool CrosswordFailed = false;
         private readonly Color _backgroundColor = Colors.DarkSlateGray;
-        public CrosswordWindow(Puzzle puzzle)
+
+        private readonly IList<Puzzle> _puzzles;
+        private int _puzzleIndex = 0;
+
+        public CrosswordWindow(IList<Puzzle> puzzles)
         {
             InitializeComponent();
-            var blocksWidth = puzzle.Blocks.Max(b => b.Coordinate.X);
-            var blocksHeight = puzzle.Blocks.Max(b => b.Coordinate.Y);
-            _drawingBlocks = new DrawingBlock[blocksHeight, blocksWidth];
-            DrawCrossword(puzzle.Blocks);
-            DrawClues(puzzle.Words.ToList());
+            _puzzles = puzzles;
+            DrawCrossword();
+            DrawClues();
         }
-        private void DrawCrossword(IEnumerable<PuzzleBlock> puzzleBlocks)
+        private void DrawCrossword()
         {
+            var puzzleBlocks = _puzzles[_puzzleIndex].Blocks.ToList();
+            var blocksWidth = puzzleBlocks.Max(b => b.Coordinate.X);
+            var blocksHeight = puzzleBlocks.Max(b => b.Coordinate.Y);
+            _drawingBlocks = new DrawingBlock[blocksHeight, blocksWidth];
+
             CrosswordGrid.Children.Clear();
 
             var background = new Border
@@ -54,8 +60,10 @@ namespace CrosswordWPF
             }
         }
 
-        private void DrawClues(ICollection<PuzzleWord> wordClues)
+        private void DrawClues()
         {
+            
+            var wordClues = _puzzles[_puzzleIndex].Words.ToList();
             var x = 0;
             var acrossClues = wordClues.Where(w => w.Across).ToList();
 
@@ -91,6 +99,7 @@ namespace CrosswordWPF
             void SetRows(Grid grid, int rows)
             {
                 grid.RowDefinitions.Clear();
+                grid.Children.Clear();
                 for (var i = 0; i < rows; i++)
                 {
                     grid.RowDefinitions.Add(new RowDefinition
@@ -100,8 +109,6 @@ namespace CrosswordWPF
                 }
             }
         }
-
-
 
         private void GenerateGridRowsAndColumns()
         {
@@ -148,20 +155,23 @@ namespace CrosswordWPF
                 _sizeFactor = Math.Round(_sizeFactor + 0.1, 1);
                 ResizeBoard();
             }
-            //else if (e.Key == Key.Enter)
-            //{
-            //    ShuffleAndRegnerate();
+            else if (e.Key == Key.Enter)
+            {
+                GetNextCrossword();
 
-            //}
+            }
         }
 
-        //private void ShuffleAndRegnerate()
-        //{
-        //    manager.Blocks = null;
-        //    manager.ShuffleWords();
-        //    GenerateCrossword();
-        //    DrawCrossword();
-        //}
+        private void GetNextCrossword()
+        {
+            _puzzleIndex++;
+            if (_puzzleIndex >= _puzzles.Count)
+            {
+                _puzzleIndex = 0;
+            }
+            DrawCrossword();
+            DrawClues();
+        }
 
     }
 }

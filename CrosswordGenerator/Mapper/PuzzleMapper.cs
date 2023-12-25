@@ -1,9 +1,11 @@
-﻿using CrosswordAPI.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CrosswordGenerator.GenerationManager;
 using CrosswordGenerator.Generator.Models;
 using CrosswordGenerator.Models;
+using CrosswordGenerator.Models.Puzzle;
 
-namespace CrosswordAPI.Mapper
+namespace CrosswordGenerator.Mapper
 {
     public class PuzzleMapper : IPuzzleMapper
     {

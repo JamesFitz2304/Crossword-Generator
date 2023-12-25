@@ -1,7 +1,7 @@
-using CrosswordAPI.Mapper;
 using CrosswordGenerator.GenerationManager;
 using CrosswordGenerator.Generator;
 using CrosswordGenerator.Generator.Interfaces;
+using CrosswordGenerator.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 

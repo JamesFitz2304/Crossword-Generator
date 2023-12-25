@@ -1,7 +1,7 @@
-using CrosswordAPI.Mapper;
-using CrosswordAPI.Models;
 using CrosswordGenerator.GenerationManager;
+using CrosswordGenerator.Mapper;
 using CrosswordGenerator.Models;
+using CrosswordGenerator.Models.Puzzle;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrosswordAPI.Controllers

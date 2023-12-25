@@ -11,28 +11,34 @@ namespace CrosswordGenerator.Mapper
     {
         public Puzzle Map(Generation generation, IEnumerable<WordCluePair> wordCluePairs)
         {
+            var words = MapWords(generation.PlacedWords, wordCluePairs).ToList();
             return new Puzzle
             {
-                Blocks = MapBlocks(generation.Blocks),
-                Words = MapWords(generation.PlacedWords, wordCluePairs)
+                Blocks = MapBlocks(generation.Blocks, words),
+                Words = words
             };
         }
 
         public IEnumerable<Puzzle> Map(IEnumerable<Generation> generations, IEnumerable<WordCluePair> wordCluePairs)
         {
-            return generations.Select(g => new Puzzle
+            return generations.Select(g =>
             {
-                Blocks = MapBlocks(g.Blocks),
-                Words = MapWords(g.PlacedWords, wordCluePairs)
+                var words = MapWords(g.PlacedWords, wordCluePairs).ToList();
+                return new Puzzle
+                {
+                    Blocks = MapBlocks(g.Blocks, words),
+                    Words = words
+                };
             });
         }
 
-        private static IEnumerable<PuzzleBlock> MapBlocks(LetterBlock[,] blocks)
+        private static IEnumerable<PuzzleBlock> MapBlocks(LetterBlock[,] blocks, IEnumerable<PuzzleWord> words)
         {
             return blocks.Cast<LetterBlock>().Where(b => b != null).Select(b => new PuzzleBlock
             {
                 Character = b.Character,
-                Coordinate = b.Coordinates.Coordinates
+                Coordinate = b.Coordinates.Coordinates,
+                WordStart = words.FirstOrDefault(w => w.Start == b.Coordinates.Coordinates)
             }).OrderBy(p => p.Coordinate.X).ThenBy(p => p.Coordinate.Y);
         }
 

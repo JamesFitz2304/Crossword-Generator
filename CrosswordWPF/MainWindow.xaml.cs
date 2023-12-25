@@ -54,7 +54,7 @@ namespace CrosswordWPF
                         new WordCluePair("Salmon", id:5, clue : "Goes swimming"),
                         new WordCluePair("Goat", id:6, clue : "Goes bahh with horns"),
                         new WordCluePair("Worm", id:7, clue : "Goes wriggle"),
-                        new WordCluePair("Wasp", id:8, clue : "Goes string"),
+                        new WordCluePair("Wasp", id:8, clue : "Goes sting"),
                         new WordCluePair("Bee", id:9, clue : "Goes for honey"),
                         new WordCluePair("Ostrich", id:10, clue : "Goes not flying"),
                         new WordCluePair("Parrot", id:11, clue : "Goes whatever you say"),

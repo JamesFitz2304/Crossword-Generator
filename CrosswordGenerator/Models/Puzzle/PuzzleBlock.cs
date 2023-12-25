@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace CrosswordGenerator.Models.Puzzle
 {
@@ -6,6 +7,6 @@ namespace CrosswordGenerator.Models.Puzzle
     {
         public Point Coordinate { get; set; }
         public char Character { get; set; }
-        public PuzzleWord WordStart { get; set; }
+        public IEnumerable<PuzzleWord> WordStarts { get; set; }
     }
 }

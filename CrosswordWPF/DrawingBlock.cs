@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CrosswordGenerator.Models.Puzzle;
@@ -60,14 +61,14 @@ namespace CrosswordWPF
 
             canvas.Children.Add(TextBox);
 
-            if (puzzleBlock.WordStart != null)
+            if (puzzleBlock.WordStarts.Any())
             {
                 var wordNumText = new TextBlock
                 {
                     VerticalAlignment = VerticalAlignment.Top,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     FontSize = 8,
-                    Text = puzzleBlock.WordStart.Order.ToString()
+                    Text = puzzleBlock.WordStarts.First().Order.ToString()
                 };
                 canvas.Children.Add(wordNumText);
             }

@@ -72,7 +72,7 @@ namespace CrosswordWPF
 
             try
             {
-                generations = _manager.GenerateCrosswords(words, timeout: int.MaxValue).ToList();
+                generations = _manager.GenerateCrosswords(words, timeout: int.MaxValue, maxAttempts:1000).ToList();
             }
             catch (FormatException)
             {

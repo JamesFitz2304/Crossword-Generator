@@ -34,12 +34,28 @@ namespace CrosswordGenerator.Mapper
 
         private static IEnumerable<PuzzleBlock> MapBlocks(LetterBlock[,] blocks, IEnumerable<PuzzleWord> words)
         {
-            return blocks.Cast<LetterBlock>().Where(b => b != null).Select(b => new PuzzleBlock
+            var puzzleBlocks =  blocks.Cast<LetterBlock>().Where(b => b != null).Select(b => new PuzzleBlock
             {
                 Character = b.Character,
                 Coordinate = b.Coordinates.Coordinates,
-                WordStart = words.FirstOrDefault(w => w.Start == b.Coordinates.Coordinates)
-            }).OrderBy(p => p.Coordinate.X).ThenBy(p => p.Coordinate.Y);
+                WordStarts = words.Where(w => w.Start == b.Coordinates.Coordinates)
+            }).OrderBy(p => p.Coordinate.X).ThenBy(p => p.Coordinate.Y).ToList();
+
+
+            // Assign order to words
+            var blocksWithStarts = puzzleBlocks.Where(pb => pb.WordStarts.Any())
+                .OrderBy(pb => pb.Coordinate.Y).ThenBy(pb => pb.Coordinate.X);
+
+            var i = 1;
+            foreach (var block in blocksWithStarts)
+            {
+                foreach (var word in block.WordStarts)
+                {
+                    word.Order = i;
+                }
+                i++;
+            }
+            return puzzleBlocks;
         }
 
         private static IEnumerable<PuzzleWord> MapWords(IEnumerable<PlacedWord> words, IEnumerable<WordCluePair> wordCluePairs)
@@ -52,10 +68,7 @@ namespace CrosswordGenerator.Mapper
                 Clue = wordCluePairs.First(wcp => wcp.Id == word.Id).Clue
             }).ToList();
 
-            puzzleWords = puzzleWords.OrderBy(p => p.Start.Y).ThenBy(p => p.Start.X).ToList();
-            var i = 1;
-            puzzleWords.ForEach(p => p.Order = i++);
-            return puzzleWords;
+            return puzzleWords.OrderBy(p => p.Start.Y).ThenBy(p => p.Start.X).ToList();
         }
 
     }

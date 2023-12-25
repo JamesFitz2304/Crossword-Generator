@@ -4,6 +4,7 @@ using CrosswordGenerator.GenerationManager;
 using CrosswordGenerator.Generator;
 using CrosswordGenerator.Generator.Interfaces;
 using System;
+using CrosswordGenerator.Mapper;
 
 namespace CrosswordWPF
 {
@@ -25,9 +26,8 @@ namespace CrosswordWPF
             services.AddScoped<IGenerationManager, GenerationManager>();
             services.AddScoped<IGenerator, Generator>();
             services.AddScoped<IPlacementFinder, PlacementFinder>();
-
+            services.AddScoped<IPuzzleMapper, PuzzleMapper>();
             services.AddSingleton<MainWindow>();
-
         }
 
         private void OnStartup(object sender, StartupEventArgs e)

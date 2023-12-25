@@ -5,8 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CrosswordGenerator.GenerationManager;
-using CrosswordGenerator.Generator;
-using CrosswordGenerator.Generator.Models;
+using CrosswordGenerator.Mapper;
 using CrosswordGenerator.Models;
 
 namespace CrosswordWPF
@@ -16,23 +15,27 @@ namespace CrosswordWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        List<WordInput> WordInputs = new List<WordInput>();
+        private readonly List<WordInput> _wordInputs;
         private readonly IGenerationManager _manager;
+        private readonly IPuzzleMapper _mapper;
 
-        public MainWindow(IGenerationManager manager)
+        public MainWindow(IGenerationManager manager, IPuzzleMapper mapper)
         {
             _manager = manager;
+            _mapper = mapper;
             InitializeComponent();
-            WordInputs.Add(new WordInput(boxWord1, boxClue1));
-            WordInputs.Add(new WordInput(boxWord2, boxClue2));
+            _wordInputs = new List<WordInput>
+            {
+                new WordInput(boxWord1, boxClue1),
+                new WordInput(boxWord2, boxClue2)
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var words = new List<WordCluePair>();
             var x = 1;
-            foreach (var input in WordInputs)
+            foreach (var input in _wordInputs)
             {
                 if(input.WordBox.Text.Trim().Length > 0) 
                     words.Add(new WordCluePair(input.WordBox.Text, id: x));
@@ -82,11 +85,12 @@ namespace CrosswordWPF
                 .ThenByDescending(g => g.SizeRatio);
 
             var generation = generationsSorted.First();
-
-            CrosswordWindow crossword = new CrosswordWindow(generation);
+            
 
             if (generations.Any())
             {
+                var puzzle = _mapper.Map(generation, words);
+                var crossword = new CrosswordWindow(puzzle);
                 crossword.Show();
                 //var message = generation.PlacedWords.Aggregate("Word Starts\n", (current, placedWord) => current + (placedWord.Word + ' ' + placedWord.Start + "\n"));
 
@@ -106,9 +110,9 @@ namespace CrosswordWPF
         private void AddNewWordLine()
         {
             AddNewGridRow();
-            WordInputs.Add(new WordInput(WordInputs, MainGrid));
+            _wordInputs.Add(new WordInput(_wordInputs, MainGrid));
 
-            if (WordInputs.Count > 2)
+            if (_wordInputs.Count > 2)
             {
                 btnRemove.Visibility = Visibility.Visible;
             }
@@ -133,11 +137,11 @@ namespace CrosswordWPF
 
         private void RemoveWordLine()
         {
-            MainGrid.Children.Remove(WordInputs[WordInputs.Count - 1].WordBox);
-            MainGrid.Children.Remove(WordInputs[WordInputs.Count - 1].ClueBox);
-            WordInputs.RemoveAt(WordInputs.Count - 1);
+            MainGrid.Children.Remove(_wordInputs[_wordInputs.Count - 1].WordBox);
+            MainGrid.Children.Remove(_wordInputs[_wordInputs.Count - 1].ClueBox);
+            _wordInputs.RemoveAt(_wordInputs.Count - 1);
             RemoveGridRow();
-            if (WordInputs.Count < 3)
+            if (_wordInputs.Count < 3)
             {
                 btnRemove.Visibility = Visibility.Hidden;
             }
@@ -154,7 +158,7 @@ namespace CrosswordWPF
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Tab && WordInputs[WordInputs.Count - 1].ClueBox.IsFocused)
+            if (e.Key == Key.Tab && _wordInputs[_wordInputs.Count - 1].ClueBox.IsFocused)
             {
                 AddNewWordLine();
             }

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CrosswordGenerator.Generator.Models;
+using CrosswordGenerator.Models.Puzzle;
 
 namespace CrosswordWPF
 {
@@ -17,7 +18,7 @@ namespace CrosswordWPF
 
         public string Text => _textBlock.Text;
 
-        public DrawingBlock(LetterBlock letterBlock, int x, int y)
+        public DrawingBlock(PuzzleBlock puzzleBlock, int x, int y)
         {
             Grid = new Grid();
             Grid.SetRow(Grid, y);
@@ -37,7 +38,7 @@ namespace CrosswordWPF
             Grid.Children.Add(_foreground);
             _textBlock = new TextBlock
             {
-                Text = letterBlock.Character.ToString(),
+                Text = puzzleBlock.Character.ToString(),
                 Foreground = new SolidColorBrush(Colors.Black)
             };
             _foreground.Child = _textBlock;

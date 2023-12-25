@@ -9,6 +9,15 @@ namespace CrosswordGenerator.Mapper
 {
     public class PuzzleMapper : IPuzzleMapper
     {
+        public Puzzle Map(Generation generation, IEnumerable<WordCluePair> wordCluePairs)
+        {
+            return new Puzzle
+            {
+                Blocks = MapBlocks(generation.Blocks),
+                Words = MapWords(generation.PlacedWords, wordCluePairs)
+            };
+        }
+
         public IEnumerable<Puzzle> Map(IEnumerable<Generation> generations, IEnumerable<WordCluePair> wordCluePairs)
         {
             return generations.Select(g => new Puzzle
@@ -24,7 +33,7 @@ namespace CrosswordGenerator.Mapper
             {
                 Character = b.Character,
                 Coordinate = b.Coordinates.Coordinates
-            });
+            }).OrderBy(p => p.Coordinate.X).ThenBy(p => p.Coordinate.Y);
         }
 
         private static IEnumerable<PuzzleWord> MapWords(IEnumerable<PlacedWord> words, IEnumerable<WordCluePair> wordCluePairs)

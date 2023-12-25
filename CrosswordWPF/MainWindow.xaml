@@ -46,48 +46,6 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.RowSpan="10" Grid.ColumnSpan="10" Background="White" Margin="0,0,0,0"/>
-            <Grid Height="20" Width="20">
-                <Border Background="Black" Margin="0,0,0,0"/>
-                <Border Background="White" Margin="1,1,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Column="1">
-                <Border Background="Black" Margin="-1,0,0,0"/>
-                <Border Background="White" Margin="0,1,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Column="2">
-                <Border Background="Black" Margin="-1,0,0,0"/>
-                <Border Background="White" Margin="0,1,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Column="3">
-                <Border Background="Black" Margin="-1,0,0,0"/>
-                <Border Background="White" Margin="0,1,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Row="1"  Grid.Column="2">
-                <Border Background="Black" Margin="-1,-1,0,0"/>
-                <Border Background="White" Margin="0,0,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Row="2"  Grid.Column="2">
-                <Border Background="Black" Margin="-1,-1,0,0"/>
-                <Border Background="White" Margin="0,0,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Row="3"  Grid.Column="2">
-                <Border Background="Black" Margin="-1,-1,0,0"/>
-                <Border Background="White" Margin="0,0,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Row="3"  Grid.Column="3">
-                <Border Background="Black" Margin="-1,-1,0,0"/>
-                <Border Background="White" Margin="0,0,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Row="3"  Grid.Column="1">
-                <Border Background="Black" Margin="-1,-1,0,0"/>
-                <Border Background="White" Margin="0,0,1,1"/>
-            </Grid>
-            <Grid Height="20" Width="20" Grid.Row="4"  Grid.Column="2">
-                <Border Background="Black" Margin="-1,-1,0,0"/>
-                <Border Background="White" Margin="0,0,1,1"/>
-            </Grid>
-
         </Grid>
     </Grid>
 </Window>

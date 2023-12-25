@@ -6,7 +6,6 @@ namespace CrosswordGenerator.Models.Puzzle
     {
         public Point Coordinate { get; set; }
         public char Character { get; set; }
-
         public PuzzleWord WordStart { get; set; }
     }
 }

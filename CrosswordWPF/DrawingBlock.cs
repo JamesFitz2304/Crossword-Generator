@@ -7,14 +7,15 @@ namespace CrosswordWPF
 {
     public class DrawingBlock
     {
-        private readonly PuzzleBlock _puzzleBlock;
+        public readonly PuzzleBlock PuzzleBlock;
+        public TextBox TextBox;
         private double _blockSize = 30;
 
         public Grid Grid;
 
         public DrawingBlock(PuzzleBlock puzzleBlock, int x, int y)
         {
-            _puzzleBlock = puzzleBlock;
+            PuzzleBlock = puzzleBlock;
             Grid = new Grid();
             Grid.SetRow(Grid, y);
             Grid.SetColumn(Grid, x);
@@ -40,21 +41,24 @@ namespace CrosswordWPF
 
             var canvas = new Canvas();
 
-            var textBox = new TextBox
+            TextBox = new TextBox
             {
                 Foreground = new SolidColorBrush(Colors.Black),
                 MaxLength = 1,
                 BorderBrush = null,
+                BorderThickness = new Thickness(0),
                 Background = null,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 Height = _blockSize,
-                Width = _blockSize
+                Width = _blockSize,
+                IsTabStop = false,
+                AcceptsTab = false
             };
 
-            canvas.Children.Add(textBox);
+            canvas.Children.Add(TextBox);
 
             if (puzzleBlock.WordStart != null)
             {

@@ -23,6 +23,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" TextDecorations="Underline">Across</TextBlock>
             <Grid Name="AcrossGrid" Row="1" Column="0">
@@ -30,6 +31,7 @@
             <TextBlock Grid.Row="0" Grid.Column="1"  FontWeight="Bold" TextDecorations="Underline">Down</TextBlock>
             <Grid Name="DownGrid" Row="1" Column="1">
             </Grid>
+            <Button Grid.Row="2" Grid.Column="0" Margin="5" Click="Button_Click">Reveal</Button>
         </Grid>
     </Grid>
 

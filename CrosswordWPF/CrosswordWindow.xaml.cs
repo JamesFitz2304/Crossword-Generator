@@ -32,7 +32,8 @@ namespace CrosswordWPF
         }
         private void DrawCrossword()
         {
-            var puzzleBlocks = _puzzles[_puzzleIndex].Blocks.ToList();
+            var puzzle = _puzzles[_puzzleIndex];
+            var puzzleBlocks = puzzle.Blocks.ToList();
             var blocksWidth = puzzleBlocks.Max(b => b.Coordinate.X);
             var blocksHeight = puzzleBlocks.Max(b => b.Coordinate.Y);
             _drawingBlocks = new DrawingBlock[blocksHeight, blocksWidth];
@@ -58,6 +59,7 @@ namespace CrosswordWPF
                 _drawingBlocks[y, x] = drawingBlock;
                 CrosswordGrid.Children.Add(drawingBlock.Grid);
             }
+
         }
 
         private void DrawClues()
@@ -173,5 +175,16 @@ namespace CrosswordWPF
             DrawClues();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var block in _drawingBlocks)
+            {
+                if (block != null)
+                {
+                    block.TextBox.IsReadOnly = true;
+                    block.TextBox.Text = block.PuzzleBlock.Character.ToString();
+                }
+            }
+        }
     }
 }

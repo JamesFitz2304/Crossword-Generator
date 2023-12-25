@@ -46,7 +46,7 @@ namespace CrosswordGenerator.Mapper
                 Clue = wordCluePairs.First(wcp => wcp.Id == word.Id).Clue
             }).ToList();
 
-            puzzleWords = puzzleWords.OrderBy(p => p.Start.X).ThenBy(p => p.Start.Y).ToList();
+            puzzleWords = puzzleWords.OrderBy(p => p.Start.Y).ThenBy(p => p.Start.X).ToList();
             var i = 1;
             puzzleWords.ForEach(p => p.Order = i++);
             return puzzleWords;

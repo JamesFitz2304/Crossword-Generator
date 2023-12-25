@@ -3,12 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Annotations;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using CrosswordGenerator.GenerationManager;
 using CrosswordGenerator.Models.Puzzle;
 
 namespace CrosswordWPF
@@ -29,12 +26,13 @@ namespace CrosswordWPF
             var blocksWidth = puzzle.Blocks.Max(b => b.Coordinate.X);
             var blocksHeight = puzzle.Blocks.Max(b => b.Coordinate.Y);
             _drawingBlocks = new DrawingBlock[blocksHeight, blocksWidth];
-            DrawCrossword(puzzle);
-
+            DrawCrossword(puzzle.Blocks);
+            DrawClues(puzzle.Words.ToList());
         }
-        private void DrawCrossword(Puzzle puzzle)
+        private void DrawCrossword(IEnumerable<PuzzleBlock> puzzleBlocks)
         {
-            CrosswordGrid.Children.RemoveRange(0, CrosswordGrid.Children.Count);
+            CrosswordGrid.Children.Clear();
+
             var background = new Border
             {
                 Background = new SolidColorBrush(_backgroundColor)
@@ -46,7 +44,7 @@ namespace CrosswordWPF
 
             GenerateGridRowsAndColumns();
 
-            foreach (var puzzleBlock in puzzle.Blocks)
+            foreach (var puzzleBlock in puzzleBlocks)
             {
                 var x = puzzleBlock.Coordinate.X - 1;
                 var y = puzzleBlock.Coordinate.Y - 1;
@@ -55,6 +53,54 @@ namespace CrosswordWPF
                 CrosswordGrid.Children.Add(drawingBlock.Grid);
             }
         }
+
+        private void DrawClues(ICollection<PuzzleWord> wordClues)
+        {
+            var x = 0;
+            var acrossClues = wordClues.Where(w => w.Across).ToList();
+
+            SetRows(AcrossGrid, acrossClues.Count);
+
+            foreach (var across in acrossClues)
+            {
+                var textBlock = new TextBlock
+                {
+                    Text = $"{across.Order}: {across.Clue}"
+                };
+                textBlock.SetValue(Grid.RowProperty, x);
+                AcrossGrid.Children.Add(textBlock);
+                x++;
+            }
+
+
+            var downClues = wordClues.Where(w => !w.Across).ToList();
+            SetRows(DownGrid, downClues.Count);
+
+            x = 0;
+            foreach (var down in downClues)
+            {
+                var textBlock = new TextBlock
+                {
+                    Text = $"{down.Order}: {down.Clue}"
+                };
+                textBlock.SetValue(Grid.RowProperty, x);
+                DownGrid.Children.Add(textBlock);
+                x++;
+            }
+
+            void SetRows(Grid grid, int rows)
+            {
+                grid.RowDefinitions.Clear();
+                for (var i = 0; i < rows; i++)
+                {
+                    grid.RowDefinitions.Add(new RowDefinition
+                    {
+                        Height = GridLength.Auto
+                    });
+                }
+            }
+        }
+
 
 
         private void GenerateGridRowsAndColumns()
@@ -82,7 +128,8 @@ namespace CrosswordWPF
                 for (var x = 0; x < _drawingBlocks.GetLength(1); x++)
                 {
                     var drawingBlock = _drawingBlocks[y, x];
-                    drawingBlock.BlockSize = BaseSize * _sizeFactor;
+                    if(drawingBlock != null)
+                        drawingBlock.BlockSize = BaseSize * _sizeFactor;
                 }
             }
             CrosswordGrid.Width = double.NaN;

@@ -46,25 +46,25 @@ namespace CrosswordWPF
             {
                 words = new List<WordCluePair>()
                 {
-                        new WordCluePair("Dog", id: 1),
-                        new WordCluePair("Cat",id:2),
-                        new WordCluePair("Chicken", id:3),
-                        new WordCluePair("Cow", id:4),
-                        new WordCluePair("Monkey", id:5),
-                        new WordCluePair("Salmon", id:5),
-                        new WordCluePair("Goat", id:6),
-                        new WordCluePair("Worm", id:7),
-                        new WordCluePair("Wasp", id:8),
-                        new WordCluePair("Bee", id:9),
-                        new WordCluePair("Ostrich", id:10),
-                        new WordCluePair("Parrot", id:11),
-                        new WordCluePair("Frog", id:12),
-                        new WordCluePair("Skunk", id:13),
-                        new WordCluePair("Tiger", id:14),
-                        new WordCluePair("Rabbit", id:15),
-                        new WordCluePair("Bat", id:16),
-                        new WordCluePair("Antelope", id:17),
-                        new WordCluePair("Tortoise", id:18)
+                        new WordCluePair("Dog", id: 1, clue: "Goes woof"),
+                        new WordCluePair("Cat",id:2, clue: "Goes meow"),
+                        new WordCluePair("Chicken", id:3, clue : "Goes cluck"),
+                        new WordCluePair("Cow", id:4, clue : "Goes moo"),
+                        new WordCluePair("Monkey", id:5, clue : "Goes ooh ooh ahh ahh"),
+                        new WordCluePair("Salmon", id:5, clue : "Goes swimming"),
+                        new WordCluePair("Goat", id:6, clue : "Goes bahh with horns"),
+                        new WordCluePair("Worm", id:7, clue : "Goes wriggle"),
+                        new WordCluePair("Wasp", id:8, clue : "Goes string"),
+                        new WordCluePair("Bee", id:9, clue : "Goes for honey"),
+                        new WordCluePair("Ostrich", id:10, clue : "Goes not flying"),
+                        new WordCluePair("Parrot", id:11, clue : "Goes whatever you say"),
+                        new WordCluePair("Frog", id:12, clue : "Goes ribbit"),
+                        new WordCluePair("Skunk", id:13, clue : "Goes stink"),
+                        new WordCluePair("Tiger", id:14, clue : "Goes growl in India"),
+                        new WordCluePair("Rabbit", id:15, clue : "Goes hopping"),
+                        new WordCluePair("Bat", id:16, clue : "Goes screech in the dark"),
+                        new WordCluePair("Antelope", id:17, clue : "Goes running with antlers"),
+                        new WordCluePair("Tortoise", id:18, clue : "Goes slow")
                     };
             }
 

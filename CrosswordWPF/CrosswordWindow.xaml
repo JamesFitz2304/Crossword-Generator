@@ -3,9 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CrosswordWPF"
         mc:Ignorable="d"
         Title="CrosswordWindow" ResizeMode="NoResize" SizeToContent="WidthAndHeight" MinHeight="25" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
-    <Grid Name="CrosswordGrid" Grid.Row="0">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Name="CrosswordGrid" Grid.Row="0">
+        </Grid>
+        <Grid Name="ClueGrid" Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" FontWeight="Bold" TextDecorations="Underline">Across</TextBlock>
+            <Grid Name="AcrossGrid" Row="1" Column="0">
+            </Grid>
+            <TextBlock Grid.Row="0" Grid.Column="1"  FontWeight="Bold" TextDecorations="Underline">Down</TextBlock>
+            <Grid Name="DownGrid" Row="1" Column="1">
+            </Grid>
+        </Grid>
     </Grid>
+  
 </Window>

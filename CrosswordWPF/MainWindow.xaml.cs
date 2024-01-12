@@ -38,7 +38,7 @@ namespace CrosswordWPF
             foreach (var input in _wordInputs)
             {
                 if(input.WordBox.Text.Trim().Length > 0) 
-                    words.Add(new WordCluePair(input.WordBox.Text, id: x));
+                    words.Add(new WordCluePair(input.WordBox.Text, input.ClueBox.Text, x));
                 x++;
             }
 
@@ -87,18 +87,20 @@ namespace CrosswordWPF
             //var generation = generationsSorted.First();
             
 
-            if (generations.Any())
+            if (generations.Any(g => g.PlacedWords.Count > 2))
             {
                 var puzzles = _mapper.Map(generationsSorted, words).ToList();
                 var crossword = new CrosswordWindow(puzzles);
                 crossword.Show();
-                //var message = generation.PlacedWords.Aggregate("Word Starts\n", (current, placedWord) => current + (placedWord.Word + ' ' + placedWord.Start + "\n"));
-
-                //message += "\nUnplaced Words\n";
-
-                //message = generation.UnplacedWords.Aggregate(message, (current, unplaced) => current + (unplaced + "\n"));
-
-                //MessageBox.Show(message);
+                var unplacedWords = generations.First().UnplacedWords.Count;
+                if (unplacedWords > 0)
+                {
+                    MessageBox.Show($"{unplacedWords} words couldn't be placed");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Crossword couldn't be generated. Please try adding more words.");
             }
         }
 
